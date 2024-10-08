@@ -27,6 +27,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
 
 # vercel
 .vercel
@@ -44,3 +45,4 @@ front_end/.next
 
 # backend stuff
 back_end/__pycache__
+
