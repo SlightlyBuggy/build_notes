@@ -4,6 +4,8 @@ import { z } from 'zod'
 import { sql } from '@vercel/postgres'
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { signIn } from '@/auth';
+import { AuthError } from 'next-auth';
 
 // this server action contains too many details
 const FormSchema = z.object({
@@ -23,7 +25,7 @@ const FormSchema = z.object({
 const CreateInvoice = FormSchema.omit({id: true, date: true});
 const UpdateInvoice = FormSchema.omit({id: true, date: true})
 
-export type State = {
+export type CreateEditFormState = {
     errors?: {
         customerId?: string[];
         amount?: string[];
@@ -32,7 +34,7 @@ export type State = {
     message?: string | null;
 }
 
-export async function createInvoice(prevState: State, formData: FormData) {
+export async function createInvoice(prevState: CreateEditFormState, formData: FormData) {
     // Validate form using Zod
     const validatedFields = CreateInvoice.safeParse({
       customerId: formData.get('customerId'),
@@ -71,12 +73,22 @@ export async function createInvoice(prevState: State, formData: FormData) {
     redirect('/dashboard/invoices');
   }
 
-export async function updateInvoice(id: string, formData: FormData) {
-    const { customerId, amount, status } = UpdateInvoice.parse({
+export async function updateInvoice(id: string, prevState: CreateEditFormState, formData: FormData) {
+    // Validate form using Zod
+    const validatedFields = CreateInvoice.safeParse({
         customerId: formData.get('customerId'),
         amount: formData.get('amount'),
         status: formData.get('status'),
-    });
+        });
+
+    if(!validatedFields.success) {
+        return {
+            errors: validatedFields.error.flatten().fieldErrors,
+            message: 'Missing Fields. Failed to Create Invoice.',
+        };
+    }
+
+    const { customerId, amount, status } = validatedFields.data;
 
     const amountInCents = amount * 100;
 
@@ -109,4 +121,23 @@ export async function deleteInvoice(id: string) {
         }
     }
     revalidatePath('/dashboard/invoices');
+}
+
+export async function authenticate(
+    prevState: string | undefined,
+    formData: FormData,
+) {
+    try {
+        await signIn('credentials', FormData);
+    } catch (error) {
+        if (error instanceof AuthError) {
+            switch (error.type) {
+                case 'CredentialsSignin':
+                    return 'Invalid credentials.';
+                default:
+                    return 'Something went wrong';
+            }
+        }
+        throw error;
+    }
 }

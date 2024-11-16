@@ -18,7 +18,7 @@ export default function ApiRouteTest() {
     if (isLoading) return <p>Loading...</p>
     if(!data) return <p>No data</p>
 
-    const listItems = data.map((item: any) => <div>{item.name}</div>)
+    const listItems = data.map((item: any, idx: number) => <div key={idx}>{item.name}</div>)
 
     return (
 
