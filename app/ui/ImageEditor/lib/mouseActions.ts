@@ -9,7 +9,6 @@ import { mouseDownSquareTool } from "./squareToolActions";
 
 export const mouseDownAction = (mouseDownEvent: MouseEvent, rect: DOMRect, tool: DrawingTool | null, 
     contextPerm: CanvasRenderingContext2D, paintingSetter: (paintingVal: boolean) => void, startingCoordsSetter: (coords: StartingCoords) => void, addDrawingCommand: (command: DrawingCommand) => void
-
 ) : void => {
 
     const currentX = mouseDownEvent.clientX - rect.left;
@@ -20,7 +19,7 @@ export const mouseDownAction = (mouseDownEvent: MouseEvent, rect: DOMRect, tool:
             mouseDownCircleTool(currentX, currentY, contextPerm, addDrawingCommand)
             return;
         case DrawingTool.Square:
-            mouseDownSquareTool(currentX, currentY, contextPerm)
+            mouseDownSquareTool(currentX, currentY, contextPerm, addDrawingCommand)
             return;
         case DrawingTool.Line:
             mouseDownLineTool(currentX, currentY, paintingSetter, startingCoordsSetter)
@@ -34,19 +33,19 @@ export const mouseDownAction = (mouseDownEvent: MouseEvent, rect: DOMRect, tool:
 }
 
 export const mouseUpAction = (tool: DrawingTool | null, contextPerm: CanvasRenderingContext2D, contextTemp: CanvasRenderingContext2D, 
-    startingCoords: StartingCoords | null, lastCoords: LastCoords | null, paintingSetter: (paintingVal: boolean) => void, startingCoordsSetter: (startingCoords: StartingCoords | null) => void, lastCoordsSetter: (coords: LastCoords | null) => void, canvasWidth: number, canvasHeight: number) => {
+    startingCoords: StartingCoords | null, lastCoords: LastCoords | null, paintingSetter: (paintingVal: boolean) => void, startingCoordsSetter: (startingCoords: StartingCoords | null) => void, lastCoordsSetter: (coords: LastCoords | null) => void, canvasWidth: number, canvasHeight: number, addDrawingCommand: (command: DrawingCommand) => void) => {
     switch(tool)
     {
         case DrawingTool.Line:
             if(startingCoords && lastCoords)
             {
-                mouseUpLineTool(contextPerm, contextTemp, startingCoords, lastCoords, paintingSetter, startingCoordsSetter, lastCoordsSetter, canvasWidth, canvasHeight)
+                mouseUpLineTool(contextPerm, contextTemp, startingCoords, lastCoords, paintingSetter, startingCoordsSetter, lastCoordsSetter, canvasWidth, canvasHeight, addDrawingCommand)
             }
             return;
         case DrawingTool.RadiusedCircle:
             if(startingCoords && lastCoords)
             {
-                mouseUpRadiusedCircleTool(contextPerm, contextTemp, startingCoords, lastCoords, paintingSetter, startingCoordsSetter, lastCoordsSetter, canvasWidth, canvasHeight)
+                mouseUpRadiusedCircleTool(contextPerm, contextTemp, startingCoords, lastCoords, paintingSetter, startingCoordsSetter, lastCoordsSetter, canvasWidth, canvasHeight, addDrawingCommand)
             }
             return
         default:

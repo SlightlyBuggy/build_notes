@@ -1,13 +1,18 @@
-import { StartingCoords, LastCoords } from "@/app/lib/util/types";
+import { DrawingTool } from "@/app/lib/util/enums";
+import { StartingCoords, LastCoords, DrawingCommand } from "@/app/lib/util/types";
 
-export const mouseUpLineTool = (contextPerm: CanvasRenderingContext2D, contextTemp: CanvasRenderingContext2D, startingCoords: StartingCoords, lastCoords: LastCoords, paintingSetter: (paintingVal: boolean) => void, startingCoordsSetter: (startingCoords: StartingCoords | null) => void, lastCoordsSetter: (coords: LastCoords | null) => void, canvasWidth: number, canvasHeight: number) => {
+export const mouseUpLineTool = (contextPerm: CanvasRenderingContext2D, contextTemp: CanvasRenderingContext2D, startingCoords: StartingCoords, lastCoords: LastCoords, paintingSetter: (paintingVal: boolean) => void, startingCoordsSetter: (startingCoords: StartingCoords | null) => void, lastCoordsSetter: (coords: LastCoords | null) => void, canvasWidth: number, canvasHeight: number, addDrawingCommand: (command: DrawingCommand) => void) => {
+
+    const command: DrawingCommand = {
+        drawingTool: DrawingTool.Line,
+        startX: startingCoords.startX,
+        startY: startingCoords.startY,
+        endX: lastCoords.lastX,
+        endY: lastCoords.lastY
+    }
+    addDrawingCommand(command)
+
     paintingSetter(false);
-    contextPerm.strokeStyle = "#000";
-    contextPerm.beginPath();
-    contextPerm.moveTo(startingCoords.startX, startingCoords.startY);
-    contextPerm.lineTo(lastCoords.lastX, lastCoords.lastY);
-    contextPerm.stroke();
-    contextTemp.clearRect(0, 0, canvasWidth, canvasHeight)
     startingCoordsSetter(null);
     lastCoordsSetter(null);
 }
@@ -24,7 +29,7 @@ export const mouseMoveLineTool = (currentX: number, currentY: number, contextTem
     }
 }
 
-export const mouseDownLineTool = (currentX: number, currentY: number, paintingSetter: (paintingVal: boolean) => void, startingCoordsSetter: (coords: StartingCoords) => void, ) => {
+export const mouseDownLineTool = (currentX: number, currentY: number, paintingSetter: (paintingVal: boolean) => void, startingCoordsSetter: (coords: StartingCoords) => void) => {
     startingCoordsSetter({startX: currentX, startY: currentY});
     paintingSetter(true)
 }

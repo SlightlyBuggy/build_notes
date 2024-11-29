@@ -47,7 +47,7 @@ export const useDrawingTool = (canvasRefPerm: React.RefObject<HTMLCanvasElement>
                 };
 
                 const mouseUpListener = () => {
-                    mouseUpAction(activeTool, contextPerm, contextTemp, startingCoords, lastCoords, paintingSetter, startingCoordsSetter, lastCoordsSetter, canvasWidth, canvasHeight)
+                    mouseUpAction(activeTool, contextPerm, contextTemp, startingCoords, lastCoords, paintingSetter, startingCoordsSetter, lastCoordsSetter, canvasWidth, canvasHeight, addDrawingCommand)
                 };
 
                 const mouseMoveListener = (event: MouseEvent) => {
