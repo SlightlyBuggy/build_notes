@@ -1,6 +1,6 @@
 'use client'
 import { StaticImageData } from "next/image";
-import React, { useEffect, useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import { DrawingTool } from "@/app/lib/util/enums";
 import { useDrawingTool } from "@/app/lib/hooks/useDrawingTools";
 import ImageAndCanvases from "./ImageAndCanvases";
@@ -23,6 +23,7 @@ export default function ImageEditor({
     const [activeTool, setActiveTool] = useState<null|DrawingTool>(null);
 
     const [drawCommands, setDrawCommands] = useState<DrawingCommand[]>([])
+    const [undoneDrawCommands, setUndoneDrawCommands] = useState<DrawingCommand[]>([])
 
     const handleToolClick = (tool: DrawingTool) => {
         setActiveTool(tool);
@@ -32,8 +33,13 @@ export default function ImageEditor({
     const canvasWidth = imageData.width;
 
     const addDrawingCommand = (command: DrawingCommand) => {
-        console.log(`Adding draw commands.  Current commands: ${JSON.stringify(drawCommands)}.  Incoming command: ${command}`)
         setDrawCommands([...drawCommands, command])
+    }
+
+    const undoLastDrawingCommand = () => {
+        const currentCommands = [...drawCommands]
+        const lastCommand : DrawingCommand | undefined = currentCommands.pop()
+        setDrawCommands(currentCommands)
     }
 
     useDrawingCommands(canvasRefPerm, drawCommands);
@@ -42,7 +48,7 @@ export default function ImageEditor({
 
     return (
         <div>
-            <DrawingToolPalette activeTool={activeTool} handleToolClick={handleToolClick}/>
+            <DrawingToolPalette activeTool={activeTool} handleToolClick={handleToolClick} undoLastDrawingCommand={undoLastDrawingCommand} drawingCommands={drawCommands}/>
             <ImageAndCanvases 
                 imageData={imageData} 
                 canvasHeight={canvasHeight} 

@@ -24,7 +24,7 @@ export default function ToolButton(
             <div className="p-3 flex items-center" onClick={() => handleClick(DrawingTool.Circle)}>
                 <div className={
                     clsx(
-                        'h-5 w-5 rounded-full',
+                        'h-5 w-5 rounded-full hover:cursor-pointer',
                         {'bg-green-300': activeTool == DrawingTool.Circle},
                         {'hover:bg-yellow-100 bg-green-500': activeTool != DrawingTool.Circle},
                     )}
@@ -37,7 +37,7 @@ export default function ToolButton(
             <div className="p-3 flex items-center" onClick={() => handleClick(DrawingTool.Square)}>
                 <div className={
                     clsx(
-                        'h-6 w-6',
+                        'h-6 w-6 hover:cursor-pointer',
                         {'bg-green-300': activeTool == DrawingTool.Square},
                         {'hover:bg-yellow-100 bg-yellow-500': activeTool != DrawingTool.Square},
                     )}
@@ -50,7 +50,7 @@ export default function ToolButton(
             <div className="p-3 flex items-center" onClick={() => handleClick(DrawingTool.Line)}>
                 <div className={
                     clsx(
-                        'h-6 w-6 flex items-center group',
+                        'h-6 w-6 flex items-center group  hover:cursor-pointer',
                         {'bg-green-300': activeTool == DrawingTool.Line},
                         {'hover:bg-yellow-100': activeTool != DrawingTool.Line},
                     )}
@@ -62,14 +62,15 @@ export default function ToolButton(
             )
         case DrawingTool.RadiusedCircle:
             return (
-                <div className="p3 flex items-center" onClick={() => handleClick(DrawingTool.RadiusedCircle)}>
+                <div className="p-3 flex items-center" onClick={() => handleClick(DrawingTool.RadiusedCircle)}>
                     <div className={
                         clsx(
-                        'h-5 w-5 rounded-full border-solid border-2 border-black flex items-center',
+                        'h-6 w-6 flex items-center justify-center hover:cursor-pointer',
                         {'bg-green-300': activeTool == DrawingTool.RadiusedCircle},
                         {'hover:bg-yellow-100 hover:border-gray-500': activeTool != DrawingTool.RadiusedCircle}
                      )}
                 >
+                    <div className="h-5 w-5 rounded-full border-solid border-2 border-black"></div>
                 </div>
             </div>
             )

@@ -10,3 +10,11 @@ export const saveImage = (canvasRefPerm: React.RefObject<HTMLCanvasElement>) => 
         link.click();
     }
 }
+
+export const clearCanvas = (ctx: CanvasRenderingContext2D | null | undefined, width: number, height: number) =>
+{
+    if(ctx)
+    {
+        ctx.clearRect(0, 0, width, height)
+    }
+}

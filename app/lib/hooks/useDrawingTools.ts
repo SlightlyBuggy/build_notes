@@ -14,20 +14,16 @@ export const useDrawingTool = (canvasRefPerm: React.RefObject<HTMLCanvasElement>
 
     // TODO: this should be something like "finishDraw" which cleans up starting and last coordinates as well as painting
     const paintingSetter = (paintingVal: boolean) => {
-        console.log(`Set painting to ${paintingVal}`)
         setPainting(paintingVal)
     }
 
     const startingCoordsSetter = (coords: StartingCoords | null) => {
-        console.log("Updating starting coords")
         setStartingCoords(coords)
     }
 
     const lastCoordsSetter = (coords: LastCoords | null) => {
-        console.log("Updating last coords")
         setLastCoords(coords)
     }
-
 
     useEffect(() => {
         if(canvasRefPerm.current && canvasRefTemp.current && activeTool)
