@@ -43,19 +43,21 @@ export default function ImageUpload({
     }
 
     return (
-        <div className={clsx(
-            "w-[400px] h-[400px] flex items-center justify-center rounded-lg text-black border-dashed border-4 border-green-300",
-            {"bg-slate-400" : draggingOverElem},
-            {"bg-slate-200": !draggingOverElem}
-            )}
-            onDragOver = {handleDragOver}
-            onDragLeave={() => setDraggingOverElem(false)}
-            onDragEnter={(event) => {event.preventDefault()}}
-            onDrop={handleDrop}
-        >
-            <div className="flex items-center"
+        <div className="pt-12">
+            <div className={clsx(
+                "w-[400px] h-[400px] flex items-center justify-center rounded-lg text-black border-dashed border-4 border-green-300",
+                {"bg-slate-400" : draggingOverElem},
+                {"bg-slate-200": !draggingOverElem}
+                )}
+                onDragOver = {handleDragOver}
+                onDragLeave={() => setDraggingOverElem(false)}
+                onDragEnter={(event) => {event.preventDefault()}}
+                onDrop={handleDrop}
             >
-               Drag image here to upload 
+                <div className="flex items-center"
+                >
+                Drag image here to upload 
+                </div>
             </div>
         </div>
     )

@@ -17,7 +17,7 @@ export default function DrawingToolPalette(
 ) {
 
     return (
-    <div className="flex flex-row p-5 bg-slate-100 select-none">
+    <div className="flex flex-row p-5 select-none">
         <ToolButton tool={DrawingTool.Circle} activeTool={activeTool} handleToolClick={handleToolClick}/>
         <ToolButton tool={DrawingTool.Square} activeTool={activeTool} handleToolClick={handleToolClick}/>
         <ToolButton tool={DrawingTool.Line} activeTool={activeTool} handleToolClick={handleToolClick} />
