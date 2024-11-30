@@ -7,10 +7,12 @@ import { DrawingCommand } from "@/app/lib/util/types"
 
 export default function DrawingToolPalette(
     {
-        activeTool, handleToolClick, undoLastDrawingCommand, drawingCommands
+        activeTool, handleToolClick, undoLastDrawingCommand, drawingCommands, redoLastUndoneCommand, undoneDrawCommands
 
     } : {
-        activeTool: DrawingTool | null, handleToolClick: (tool: DrawingTool) => void, undoLastDrawingCommand: () => void, drawingCommands: DrawingCommand[]
+        activeTool: DrawingTool | null, handleToolClick: (tool: DrawingTool) => void, 
+        undoLastDrawingCommand: () => void, drawingCommands: DrawingCommand[], 
+        redoLastUndoneCommand: () => void, undoneDrawCommands: DrawingCommand[]
     }
 ) {
 
@@ -22,7 +24,7 @@ export default function DrawingToolPalette(
         <ToolButton tool={DrawingTool.RadiusedCircle} activeTool={activeTool} handleToolClick={handleToolClick}/>
         <div className="p-3" ></div>
         <UndoButton undoLastDrawingCommand={undoLastDrawingCommand} drawingCommands={drawingCommands}/>
-        <RedoButton />
+        <RedoButton redoLastUndoneCommand={redoLastUndoneCommand} undoneDrawCommands={undoneDrawCommands}/>
     </div>
     )
 }

@@ -34,12 +34,28 @@ export default function ImageEditor({
 
     const addDrawingCommand = (command: DrawingCommand) => {
         setDrawCommands([...drawCommands, command])
+        // when a new command is added, we clear the list of undone commands.  otherwise things could get confusing for the user.
+        setUndoneDrawCommands([])
     }
 
     const undoLastDrawingCommand = () => {
         const currentCommands = [...drawCommands]
         const lastCommand : DrawingCommand | undefined = currentCommands.pop()
-        setDrawCommands(currentCommands)
+        if(lastCommand)
+        {
+            setUndoneDrawCommands([...undoneDrawCommands, lastCommand])
+            setDrawCommands(currentCommands)
+        }
+    }
+
+    const redoLastUndoneCommand = () => {
+        const currentUndoneCommands = [...undoneDrawCommands]
+        const commandToRedo = currentUndoneCommands.pop()
+        if(commandToRedo)
+        {
+            setDrawCommands([...drawCommands, commandToRedo])
+            setUndoneDrawCommands(currentUndoneCommands)
+        }
     }
 
     useDrawingCommands(canvasRefPerm, drawCommands);
@@ -48,7 +64,14 @@ export default function ImageEditor({
 
     return (
         <div>
-            <DrawingToolPalette activeTool={activeTool} handleToolClick={handleToolClick} undoLastDrawingCommand={undoLastDrawingCommand} drawingCommands={drawCommands}/>
+            <DrawingToolPalette 
+                activeTool={activeTool} 
+                handleToolClick={handleToolClick} 
+                undoLastDrawingCommand={undoLastDrawingCommand} 
+                drawingCommands={drawCommands}
+                redoLastUndoneCommand={redoLastUndoneCommand}
+                undoneDrawCommands={undoneDrawCommands}
+            />
             <ImageAndCanvases 
                 imageData={imageData} 
                 canvasHeight={canvasHeight} 
