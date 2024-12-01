@@ -1,8 +1,8 @@
 'use client'
-import RedoButton from "./redoButton"
-import ToolButton from "./toolButton"
+import RedoButton from "./RedoButton"
+import ToolButton from "./ToolButton"
 import { DrawingTool } from "@/app/lib/util/enums"
-import UndoButton from "./undoButton"
+import UndoButton from "./UndoButton"
 import { DrawingCommand } from "@/app/lib/util/types"
 
 export default function DrawingToolPalette(

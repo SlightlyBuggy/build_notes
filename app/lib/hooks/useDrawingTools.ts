@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { mouseUpAction, mouseDownAction, mouseMoveAction } from "@/app/ui/ImageEditor/lib/mouseActions";
+import { mouseUpAction, mouseDownAction, mouseMoveAction } from "@/app/ui/ImageUploadAndEditor/ImageEditor/lib/mouseActions";
 import { DrawingTool } from "../util/enums";
 import { StartingCoords, LastCoords, DrawingCommand } from "../util/types";
 

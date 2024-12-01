@@ -3,7 +3,7 @@
 import { StaticImageData } from "next/image"
 import ImageUpload from "./ImageUpload"
 import { useState } from "react"
-import ImageEditor from "../ImageEditor/ImageEditor"
+import ImageEditor from "./ImageEditor/ImageEditor"
 
 export default function ImageUploadAndEditor() {
 
