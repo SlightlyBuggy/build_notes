@@ -10,7 +10,7 @@ export type LastCoords = {
     lastY: number
 }
 
-// this will need so much more.  think about an abstract class with subclasses for each type of tool.  then no switch needed in useDrawingCommands
+// this will need so much more.  think about an abstract class with subclasses for each type of tool. 
 export type DrawingCommand = {
     drawingTool: DrawingTool
     startX: number
