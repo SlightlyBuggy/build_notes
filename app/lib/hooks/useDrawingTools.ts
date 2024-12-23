@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { mouseUpAction, mouseDownAction, mouseMoveAction } from "@/app/ui/ImageUploadAndEditor/ImageEditor/lib/mouseActions";
 import { DrawingTool } from "../util/enums";
 import { StartingCoords, LastCoords, DrawingCommand } from "../util/types";
+import { DrawingToolEventListenerCoordinatorArgs, drawingToolListenerCoordinatorFactory } from "@/app/ui/ImageUploadAndEditor/ImageEditor/classes/DrawingToolEventListenerCoordinator";
 
 export const useDrawingTool = (canvasRefPerm: React.RefObject<HTMLCanvasElement>, canvasRefTemp: React.RefObject<HTMLCanvasElement>,
                          activeTool: DrawingTool | null, canvasWidth: number, canvasHeight: number, drawCommands: DrawingCommand[],
@@ -38,26 +39,46 @@ export const useDrawingTool = (canvasRefPerm: React.RefObject<HTMLCanvasElement>
             
             if(contextPerm && contextTemp)
             {
-                const mouseDownListener = (event: MouseEvent) => { 
-                    mouseDownAction(event, rect, activeTool, contextPerm, paintingSetter, startingCoordsSetter, addDrawingCommand); 
-                };
+                if(activeTool == DrawingTool.Square)
+                {
+                    const args: DrawingToolEventListenerCoordinatorArgs = {
+                        drawingTool: activeTool,
+                        canvasPerm: canvasPerm,
+                        contextPerm: contextPerm,
+                        addDrawingCommand: addDrawingCommand,
+                        rect: rect,
+                    }
+                    
+                    const coordinator = drawingToolListenerCoordinatorFactory(args)
 
-                const mouseUpListener = () => {
-                    mouseUpAction(activeTool, contextPerm, contextTemp, startingCoords, lastCoords, paintingSetter, startingCoordsSetter, lastCoordsSetter, canvasWidth, canvasHeight, addDrawingCommand)
-                };
+                    coordinator.addEventListenersToPermCanvas()
 
-                const mouseMoveListener = (event: MouseEvent) => {
-                    mouseMoveAction(event, rect, activeTool, contextTemp, painting, startingCoords, lastCoordsSetter, canvasWidth, canvasHeight)
-                }
+                    return () => {
+                        coordinator.removeEventListenersFromPermCanvas()
+                    }
+                } else {
 
-                canvasPerm.addEventListener('mousedown', mouseDownListener);
-                canvasPerm.addEventListener('mouseup', mouseUpListener)
-                canvasPerm.addEventListener('mousemove', mouseMoveListener)
-
-                return () => {
-                    canvasPerm.removeEventListener('mousedown', mouseDownListener);
-                    canvasPerm.removeEventListener('mouseup', mouseUpListener);
-                    canvasPerm.removeEventListener('mousemove', mouseMoveListener);
+                    const mouseDownListener = (event: MouseEvent) => { 
+                        mouseDownAction(event, rect, activeTool, contextPerm, paintingSetter, startingCoordsSetter, addDrawingCommand); 
+                    };
+    
+                    const mouseUpListener = () => {
+                        mouseUpAction(activeTool, contextPerm, contextTemp, startingCoords, lastCoords, paintingSetter, startingCoordsSetter, lastCoordsSetter, canvasWidth, canvasHeight, addDrawingCommand)
+                    };
+    
+                    const mouseMoveListener = (event: MouseEvent) => {
+                        mouseMoveAction(event, rect, activeTool, contextTemp, painting, startingCoords, lastCoordsSetter, canvasWidth, canvasHeight)
+                    }
+    
+                    canvasPerm.addEventListener('mousedown', mouseDownListener);
+                    canvasPerm.addEventListener('mouseup', mouseUpListener)
+                    canvasPerm.addEventListener('mousemove', mouseMoveListener)
+                    
+                    return () => {
+                        canvasPerm.removeEventListener('mousedown', mouseDownListener);
+                        canvasPerm.removeEventListener('mouseup', mouseUpListener);
+                        canvasPerm.removeEventListener('mousemove', mouseMoveListener);
+                    }
                 }
             }
         }

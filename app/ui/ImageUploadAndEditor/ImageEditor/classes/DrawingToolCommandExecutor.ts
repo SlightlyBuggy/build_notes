@@ -82,6 +82,6 @@ export const drawCommandExecutorFactory = (command: DrawingCommand, permDrawingC
         case(DrawingTool.RadiusedCircle):
             return new RadiusedCircleCommandExecutor(command, permDrawingContext)
         default:
-            throw new Error(`drawCommandExecutorFactory does not handle type ${command.drawingTool}`)
+            throw new Error(`drawCommandExecutorFactory does not handle DrawingTool ${command.drawingTool}`)
     }
 }
