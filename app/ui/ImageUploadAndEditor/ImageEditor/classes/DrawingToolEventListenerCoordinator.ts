@@ -1,22 +1,35 @@
-import { DrawingCommand } from "@/app/lib/util/types"
+import { DrawingCommand, LastCoords, StartingCoords } from "@/app/lib/util/types"
 import { mouseDownSquareTool } from "../lib/squareToolActions"
 import { DrawingTool } from "@/app/lib/util/enums"
+import { mouseDownCircleTool } from "../lib/circleToolActions"
+import { mouseDownLineTool, mouseMoveLineTool, mouseUpLineTool } from "../lib/lineToolActions"
 
 export interface DrawingToolEventListenerCoordinatorArgs {
     drawingTool: DrawingTool
     canvasPerm: HTMLCanvasElement,
     contextPerm: CanvasRenderingContext2D, 
+    contextTemp: CanvasRenderingContext2D,
+    rect: DOMRect,
+    startingCoords: StartingCoords | null,
+    lastCoords: LastCoords | null,
+    canvasWidth: number,
+    canvasHeight: number, 
+    painting: boolean
     addDrawingCommand: (command: DrawingCommand) => void,
-    rect: DOMRect
+    paintingSetter: (paintingVal: boolean) => void, 
+    startingCoordsSetter: (coords: StartingCoords | null) => void
+    lastCoordsSetter: (coords: LastCoords | null) => void
 }
 
 interface EventTypeWithListener {
     eventListener: (ev: MouseEvent) => void,
-    eventType: 'mousedown' | 'mouseup' | 'mousemove'
+    eventType: EventTypes
 }
 
 enum EventTypes {
-    MouseDown = 'mousedown'
+    MouseDown = 'mousedown',
+    MouseUp = 'mouseup',
+    MouseMove = 'mousemove'
 } 
 
 abstract class DrawingToolEventListenerCoordinator {
@@ -65,29 +78,104 @@ class SquareToolListenerCoordinator extends DrawingToolEventListenerCoordinator 
     }
 
     protected createEventListenersWithHandlers = () => {
-
         const eventType = EventTypes.MouseDown
-        const eventListener = (ev: MouseEvent) => {
-
-            const currentX = ev.clientX - this.rect.left;
-            const currentY = ev.clientY - this.rect.top;
-
-            mouseDownSquareTool(currentX, currentY, this.contextPerm, this.addDrawingCommand)
-        }
-
-        const eventTypeWithHandler: EventTypeWithListener = {eventType: eventType, eventListener: eventListener}
+        const eventTypeWithHandler: EventTypeWithListener = {eventType: eventType, eventListener: this.mouseDownListener}
         this.eventsWithHandlers.push(eventTypeWithHandler)
+    }
 
+    private mouseDownListener = (ev: MouseEvent) => {
+        const {currentX, currentY} = getCurrentCoords(ev, this.rect)
+        mouseDownSquareTool(currentX, currentY, this.contextPerm, this.addDrawingCommand)
     }
 }
 
-export const drawingToolListenerCoordinatorFactory = (drawingToolListenerCoordinatorArgs: DrawingToolEventListenerCoordinatorArgs) =>
+class CircleToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
+    constructor(args: DrawingToolEventListenerCoordinatorArgs)
+    {
+        super(args)
+        this.createEventListenersWithHandlers()
+    }
+
+    protected createEventListenersWithHandlers = () => {
+        const eventType = EventTypes.MouseDown
+        const eventTypeWithHandler: EventTypeWithListener = {eventType: eventType, eventListener: this.mouseDownListener}
+        this.eventsWithHandlers.push(eventTypeWithHandler)
+    }
+
+    private mouseDownListener = (ev: MouseEvent) => {
+        const {currentX, currentY} = getCurrentCoords(ev, this.rect)
+        mouseDownCircleTool(currentX, currentY, this.contextPerm, this.addDrawingCommand)
+    }
+}
+
+class LineToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
+    constructor(args: DrawingToolEventListenerCoordinatorArgs)
+    {
+        super(args)
+
+        this.contextTemp = args.contextTemp
+        this.startingCoords = args.startingCoords
+        this.lastCoords = args.lastCoords
+        this.canvasWidth = args.canvasWidth
+        this.canvasHeight = args.canvasHeight
+        this.painting = args.painting
+        this.paintingSetter = args.paintingSetter
+        this.startingCoordsSetter = args.startingCoordsSetter
+        this.lastCoordsSetter = args.lastCoordsSetter
+
+        this.createEventListenersWithHandlers()
+    }
+
+    private contextTemp: CanvasRenderingContext2D
+    private startingCoords: StartingCoords | null
+    private lastCoords: LastCoords | null
+    private canvasWidth: number
+    private canvasHeight: number
+    private painting: boolean
+    private paintingSetter: (paintingVal: boolean) => void
+    private startingCoordsSetter: (coords: StartingCoords | null) => void
+    private lastCoordsSetter: (coords: LastCoords | null) => void
+
+    protected createEventListenersWithHandlers = () => {
+        this.eventsWithHandlers.push({eventType: EventTypes.MouseDown, eventListener: this.mouseDownListener})
+        this.eventsWithHandlers.push({eventType: EventTypes.MouseUp, eventListener: this.mouseUpListener})
+        this.eventsWithHandlers.push({eventType: EventTypes.MouseMove, eventListener: this.mouseMoveListener})
+    }
+
+    private mouseDownListener = (ev: MouseEvent) => {
+        const {currentX, currentY} = getCurrentCoords(ev, this.rect)
+        mouseDownLineTool(currentX, currentY, this.paintingSetter, this.startingCoordsSetter)
+    }
+
+    private mouseUpListener = (ev: MouseEvent) => {
+        mouseUpLineTool(this.contextTemp, this.startingCoords, this.lastCoords, this.paintingSetter, 
+            this.startingCoordsSetter, this.lastCoordsSetter, this.canvasWidth, this.canvasHeight, this.addDrawingCommand)
+    }
+
+    private mouseMoveListener = (ev: MouseEvent) => {
+        const {currentX, currentY} = getCurrentCoords(ev, this.rect)
+        mouseMoveLineTool(currentX, currentY, this.contextTemp, this.painting, this.startingCoords, this.lastCoordsSetter, this.canvasWidth, this.canvasHeight)
+    }
+}
+
+const getCurrentCoords = (ev: MouseEvent, rect: DOMRect) => {
+    const currentX = ev.clientX - rect.left;
+    const currentY = ev.clientY - rect.top;
+
+    return {currentX, currentY}
+}
+
+export const drawingToolListenerCoordinatorFactory = (args: DrawingToolEventListenerCoordinatorArgs) =>
 {
-    const drawingTool = drawingToolListenerCoordinatorArgs.drawingTool
+    const drawingTool = args.drawingTool
     switch(drawingTool)
     {
         case(DrawingTool.Square):
-            return new SquareToolListenerCoordinator(drawingToolListenerCoordinatorArgs)
+            return new SquareToolListenerCoordinator(args)
+        case(DrawingTool.Circle):
+            return new CircleToolListenerCoordinator(args)
+        case(DrawingTool.Line):
+            return new LineToolListenerCoordinator(args)
         default:
             throw new Error(`drawingToolListenerCoordinatorFactory does not handle DraingTool ${drawingTool}`)
     }

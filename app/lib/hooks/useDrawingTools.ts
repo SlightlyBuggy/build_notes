@@ -39,14 +39,23 @@ export const useDrawingTool = (canvasRefPerm: React.RefObject<HTMLCanvasElement>
             
             if(contextPerm && contextTemp)
             {
-                if(activeTool == DrawingTool.Square)
+                if(activeTool == DrawingTool.Square || activeTool == DrawingTool.Circle || activeTool == DrawingTool.Line)
                 {
                     const args: DrawingToolEventListenerCoordinatorArgs = {
                         drawingTool: activeTool,
                         canvasPerm: canvasPerm,
                         contextPerm: contextPerm,
-                        addDrawingCommand: addDrawingCommand,
+                        contextTemp: contextTemp,
                         rect: rect,
+                        startingCoords: startingCoords, 
+                        lastCoords: lastCoords, 
+                        canvasWidth: canvasWidth,
+                        canvasHeight: canvasHeight,
+                        painting: painting,
+                        addDrawingCommand: addDrawingCommand,
+                        paintingSetter: paintingSetter,
+                        startingCoordsSetter: startingCoordsSetter,
+                        lastCoordsSetter: lastCoordsSetter
                     }
                     
                     const coordinator = drawingToolListenerCoordinatorFactory(args)
