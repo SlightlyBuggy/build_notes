@@ -13,7 +13,7 @@ export default function ToolButton(
         return (
         <div className="p-3 flex items-center" onClick={() => handleToolClick(tool)}>
             <div className={drawingToolObj.outerStyle}>
-                <div className={drawingToolObj.innerStyle}></div>
+                <div data-testid={'drawing-tool-button-'+tool} className={drawingToolObj.innerStyle}></div>
             </div>
         </div>
         )

@@ -5,7 +5,7 @@ export default function SaveDrawingButton(
 ) {
     return (
     <div className="text-left m-10">
-        <button onClick={saveImage}>Save Drawing</button>
+        <button data-testid='save-drawing-button' onClick={saveImage}>Save Drawing</button>
     </div>
     )
 }

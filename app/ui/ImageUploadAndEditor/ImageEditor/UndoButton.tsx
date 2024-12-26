@@ -15,7 +15,7 @@ export default function UndoButton(
         )}
         onClick={undoLastDrawingCommand} 
         >
-            <ArrowUturnLeftIcon className="size-6 hover:bg-yellow-100  hover:cursor-pointer" />
+            <ArrowUturnLeftIcon data-testid='undo-button' className="size-6 hover:bg-yellow-100  hover:cursor-pointer" />
         </div>
     )
 }

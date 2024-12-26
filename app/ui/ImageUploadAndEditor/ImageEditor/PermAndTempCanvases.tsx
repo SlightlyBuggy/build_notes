@@ -15,10 +15,10 @@ export default function PermAndTempCanvases({
 
     return (
         <div className="z-1 relative">
-            <canvas ref={canvasRefPerm} className="absolute z-2"
+            <canvas data-testid="canvas-perm" ref={canvasRefPerm} className="absolute z-2"
             height={canvasHeight} width={canvasWidth}
             />
-            <canvas ref={canvasRefTemp}
+            <canvas data-testid='canvas-temp' ref={canvasRefTemp}
             height={canvasHeight} width={canvasWidth}
             />
         </div>

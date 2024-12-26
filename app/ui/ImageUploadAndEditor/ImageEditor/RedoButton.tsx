@@ -16,7 +16,7 @@ export default function RedoButton({
         )}
         onClick={redoLastUndoneCommand}
         >
-            <ArrowUturnRightIcon className="size-6 hover:bg-yellow-100  hover:cursor-pointer" />
+            <ArrowUturnRightIcon data-testid='redo-button' className="size-6 hover:bg-yellow-100  hover:cursor-pointer" />
         </div>
     )
 }
