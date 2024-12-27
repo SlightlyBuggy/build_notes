@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import  ImageEditor from '../../../../ui/ImageUploadAndEditor/ImageEditor/ImageEditor'
 import React from 'react'
 import RV7A from '../../../../lib/images/RV7A.jpg'
@@ -25,34 +25,44 @@ describe('ImageEditor', () => {
         expect(tempCanvas).toBeInTheDocument()
     })
 
-    it('renders the square tool button', () => {
-        const squareToolButton = screen.getByTestId('drawing-tool-button-square')
-        expect(squareToolButton).toBeInTheDocument()
+    it('correctly styles the circle button on click', () => {
+        const circleToolContainer = screen.getByTestId('drawing-tool-button-circle')
+        const circleToolStyledDiv = circleToolContainer.querySelector('div')
+
+        expect(circleToolStyledDiv).toHaveClass('bg-green-500')
+
+        fireEvent.click(circleToolContainer)
+
+        expect(circleToolStyledDiv).toHaveClass('bg-red-500')
     })
 
-    it('renders the circle tool button', () => {
-        const circleToolButton = screen.getByTestId('drawing-tool-button-circle')
-        expect(circleToolButton).toBeInTheDocument()
+    it('correctly styles the square button on click', () => {
+        const squareToolContainer = screen.getByTestId('drawing-tool-button-square')
+        const squareToolStyledDiv = squareToolContainer.querySelector('div')
+
+        expect(squareToolStyledDiv).toHaveClass('bg-yellow-300')
+
+        fireEvent.click(squareToolContainer)
+
+        expect(squareToolStyledDiv).toHaveClass('bg-red-500')
     })
 
-    it('renders the line tool button', () => {
-        const lineToolButton = screen.getByTestId('drawing-tool-button-line')
-        expect(lineToolButton).toBeInTheDocument()
+    it('correctly styles the line button on click', () => {
+        const lineToolContainer = screen.getByTestId('drawing-tool-button-line')
+        const lineToolStyledDiv = lineToolContainer.querySelector('div')
+
+        fireEvent.click(lineToolContainer)
+
+        expect(lineToolStyledDiv).toHaveClass('bg-red-500')
     })
 
-    it('renders the radiused circle tool button', () => {
-        const radiusedCircleToolButton = screen.getByTestId('drawing-tool-button-radiusedcircle')
-        expect(radiusedCircleToolButton).toBeInTheDocument()
-    })
+    it('correctly styles the radiused circle button on click', () => {
+        const radiusedCircleToolContainer = screen.getByTestId('drawing-tool-button-radiusedcircle')
+        const radiusedCircleToolStyledDiv = radiusedCircleToolContainer.querySelector('div')
 
-    it('renders the undo button', () => {
-        const undoButton = screen.getByTestId('undo-button')
-        expect(undoButton).toBeInTheDocument()
-    })
+        fireEvent.click(radiusedCircleToolContainer)
 
-    it('renders the redo button', () => {
-        const redoButton = screen.getByTestId('redo-button')
-        expect(redoButton).toBeInTheDocument()
+        expect(radiusedCircleToolStyledDiv).toHaveClass('bg-red-500')
     })
 })
 

@@ -63,7 +63,7 @@ export default function ImageEditor({
     useDrawingTool(canvasRefPerm, canvasRefTemp, activeTool, canvasWidth, canvasHeight, drawCommands, addDrawingCommand);
 
     return (
-        <div>
+        <div data-testid='image-editor'>
             <DrawingToolPalette 
                 activeTool={activeTool} 
                 handleToolClick={handleToolClick} 

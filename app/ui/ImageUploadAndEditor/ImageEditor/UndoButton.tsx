@@ -9,13 +9,13 @@ export default function UndoButton(
         undoLastDrawingCommand: () => void, drawingCommands: DrawingCommand[]
     }) {
     return (
-        <div className={clsx(
+        <div data-testid='undo-button' className={clsx(
             "p-3 flex items-center",
             {"select-none text-gray-400": drawingCommands.length == 0 }
         )}
         onClick={undoLastDrawingCommand} 
         >
-            <ArrowUturnLeftIcon data-testid='undo-button' className="size-6 hover:bg-yellow-100  hover:cursor-pointer" />
+            <ArrowUturnLeftIcon  className="size-6 hover:bg-yellow-100  hover:cursor-pointer" />
         </div>
     )
 }

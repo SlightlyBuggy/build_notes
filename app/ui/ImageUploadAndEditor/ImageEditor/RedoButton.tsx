@@ -10,13 +10,13 @@ export default function RedoButton({
     undoneDrawCommands: DrawingCommand[]
 }) {
     return (
-        <div className={clsx(
+        <div data-testid='redo-button' className={clsx(
             "p-3 flex items-center",
             {"select-none text-gray-400": undoneDrawCommands.length == 0 }
         )}
         onClick={redoLastUndoneCommand}
         >
-            <ArrowUturnRightIcon data-testid='redo-button' className="size-6 hover:bg-yellow-100  hover:cursor-pointer" />
+            <ArrowUturnRightIcon  className="size-6 hover:bg-yellow-100  hover:cursor-pointer" />
         </div>
     )
 }

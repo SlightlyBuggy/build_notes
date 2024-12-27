@@ -11,9 +11,9 @@ export default function ToolButton(
 
     const drawingToolObj = toolButtonStyleFactory(tool, activeTool);
         return (
-        <div className="p-3 flex items-center" onClick={() => handleToolClick(tool)}>
+        <div className="p-3 flex items-center" data-testid={'drawing-tool-button-'+tool} onClick={() => handleToolClick(tool)}>
             <div className={drawingToolObj.outerStyle}>
-                <div data-testid={'drawing-tool-button-'+tool} className={drawingToolObj.innerStyle}></div>
+                <div className={drawingToolObj.innerStyle}></div>
             </div>
         </div>
         )
