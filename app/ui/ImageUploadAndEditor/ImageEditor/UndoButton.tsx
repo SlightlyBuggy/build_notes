@@ -8,6 +8,7 @@ export default function UndoButton(
     }:{
         undoLastDrawingCommand: () => void, drawingCommands: DrawingCommand[]
     }) {
+    // TODO: cursor is pointer only when clickable
     return (
         <div data-testid='undo-button' className={clsx(
             "p-3 flex items-center",
