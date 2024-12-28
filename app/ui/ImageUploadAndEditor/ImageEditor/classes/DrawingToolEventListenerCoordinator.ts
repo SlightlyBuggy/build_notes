@@ -22,6 +22,7 @@ export interface DrawingToolEventListenerCoordinatorArgs {
     paintingSetter: (paintingVal: boolean) => void, 
     startingCoordsSetter: (coords: StartingCoords | null) => void
     lastCoordsSetter: (coords: LastCoords | null) => void
+    textInputState: TextInputState
     textInputStateSetter: (inputState: TextInputState) => void
 }
 
@@ -230,6 +231,7 @@ class TextToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
         this.paintingSetter = args.paintingSetter
         this.startingCoordsSetter = args.startingCoordsSetter
         this.lastCoordsSetter = args.lastCoordsSetter
+        this.textInputState = args.textInputState
         this.textInputStateSetter = args.textInputStateSetter
 
         this.createEventListenersWithHandlers()
@@ -244,6 +246,7 @@ class TextToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
     private paintingSetter: (paintingVal: boolean) => void
     private startingCoordsSetter: (coords: StartingCoords | null) => void
     private lastCoordsSetter: (coords: LastCoords | null) => void
+    private textInputState: TextInputState
     private textInputStateSetter: (inputState: TextInputState) => void
 
     protected createEventListenersWithHandlers = () => {
@@ -253,8 +256,9 @@ class TextToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
     }
 
     private mouseDownListener = (ev: MouseEvent) => {
+        ev.preventDefault()
         const {currentX, currentY} = getCurrentCoords(ev, this.rect)
-        mouesDownTextTool(currentX, currentY, this.startingCoordsSetter, this.textInputStateSetter)
+        mouesDownTextTool(currentX, currentY, this.textInputState, this.textInputStateSetter, this.addDrawingCommand)
     }
 
     // private mouseUpListener = (ev: MouseEvent) => {

@@ -57,6 +57,7 @@ export const useDrawingTool = (canvasRefPerm: React.RefObject<HTMLCanvasElement>
                     paintingSetter: paintingSetter,
                     startingCoordsSetter: startingCoordsSetter,
                     lastCoordsSetter: lastCoordsSetter,
+                    textInputState: textInputState,
                     textInputStateSetter: textInputStateSetter
                 }
                 
@@ -70,5 +71,9 @@ export const useDrawingTool = (canvasRefPerm: React.RefObject<HTMLCanvasElement>
                 
             }
         }
-    }, [activeTool, painting, startingCoords, lastCoords, drawCommands, textInputState.active]);
+    }, [
+        activeTool, painting, startingCoords, 
+        lastCoords, drawCommands, textInputState.active,
+        textInputState.value
+    ]);
 }

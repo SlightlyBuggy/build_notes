@@ -28,7 +28,7 @@ export default function ImageEditor({
     const [drawCommands, setDrawCommands] = useState<DrawingCommand[]>([])
     const [undoneDrawCommands, setUndoneDrawCommands] = useState<DrawingCommand[]>([])
 
-    const [textInputState, setTextInputState] = useState<TextInputState>({active: false, posX: 0, posY: 0})
+    const [textInputState, setTextInputState] = useState<TextInputState>({active: false, posX: 0, posY: 0, value: ''})
 
     const handleToolClick = (tool: DrawingTool) => {
         // only switch tools if we've clicked a different one
@@ -88,6 +88,10 @@ export default function ImageEditor({
         setTextInputState(newTextInputState)
     }
 
+    const textInputValueSetter = (value: string) => {
+        setTextInputState({...textInputState, value: value})
+    }
+
     useDrawingCommands(canvasRefPerm, drawCommands);
 
     useDrawingTool(canvasRefPerm, canvasRefTemp, activeTool, canvasWidth, canvasHeight, drawCommands, addDrawingCommand, textInputStateSetter, textInputState);
@@ -109,6 +113,7 @@ export default function ImageEditor({
                 canvasRefPerm={canvasRefPerm} 
                 canvasRefTemp={canvasRefTemp}
                 textInputState={textInputState}
+                textInputValueSetter={textInputValueSetter}
             />
             <SaveDrawingButton saveImage={() => saveImage(canvasRefPerm)} />
         </div>

@@ -18,4 +18,5 @@ export type DrawingCommand = {
     endX?: number
     endY?: number
     radius?: number
+    text?: string
 }

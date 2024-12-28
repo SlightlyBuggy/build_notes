@@ -69,6 +69,19 @@ class RadiusedCircleCommandExecutor extends DrawingToolCommandExecutor {
     }
 }
 
+class TextCommandExecutor extends DrawingToolCommandExecutor {
+    protected _executeCommand(): void {
+        if(this.command.text)
+        {
+            this.drawingContext.font = "1.25em Arial"
+            this.drawingContext.fillText(this.command.text, 
+                this.command.startX, 
+                this.command.startY
+            )
+        }
+    }
+}
+
 export const drawCommandExecutorFactory = (command: DrawingCommand, permDrawingContext: CanvasRenderingContext2D): DrawingToolCommandExecutor => 
 {
     switch(command.drawingTool)
@@ -81,6 +94,8 @@ export const drawCommandExecutorFactory = (command: DrawingCommand, permDrawingC
             return new LineToolCommandExecutor(command, permDrawingContext)
         case(DrawingTool.RadiusedCircle):
             return new RadiusedCircleCommandExecutor(command, permDrawingContext)
+        case(DrawingTool.Text):
+            return new TextCommandExecutor(command, permDrawingContext)
         default:
             throw new Error(`drawCommandExecutorFactory does not handle DrawingTool ${command.drawingTool}`)
     }
