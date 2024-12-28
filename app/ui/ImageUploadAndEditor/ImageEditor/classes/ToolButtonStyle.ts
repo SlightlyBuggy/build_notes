@@ -60,6 +60,14 @@ class RadiusedCircleButtonStyles extends ToolButtonStyles {
     innerStyle = "h-5 w-5 rounded-full border-solid border-2 border-black"
 }
 
+class TextToolButtonStyles extends ToolButtonStyles {
+    thisToolType = DrawingTool.Text
+
+    outerFixedStyle = "h-6 w-6 flex items-center justify-center"
+    protected outerInactiveStyle = "hover:bg-yellow-100"    
+    innerStyle = "text-2xl"
+}
+
 export const toolButtonStyleFactory = (thisToolType: DrawingTool, activeToolType: DrawingTool | null): ToolButtonStyles =>
 {
     switch(thisToolType)
@@ -72,7 +80,9 @@ export const toolButtonStyleFactory = (thisToolType: DrawingTool, activeToolType
             return new LineToolButtonStyles(activeToolType);
         case DrawingTool.RadiusedCircle:
             return new RadiusedCircleButtonStyles(activeToolType);
+        case DrawingTool.Text:
+            return new TextToolButtonStyles(activeToolType)
         default:
-            throw new Error(`toolButtonObjFactory does not handle tool type ${thisToolType}`)
+            throw new Error(`toolButtonStyleFactory does not handle tool type ${thisToolType}`)
     }
 }

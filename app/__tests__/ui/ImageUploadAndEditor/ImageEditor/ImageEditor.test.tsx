@@ -64,5 +64,7 @@ describe('ImageEditor', () => {
 
         expect(radiusedCircleToolStyledDiv).toHaveClass('bg-red-500')
     })
+
+    // TODO: text tool
 })
 

@@ -4,6 +4,8 @@ import { DrawingTool } from "@/app/lib/util/enums"
 import { mouseDownCircleTool } from "../lib/circleToolActions"
 import { mouseDownLineTool, mouseMoveLineTool, mouseUpLineTool } from "../lib/lineToolActions"
 import { mouseDownRadiusedCircleTool, mouseMoveRadiusedCircleTool, mouseUpRadiusedCircleTool } from "../lib/radiusedCircleToolActions"
+import { mouesDownTextTool } from "../lib/textToolActions"
+import { TextInputState } from "../TextInput"
 
 export interface DrawingToolEventListenerCoordinatorArgs {
     drawingTool: DrawingTool
@@ -20,6 +22,7 @@ export interface DrawingToolEventListenerCoordinatorArgs {
     paintingSetter: (paintingVal: boolean) => void, 
     startingCoordsSetter: (coords: StartingCoords | null) => void
     lastCoordsSetter: (coords: LastCoords | null) => void
+    textInputStateSetter: (inputState: TextInputState) => void
 }
 
 interface EventTypeWithListener {
@@ -103,7 +106,7 @@ class CircleToolListenerCoordinator extends DrawingToolEventListenerCoordinator 
 
     private mouseDownListener = (ev: MouseEvent) => {
         const {currentX, currentY} = getCurrentCoords(ev, this.rect)
-        mouseDownCircleTool(currentX, currentY, this.contextPerm, this.addDrawingCommand)
+        mouseDownCircleTool(currentX, currentY, this.addDrawingCommand)
     }
 }
 
@@ -213,6 +216,57 @@ const getCurrentCoords = (ev: MouseEvent, rect: DOMRect) => {
     return {currentX, currentY}
 }
 
+class TextToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
+    constructor(args: DrawingToolEventListenerCoordinatorArgs)
+    {
+        super(args)
+
+        this.contextTemp = args.contextTemp
+        this.startingCoords = args.startingCoords
+        this.lastCoords = args.lastCoords
+        this.canvasWidth = args.canvasWidth
+        this.canvasHeight = args.canvasHeight
+        this.painting = args.painting
+        this.paintingSetter = args.paintingSetter
+        this.startingCoordsSetter = args.startingCoordsSetter
+        this.lastCoordsSetter = args.lastCoordsSetter
+        this.textInputStateSetter = args.textInputStateSetter
+
+        this.createEventListenersWithHandlers()
+    }
+
+    private contextTemp: CanvasRenderingContext2D
+    private startingCoords: StartingCoords | null
+    private lastCoords: LastCoords | null
+    private canvasWidth: number
+    private canvasHeight: number
+    private painting: boolean
+    private paintingSetter: (paintingVal: boolean) => void
+    private startingCoordsSetter: (coords: StartingCoords | null) => void
+    private lastCoordsSetter: (coords: LastCoords | null) => void
+    private textInputStateSetter: (inputState: TextInputState) => void
+
+    protected createEventListenersWithHandlers = () => {
+        this.eventsWithHandlers.push({eventType: EventTypes.MouseDown, eventListener: this.mouseDownListener})
+        // this.eventsWithHandlers.push({eventType: EventTypes.MouseUp, eventListener: this.mouseUpListener})
+        // this.eventsWithHandlers.push({eventType: EventTypes.MouseMove, eventListener: this.mouseMoveListener})
+    }
+
+    private mouseDownListener = (ev: MouseEvent) => {
+        const {currentX, currentY} = getCurrentCoords(ev, this.rect)
+        mouesDownTextTool(currentX, currentY, this.startingCoordsSetter, this.textInputStateSetter)
+    }
+
+    // private mouseUpListener = (ev: MouseEvent) => {
+    //     mouseUpRadiusedCircleTool(this.contextTemp, this.startingCoords, this.lastCoords, this.paintingSetter, this.startingCoordsSetter, this.lastCoordsSetter, this.canvasWidth, this.canvasHeight, this.addDrawingCommand)
+    // }
+
+    // private mouseMoveListener = (ev: MouseEvent) => {
+    //     const {currentX, currentY} = getCurrentCoords(ev, this.rect)
+    //     mouseMoveRadiusedCircleTool(currentX, currentY, this.contextTemp, this.painting, this.startingCoords, this.lastCoordsSetter, this.canvasWidth, this.canvasHeight)
+    // }
+}
+
 export const drawingToolListenerCoordinatorFactory = (args: DrawingToolEventListenerCoordinatorArgs) =>
 {
     const drawingTool = args.drawingTool
@@ -226,6 +280,8 @@ export const drawingToolListenerCoordinatorFactory = (args: DrawingToolEventList
             return new LineToolListenerCoordinator(args)
         case(DrawingTool.RadiusedCircle):
             return new RadiusedCircleToolListenerCoordinator(args)
+        case(DrawingTool.Text):
+            return new TextToolListenerCoordinator(args)
         default:
             throw new Error(`drawingToolListenerCoordinatorFactory does not handle DraingTool ${drawingTool}`)
     }

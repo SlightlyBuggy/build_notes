@@ -3,6 +3,7 @@ import { StaticImageData } from "next/image";
 import React from "react"
 
 import PermAndTempCanvases from "./PermAndTempCanvases";
+import { TextInputState } from "./TextInput";
 
 
 export default function ImageAndCanvases({
@@ -10,19 +11,21 @@ export default function ImageAndCanvases({
     canvasHeight,
     canvasWidth,
     canvasRefPerm,
-    canvasRefTemp
+    canvasRefTemp,
+    textInputState,
 }: {
     imageData: StaticImageData,
     canvasHeight: number,
     canvasWidth: number,
     canvasRefPerm: React.RefObject<HTMLCanvasElement>,
-    canvasRefTemp: React.RefObject<HTMLCanvasElement>
+    canvasRefTemp: React.RefObject<HTMLCanvasElement>,
+    textInputState: TextInputState
 }) {
 
     return (
         <div>
             <img src={imageData.src} className="absolute"/>
-            <PermAndTempCanvases canvasHeight={canvasHeight} canvasWidth={canvasWidth} canvasRefPerm={canvasRefPerm} canvasRefTemp={canvasRefTemp}/>
+            <PermAndTempCanvases canvasHeight={canvasHeight} canvasWidth={canvasWidth} canvasRefPerm={canvasRefPerm} canvasRefTemp={canvasRefTemp} textInputState={textInputState}/>
         </div>
         )
 }

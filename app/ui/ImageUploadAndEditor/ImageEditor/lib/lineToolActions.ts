@@ -26,7 +26,6 @@ export const mouseUpLineTool = (contextTemp: CanvasRenderingContext2D, startingC
 export const mouseMoveLineTool = (currentX: number, currentY: number, contextTemp: CanvasRenderingContext2D, painting: boolean, startingCoords: StartingCoords | null, lastCoordsSetter: (coords: LastCoords) => void, canvasWidth: number, canvasHeight: number) => {
     if(painting && startingCoords)
     {
-        console.log(`currentX: ${currentX}, currentY: ${currentY}`)
         lastCoordsSetter({lastX: currentX, lastY: currentY})
         clearCanvas(contextTemp, canvasWidth, canvasHeight)
         contextTemp.beginPath();

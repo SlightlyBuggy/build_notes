@@ -9,6 +9,9 @@ import SaveDrawingButton from "./SaveDrawingButton";
 import { DrawingCommand } from "@/app/lib/util/types";
 import { useDrawingCommands } from "@/app/lib/hooks/useDrawingCommands";
 import { saveImage } from "@/app/lib/util/image";
+import { TextInputState} from "./TextInput";
+
+
 
 
 export default function ImageEditor({
@@ -25,8 +28,22 @@ export default function ImageEditor({
     const [drawCommands, setDrawCommands] = useState<DrawingCommand[]>([])
     const [undoneDrawCommands, setUndoneDrawCommands] = useState<DrawingCommand[]>([])
 
+    const [textInputState, setTextInputState] = useState<TextInputState>({active: false, posX: 0, posY: 0})
+
     const handleToolClick = (tool: DrawingTool) => {
+        // only switch tools if we've clicked a different one
+        if(tool === activeTool)
+        {
+            return
+        }
+
         setActiveTool(tool);
+
+        // made sure the text input is not visible
+        if(textInputState.active)
+        {
+            setTextInputState({...textInputState, active: false})
+        }
     }
 
     const canvasHeight = imageData.height;
@@ -58,9 +75,22 @@ export default function ImageEditor({
         }
     }
 
+    const textInputStateSetter = (newTextInputState: TextInputState) => {
+
+        // if the input is active and we click around, don't do anything, otherwise
+        // the input would move to wherever we click.  later we want to 'commit' the text by
+        // clicking outside the text field
+        if(textInputState.active && newTextInputState.active)
+        {
+            return
+        }
+
+        setTextInputState(newTextInputState)
+    }
+
     useDrawingCommands(canvasRefPerm, drawCommands);
 
-    useDrawingTool(canvasRefPerm, canvasRefTemp, activeTool, canvasWidth, canvasHeight, drawCommands, addDrawingCommand);
+    useDrawingTool(canvasRefPerm, canvasRefTemp, activeTool, canvasWidth, canvasHeight, drawCommands, addDrawingCommand, textInputStateSetter, textInputState);
 
     return (
         <div data-testid='image-editor'>
@@ -78,6 +108,7 @@ export default function ImageEditor({
                 canvasWidth={canvasWidth} 
                 canvasRefPerm={canvasRefPerm} 
                 canvasRefTemp={canvasRefTemp}
+                textInputState={textInputState}
             />
             <SaveDrawingButton saveImage={() => saveImage(canvasRefPerm)} />
         </div>

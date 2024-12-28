@@ -1,15 +1,19 @@
 'use client'
 
+import { TextInput, TextInputState } from "./TextInput"
+
 export default function PermAndTempCanvases({
     canvasHeight,
     canvasWidth,
     canvasRefPerm,
-    canvasRefTemp
+    canvasRefTemp,
+    textInputState
 }: {
     canvasHeight: number,
     canvasWidth: number,
     canvasRefPerm: React.RefObject<HTMLCanvasElement>,
-    canvasRefTemp: React.RefObject<HTMLCanvasElement>
+    canvasRefTemp: React.RefObject<HTMLCanvasElement>,
+    textInputState: TextInputState
 }) {
 
 
@@ -21,6 +25,7 @@ export default function PermAndTempCanvases({
             <canvas data-testid='canvas-temp' ref={canvasRefTemp}
             height={canvasHeight} width={canvasWidth}
             />
+            <TextInput inputState={textInputState} />
         </div>
         )
 }

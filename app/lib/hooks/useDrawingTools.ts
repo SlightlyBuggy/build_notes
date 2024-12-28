@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react"
 import { DrawingTool } from "../util/enums";
 import { StartingCoords, LastCoords, DrawingCommand } from "../util/types";
 import { DrawingToolEventListenerCoordinatorArgs, drawingToolListenerCoordinatorFactory } from "@/app/ui/ImageUploadAndEditor/ImageEditor/classes/DrawingToolEventListenerCoordinator";
+import { TextInputState } from "@/app/ui/ImageUploadAndEditor/ImageEditor/TextInput";
 
 export const useDrawingTool = (canvasRefPerm: React.RefObject<HTMLCanvasElement>, canvasRefTemp: React.RefObject<HTMLCanvasElement>,
                          activeTool: DrawingTool | null, canvasWidth: number, canvasHeight: number, drawCommands: DrawingCommand[],
-                         addDrawingCommand: (command: DrawingCommand) => void
+                         addDrawingCommand: (command: DrawingCommand) => void, 
+                         textInputStateSetter: (inputState: TextInputState) => void,
+                         textInputState: TextInputState
 ) => {
 
     const [startingCoords, setStartingCoords] = useState<StartingCoords | null>(null);
@@ -53,7 +56,8 @@ export const useDrawingTool = (canvasRefPerm: React.RefObject<HTMLCanvasElement>
                     addDrawingCommand: addDrawingCommand,
                     paintingSetter: paintingSetter,
                     startingCoordsSetter: startingCoordsSetter,
-                    lastCoordsSetter: lastCoordsSetter
+                    lastCoordsSetter: lastCoordsSetter,
+                    textInputStateSetter: textInputStateSetter
                 }
                 
                 const coordinator = drawingToolListenerCoordinatorFactory(args)
@@ -66,5 +70,5 @@ export const useDrawingTool = (canvasRefPerm: React.RefObject<HTMLCanvasElement>
                 
             }
         }
-    }, [activeTool, painting, startingCoords, lastCoords, drawCommands]);
+    }, [activeTool, painting, startingCoords, lastCoords, drawCommands, textInputState.active]);
 }

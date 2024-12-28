@@ -22,6 +22,7 @@ export default function DrawingToolPalette(
         <ToolButton tool={DrawingTool.Square} activeTool={activeTool} handleToolClick={handleToolClick}/>
         <ToolButton tool={DrawingTool.Line} activeTool={activeTool} handleToolClick={handleToolClick} />
         <ToolButton tool={DrawingTool.RadiusedCircle} activeTool={activeTool} handleToolClick={handleToolClick}/>
+        <ToolButton tool={DrawingTool.Text} activeTool={activeTool} handleToolClick={handleToolClick} innerText='T'/>
         <div className="p-3" ></div>
         <UndoButton undoLastDrawingCommand={undoLastDrawingCommand} drawingCommands={drawingCommands}/>
         <RedoButton redoLastUndoneCommand={redoLastUndoneCommand} undoneDrawCommands={undoneDrawCommands}/>
