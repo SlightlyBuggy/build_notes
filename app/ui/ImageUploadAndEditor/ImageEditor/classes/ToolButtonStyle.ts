@@ -68,6 +68,14 @@ class TextToolButtonStyles extends ToolButtonStyles {
     innerStyle = "text-2xl"
 }
 
+class SelectorToolButtonStyles extends ToolButtonStyles {
+    thisToolType = DrawingTool.Selector
+
+    outerFixedStyle = "h-6 w-6 flex items-center group"
+    protected outerInactiveStyle = "hover:bg-yellow-100"
+    innerStyle = ""
+}
+
 export const toolButtonStyleFactory = (thisToolType: DrawingTool, activeToolType: DrawingTool | null): ToolButtonStyles =>
 {
     switch(thisToolType)
@@ -82,6 +90,8 @@ export const toolButtonStyleFactory = (thisToolType: DrawingTool, activeToolType
             return new RadiusedCircleButtonStyles(activeToolType);
         case DrawingTool.Text:
             return new TextToolButtonStyles(activeToolType)
+        case DrawingTool.Selector:
+            return new SelectorToolButtonStyles(activeToolType)
         default:
             throw new Error(`toolButtonStyleFactory does not handle tool type ${thisToolType}`)
     }

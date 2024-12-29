@@ -10,6 +10,13 @@ export type LastCoords = {
     lastY: number
 }
 
+export type ObjectBoundaries = {
+    leftX: number
+    rightX: number
+    topY: number
+    bottomY: number
+}
+
 // this will need so much more.  think about an abstract class with subclasses for each type of tool. 
 export type DrawingCommand = {
     drawingTool: DrawingTool
@@ -19,4 +26,6 @@ export type DrawingCommand = {
     endY?: number
     radius?: number
     text?: string
+    selected?: boolean
+    objectBoundaries? :ObjectBoundaries
 }

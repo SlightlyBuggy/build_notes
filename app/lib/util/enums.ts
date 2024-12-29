@@ -3,5 +3,6 @@ export enum DrawingTool {
     Square = 'square',
     Line = 'line',
     RadiusedCircle = 'radiusedcircle',
-    Text = 'text'
+    Text = 'text',
+    Selector = 'selector'
 }

@@ -6,6 +6,7 @@ import { mouseDownLineTool, mouseMoveLineTool, mouseUpLineTool } from "../lib/li
 import { mouseDownRadiusedCircleTool, mouseMoveRadiusedCircleTool, mouseUpRadiusedCircleTool } from "../lib/radiusedCircleToolActions"
 import { mouesDownTextTool } from "../lib/textToolActions"
 import { TextInputState } from "../TextInput"
+import { mouseDownSelectorTool } from "../lib/selectorToolActions"
 
 export interface DrawingToolEventListenerCoordinatorArgs {
     drawingTool: DrawingTool
@@ -24,6 +25,7 @@ export interface DrawingToolEventListenerCoordinatorArgs {
     lastCoordsSetter: (coords: LastCoords | null) => void
     textInputState: TextInputState
     textInputStateSetter: (inputState: TextInputState) => void
+    selectOnCanvas: (posX: number, posY: number) => void
 }
 
 interface EventTypeWithListener {
@@ -241,6 +243,30 @@ class TextToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
     }
 }
 
+class SelectorToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
+    constructor(args: DrawingToolEventListenerCoordinatorArgs)
+    {
+        super(args)
+        this.selectOnCanvas = args.selectOnCanvas
+
+        this.createEventListenersWithHandlers()
+        
+    }
+    private selectOnCanvas: (posX: number, posY: number) => void
+    protected createEventListenersWithHandlers = () => {
+        console.log("binding listener for select tool")
+        this.eventsWithHandlers.push({eventType: EventTypes.MouseDown, eventListener: this.mouseDownListener})
+    }
+
+    private mouseDownListener = (ev: MouseEvent) => {
+        ev.preventDefault()
+        ev.stopPropagation()
+
+        const {currentX, currentY} = getCurrentCoords(ev, this.rect)
+        mouseDownSelectorTool(currentX, currentY, this.selectOnCanvas)
+    }
+}
+
 export const drawingToolListenerCoordinatorFactory = (args: DrawingToolEventListenerCoordinatorArgs) =>
 {
     const drawingTool = args.drawingTool
@@ -256,6 +282,8 @@ export const drawingToolListenerCoordinatorFactory = (args: DrawingToolEventList
             return new RadiusedCircleToolListenerCoordinator(args)
         case(DrawingTool.Text):
             return new TextToolListenerCoordinator(args)
+        case(DrawingTool.Selector):
+            return new SelectorToolListenerCoordinator(args)
         default:
             throw new Error(`drawingToolListenerCoordinatorFactory does not handle DraingTool ${drawingTool}`)
     }

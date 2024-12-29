@@ -1,5 +1,6 @@
 import { DrawingTool } from "@/app/lib/util/enums";
 import { toolButtonStyleFactory } from "./classes/ToolButtonStyle";
+import { CursorArrowRaysIcon } from "@heroicons/react/20/solid";
 
 // TODO: inverse video when tool is selected?
 
@@ -14,7 +15,10 @@ export default function ToolButton(
         return (
         <div className="p-3 flex items-center" data-testid={'drawing-tool-button-'+tool} onClick={() => handleToolClick(tool)}>
             <div className={drawingToolObj.outerStyle}>
-                <div className={drawingToolObj.innerStyle}>{innerText}</div>
+                {tool == DrawingTool.Selector ? 
+                    <CursorArrowRaysIcon className={drawingToolObj.innerStyle} /> :
+                    <div className={drawingToolObj.innerStyle}>{innerText}</div>
+                }
             </div>
         </div>
         )

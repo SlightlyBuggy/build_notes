@@ -10,6 +10,7 @@ import { DrawingCommand } from "@/app/lib/util/types";
 import { useDrawingCommands } from "@/app/lib/hooks/useDrawingCommands";
 import { saveImage } from "@/app/lib/util/image";
 import { TextInputState} from "./TextInput";
+import { selectionIsInObject } from "@/app/lib/util/selectorDrawingTool";
 
 
 
@@ -29,6 +30,10 @@ export default function ImageEditor({
     const [undoneDrawCommands, setUndoneDrawCommands] = useState<DrawingCommand[]>([])
 
     const [textInputState, setTextInputState] = useState<TextInputState>({active: false, posX: 0, posY: 0, value: ''})
+
+    const [mouseStartCoords, setMouseStartCoords] = useState<{startX: number, startY: number}>()
+    const [dragCoordsDelta, setDragCoordsDelta] = useState<{deltaX: Number, deltaY: number}>()
+    const [draggingInProgress, setDraggingInProgress] = useState<boolean>(false)
 
     const handleToolClick = (tool: DrawingTool) => {
         // only switch tools if we've clicked a different one
@@ -92,9 +97,40 @@ export default function ImageEditor({
         setTextInputState({...textInputState, value: value})
     }
 
+    // later consider moving this into the useDrawingTool hook?
+    const selectOnCanvas = (posX: number, posY: number) => {
+        console.log(`Position clicked (X,Y): ${posX}, ${posY}`)
+        const drawCommandsCopy = [...drawCommands]
+        for(let command of drawCommandsCopy) {
+            console.log("evaluating command")
+            console.log(command)
+            const commandSelected = selectionIsInObject(command, posX, posY)
+            
+            if(commandSelected)
+            {
+                console.log(`Selection is in command`)
+                console.log(command)
+
+                setMouseStartCoords({startX: posX, startY: posY})
+                command.selected = true
+                setDrawCommands(drawCommandsCopy)
+                break
+
+            } else {
+                console.log(`Selection is not in a command`)
+            }
+        }
+    }
+
+    const clearSelectOnCanvas = () => {
+        
+    }
+
     useDrawingCommands(canvasRefPerm, drawCommands);
 
-    useDrawingTool(canvasRefPerm, canvasRefTemp, activeTool, canvasWidth, canvasHeight, drawCommands, addDrawingCommand, textInputStateSetter, textInputState);
+    useDrawingTool(canvasRefPerm, canvasRefTemp, activeTool, 
+        canvasWidth, canvasHeight, drawCommands, addDrawingCommand, 
+        textInputStateSetter, textInputState, selectOnCanvas);
 
     return (
         <div data-testid='image-editor'>
