@@ -9,7 +9,10 @@ export const useDrawingTool = (canvasRefPerm: React.RefObject<HTMLCanvasElement>
                          addDrawingCommand: (command: DrawingCommand) => void, 
                          textInputStateSetter: (inputState: TextInputState) => void,
                          textInputState: TextInputState,
-                         selectOnCanvas: (posX: number, posY: number) => void
+                         selectOnCanvas: (posX: number, posY: number) => void,
+                         dragInProgress: boolean,
+                         handleDragOnCanvas: (posX: number, posY: number) => void,
+                         unSelectOnCanvas: () => void
 ) => {
 
     const [startingCoords, setStartingCoords] = useState<StartingCoords | null>(null);
@@ -60,7 +63,10 @@ export const useDrawingTool = (canvasRefPerm: React.RefObject<HTMLCanvasElement>
                     lastCoordsSetter: lastCoordsSetter,
                     textInputState: textInputState,
                     textInputStateSetter: textInputStateSetter,
-                    selectOnCanvas: selectOnCanvas
+                    selectOnCanvas: selectOnCanvas,
+                    dragInProgress: dragInProgress,
+                    handleDragOnCanvas: handleDragOnCanvas,
+                    unSelectOnCanvas: unSelectOnCanvas
                 }
                 
                 const coordinator = drawingToolListenerCoordinatorFactory(args)

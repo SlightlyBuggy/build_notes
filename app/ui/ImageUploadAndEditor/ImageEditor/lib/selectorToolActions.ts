@@ -2,9 +2,16 @@ export const mouseDownSelectorTool = (currentX: number, currentY: number, select
     selectOnCanvas(currentX, currentY)
 }
 
-// export const mouseMoveSelectorTool 
-// do dragging actions
+export const mouseMoveSelectorTool = (currentX: number, currentY: number, dragInProgress: boolean, handleDragOnCanvas: (posX: number, posY: number) => void) => {
+    if(dragInProgress)
+    {
+        handleDragOnCanvas(currentX, currentY)
+    }
+}
 
-// export const mouseUpSelectorTool
+
+export const mouseUpSelectorTool = (unSelectOnCanvas: () => void) => {
+    unSelectOnCanvas()
+}
 // stop dragging actions
 

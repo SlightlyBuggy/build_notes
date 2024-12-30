@@ -31,9 +31,8 @@ export default function ImageEditor({
 
     const [textInputState, setTextInputState] = useState<TextInputState>({active: false, posX: 0, posY: 0, value: ''})
 
-    const [mouseStartCoords, setMouseStartCoords] = useState<{startX: number, startY: number}>()
-    const [dragCoordsDelta, setDragCoordsDelta] = useState<{deltaX: Number, deltaY: number}>()
-    const [draggingInProgress, setDraggingInProgress] = useState<boolean>(false)
+    const [mouseLastCoords, setMouseLastCoords] = useState<{lastX: number, lastY: number}>()
+    const [dragInProgress, setDragInProgress] = useState<boolean>(false)
 
     const handleToolClick = (tool: DrawingTool) => {
         // only switch tools if we've clicked a different one
@@ -99,19 +98,15 @@ export default function ImageEditor({
 
     // later consider moving this into the useDrawingTool hook?
     const selectOnCanvas = (posX: number, posY: number) => {
-        console.log(`Position clicked (X,Y): ${posX}, ${posY}`)
         const drawCommandsCopy = [...drawCommands]
         for(let command of drawCommandsCopy) {
-            console.log("evaluating command")
-            console.log(command)
+
             const commandSelected = selectionIsInObject(command, posX, posY)
             
             if(commandSelected)
             {
-                console.log(`Selection is in command`)
-                console.log(command)
-
-                setMouseStartCoords({startX: posX, startY: posY})
+                setMouseLastCoords({lastX: posX, lastY: posY})
+                setDragInProgress(true)
                 command.selected = true
                 setDrawCommands(drawCommandsCopy)
                 break
@@ -122,15 +117,56 @@ export default function ImageEditor({
         }
     }
 
-    const clearSelectOnCanvas = () => {
-        
+    const handleDragOnCanvas = (posX: number, posY: number) => {
+        if(mouseLastCoords)
+        {
+            const deltaX = posX - mouseLastCoords.lastX
+            const deltaY = posY - mouseLastCoords.lastY
+
+            //TODO: optimize by storing array ID of thing being dragged in state
+            const drawCommandsCopy = [...drawCommands]
+            for(let command of drawCommandsCopy)
+            {
+                if(command.selected)
+                {
+                    command.startX += deltaX
+                    command.startY += deltaY
+                    if(command.endX)
+                    {
+                        command.endX += deltaX
+                    }
+                    if(command.endY)
+                    {
+                        command.endY += deltaY
+                    }
+                    setMouseLastCoords({lastX: posX, lastY: posY})
+                    setDrawCommands(drawCommandsCopy)
+                    break
+                }
+            }
+        }
+    }
+
+    const unSelectOnCanvas = () => {
+        const drawCommandsCopy = [...drawCommands]
+        for(let command of drawCommandsCopy)
+        {
+            if(command.selected)
+            {
+                command.selected = false
+                break
+            }
+        }
+        setDragInProgress(false)
+        setDrawCommands(drawCommandsCopy)
     }
 
     useDrawingCommands(canvasRefPerm, drawCommands);
 
     useDrawingTool(canvasRefPerm, canvasRefTemp, activeTool, 
         canvasWidth, canvasHeight, drawCommands, addDrawingCommand, 
-        textInputStateSetter, textInputState, selectOnCanvas);
+        textInputStateSetter, textInputState, selectOnCanvas,
+    dragInProgress, handleDragOnCanvas, unSelectOnCanvas);
 
     return (
         <div data-testid='image-editor'>

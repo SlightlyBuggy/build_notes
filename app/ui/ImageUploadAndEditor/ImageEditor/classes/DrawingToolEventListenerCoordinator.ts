@@ -6,7 +6,7 @@ import { mouseDownLineTool, mouseMoveLineTool, mouseUpLineTool } from "../lib/li
 import { mouseDownRadiusedCircleTool, mouseMoveRadiusedCircleTool, mouseUpRadiusedCircleTool } from "../lib/radiusedCircleToolActions"
 import { mouesDownTextTool } from "../lib/textToolActions"
 import { TextInputState } from "../TextInput"
-import { mouseDownSelectorTool } from "../lib/selectorToolActions"
+import { mouseDownSelectorTool, mouseMoveSelectorTool, mouseUpSelectorTool } from "../lib/selectorToolActions"
 
 export interface DrawingToolEventListenerCoordinatorArgs {
     drawingTool: DrawingTool
@@ -26,6 +26,9 @@ export interface DrawingToolEventListenerCoordinatorArgs {
     textInputState: TextInputState
     textInputStateSetter: (inputState: TextInputState) => void
     selectOnCanvas: (posX: number, posY: number) => void
+    dragInProgress: boolean
+    handleDragOnCanvas: (posX: number, posY: number) => void
+    unSelectOnCanvas: () => void
 }
 
 interface EventTypeWithListener {
@@ -248,14 +251,21 @@ class SelectorToolListenerCoordinator extends DrawingToolEventListenerCoordinato
     {
         super(args)
         this.selectOnCanvas = args.selectOnCanvas
+        this.dragInProgress = args.dragInProgress
+        this.handleDragOnCanvas = args.handleDragOnCanvas
+        this.unSelectOncanvas = args.unSelectOnCanvas
 
         this.createEventListenersWithHandlers()
         
     }
     private selectOnCanvas: (posX: number, posY: number) => void
+    private dragInProgress: boolean
+    private handleDragOnCanvas: (posX: number, posY: number) => void
+    private unSelectOncanvas: () => void
     protected createEventListenersWithHandlers = () => {
-        console.log("binding listener for select tool")
         this.eventsWithHandlers.push({eventType: EventTypes.MouseDown, eventListener: this.mouseDownListener})
+        this.eventsWithHandlers.push({eventType: EventTypes.MouseMove, eventListener: this.mouseMoveListener})
+        this.eventsWithHandlers.push({eventType: EventTypes.MouseUp, eventListener: this.mouseUpEventListener})
     }
 
     private mouseDownListener = (ev: MouseEvent) => {
@@ -264,6 +274,22 @@ class SelectorToolListenerCoordinator extends DrawingToolEventListenerCoordinato
 
         const {currentX, currentY} = getCurrentCoords(ev, this.rect)
         mouseDownSelectorTool(currentX, currentY, this.selectOnCanvas)
+    }
+
+    private mouseMoveListener = (ev: MouseEvent) => {
+        ev.preventDefault()
+        ev.stopPropagation()
+
+        const {currentX, currentY} = getCurrentCoords(ev, this.rect)
+
+        mouseMoveSelectorTool(currentX, currentY, this.dragInProgress, this.handleDragOnCanvas)
+    }
+
+    private mouseUpEventListener = (ev: MouseEvent) => {
+        ev.preventDefault()
+        ev.stopPropagation()
+
+        mouseUpSelectorTool(this.unSelectOncanvas)
     }
 }
 
