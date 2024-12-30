@@ -17,6 +17,15 @@ export type ObjectBoundaries = {
     bottomY: number
 }
 
+export type GetObjectBoundariesInputs = {
+    toolType: DrawingTool,
+    startX: number,
+    startY: number,
+    endX?: number,
+    endY?: number,
+    radius?: number
+}
+
 // this will need so much more.  think about an abstract class with subclasses for each type of tool. 
 export type DrawingCommand = {
     drawingTool: DrawingTool

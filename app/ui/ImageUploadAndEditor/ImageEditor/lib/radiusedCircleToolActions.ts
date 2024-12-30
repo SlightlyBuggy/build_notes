@@ -2,6 +2,7 @@ import { StartingCoords, LastCoords, DrawingCommand } from "@/app/lib/util/types
 import { distanceBetweenPoints } from "@/app/lib/util/formulae";
 import { DrawingTool } from "@/app/lib/util/enums";
 import { clearCanvas } from "@/app/lib/util/image";
+import { getObjectBoundaries } from "@/app/lib/util/selectorDrawingTool";
 
 export const mouseUpRadiusedCircleTool = (contextTemp: CanvasRenderingContext2D, startingCoords: StartingCoords | null, lastCoords: LastCoords | null, paintingSetter: (paintingVal: boolean) => void, startingCoordsSetter: (startingCoords: StartingCoords | null) => void, lastCoordsSetter: (coords: LastCoords | null) => void, canvasWidth: number, canvasHeight: number, addDrawingCommand: (command: DrawingCommand) => void) => {
     
@@ -16,6 +17,10 @@ export const mouseUpRadiusedCircleTool = (contextTemp: CanvasRenderingContext2D,
             startY: startingCoords.startY,
             radius: radius
         }
+
+        const objectBoundaries = getObjectBoundaries({toolType: command.drawingTool, startX: command.startX, startY: command.startY, radius: command.radius})
+        command.objectBoundaries = objectBoundaries
+
         addDrawingCommand(command)
     
         startingCoordsSetter(null);

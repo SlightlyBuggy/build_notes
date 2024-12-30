@@ -16,8 +16,7 @@ export const mouseUpLineTool = (contextTemp: CanvasRenderingContext2D, startingC
             endY: lastCoords.lastY
         }
 
-        const objectBoundaries = getObjectBoundaries(command.drawingTool, command.startX, command.startY, command.endX, command.endY)
-
+        const objectBoundaries = getObjectBoundaries({toolType: command.drawingTool, startX: command.startX, startY: command.startY, endX: command.endX, endY: command.endY})
         command.objectBoundaries = objectBoundaries
 
         addDrawingCommand(command)

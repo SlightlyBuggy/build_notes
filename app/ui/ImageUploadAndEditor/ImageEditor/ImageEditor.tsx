@@ -139,6 +139,14 @@ export default function ImageEditor({
                     {
                         command.endY += deltaY
                     }
+                    if(command.objectBoundaries)
+                    {
+                        command.objectBoundaries.leftX += deltaX
+                        command.objectBoundaries.rightX += deltaX
+                        
+                        command.objectBoundaries.bottomY += deltaY
+                        command.objectBoundaries.topY += deltaY
+                    }
                     setMouseLastCoords({lastX: posX, lastY: posY})
                     setDrawCommands(drawCommandsCopy)
                     break
