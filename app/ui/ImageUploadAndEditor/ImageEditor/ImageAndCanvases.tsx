@@ -13,7 +13,8 @@ export default function ImageAndCanvases({
     canvasRefPerm,
     canvasRefTemp,
     textInputState,
-    textInputValueSetter
+    textInputValueSetter,
+    textInputSizeSetter
 }: {
     imageData: StaticImageData,
     canvasHeight: number,
@@ -21,7 +22,8 @@ export default function ImageAndCanvases({
     canvasRefPerm: React.RefObject<HTMLCanvasElement>,
     canvasRefTemp: React.RefObject<HTMLCanvasElement>,
     textInputState: TextInputState,
-    textInputValueSetter: (value: string) => void
+    textInputValueSetter: (value: string) => void,
+    textInputSizeSetter: (width: number, height: number) => void
 }) {
 
     return (
@@ -34,6 +36,7 @@ export default function ImageAndCanvases({
                 canvasRefTemp={canvasRefTemp} 
                 textInputState={textInputState}
                 textInputValueSetter={textInputValueSetter}
+                textInputSizeSetter={textInputSizeSetter}
                 />
         </div>
         )

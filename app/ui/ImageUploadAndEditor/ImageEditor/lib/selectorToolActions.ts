@@ -9,9 +9,7 @@ export const mouseMoveSelectorTool = (currentX: number, currentY: number, dragIn
     }
 }
 
-
 export const mouseUpSelectorTool = (unSelectOnCanvas: () => void) => {
     unSelectOnCanvas()
 }
-// stop dragging actions
 

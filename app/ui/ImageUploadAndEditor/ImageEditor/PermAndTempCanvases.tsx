@@ -8,14 +8,16 @@ export default function PermAndTempCanvases({
     canvasRefPerm,
     canvasRefTemp,
     textInputState,
-    textInputValueSetter
+    textInputValueSetter,
+    textInputSizeSetter
 }: {
     canvasHeight: number,
     canvasWidth: number,
     canvasRefPerm: React.RefObject<HTMLCanvasElement>,
     canvasRefTemp: React.RefObject<HTMLCanvasElement>,
     textInputState: TextInputState,
-    textInputValueSetter: (value: string) => void
+    textInputValueSetter: (value: string) => void,
+    textInputSizeSetter: (width: number, height: number) => void
 }) {
 
 
@@ -27,7 +29,11 @@ export default function PermAndTempCanvases({
             <canvas data-testid='canvas-temp' ref={canvasRefTemp}
             height={canvasHeight} width={canvasWidth}
             />
-            <TextInput inputState={textInputState} valueSetter={textInputValueSetter}/>
+            <TextInput 
+                inputState={textInputState} 
+                valueSetter={textInputValueSetter}
+                textInputSizeSetter={textInputSizeSetter}
+                />
         </div>
         )
 }

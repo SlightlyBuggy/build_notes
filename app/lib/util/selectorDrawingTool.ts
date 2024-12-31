@@ -2,11 +2,14 @@ import { DrawingTool } from "./enums";
 import { DrawingCommand, GetObjectBoundariesInputs, ObjectBoundaries } from "./types";
 
 const MIN_DIM_PX = 30
-
+// TODO: support remaining tool types
 export const getObjectBoundaries = (inputs: GetObjectBoundariesInputs) : ObjectBoundaries => {
     switch (inputs.toolType) {
 
         case(DrawingTool.Line):
+        case(DrawingTool.Text):
+            console.log("inputs")
+            console.log(inputs)
             if(inputs.endX && inputs.endY)
             {
                 const lineBoundaries = getLineBoundaries(inputs.startX, inputs.startY, inputs.endX, inputs.endY)
@@ -19,7 +22,7 @@ export const getObjectBoundaries = (inputs: GetObjectBoundariesInputs) : ObjectB
                 return boundaries
             }
         default:
-            throw Error(`getObjectBoundaries does not handle object type ${inputs.toolType}`)
+            throw Error(`getObjectBoundaries does not handle object type ${inputs.toolType}.  Received inputs: ${JSON.stringify(inputs)}`)
     }
 }
 

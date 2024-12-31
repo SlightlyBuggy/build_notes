@@ -29,7 +29,7 @@ export default function ImageEditor({
     const [drawCommands, setDrawCommands] = useState<DrawingCommand[]>([])
     const [undoneDrawCommands, setUndoneDrawCommands] = useState<DrawingCommand[]>([])
 
-    const [textInputState, setTextInputState] = useState<TextInputState>({active: false, posX: 0, posY: 0, value: ''})
+    const [textInputState, setTextInputState] = useState<TextInputState>({active: false, posX: 0, posY: 0, value: '', width: 0, height: 0})
 
     const [mouseLastCoords, setMouseLastCoords] = useState<{lastX: number, lastY: number}>()
     const [dragInProgress, setDragInProgress] = useState<boolean>(false)
@@ -96,6 +96,10 @@ export default function ImageEditor({
         setTextInputState({...textInputState, value: value})
     }
 
+    const textInputSizeSetter = (width: number, height: number) => {
+        setTextInputState({...textInputState, width: width, height: height})
+    }
+
     // later consider moving this into the useDrawingTool hook?
     const selectOnCanvas = (posX: number, posY: number) => {
         const drawCommandsCopy = [...drawCommands]
@@ -143,7 +147,7 @@ export default function ImageEditor({
                     {
                         command.objectBoundaries.leftX += deltaX
                         command.objectBoundaries.rightX += deltaX
-                        
+
                         command.objectBoundaries.bottomY += deltaY
                         command.objectBoundaries.topY += deltaY
                     }
@@ -194,6 +198,7 @@ export default function ImageEditor({
                 canvasRefTemp={canvasRefTemp}
                 textInputState={textInputState}
                 textInputValueSetter={textInputValueSetter}
+                textInputSizeSetter={textInputSizeSetter}
             />
             <SaveDrawingButton saveImage={() => saveImage(canvasRefPerm)} />
         </div>

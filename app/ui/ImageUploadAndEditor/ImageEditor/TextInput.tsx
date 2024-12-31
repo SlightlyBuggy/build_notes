@@ -6,6 +6,8 @@ export interface TextInputState {
     posX: number
     posY: number
     value: string
+    height: number
+    width: number
 }
 
 const MIN_INPUT_WIDTH_PX = 100
@@ -13,11 +15,13 @@ const MIN_INPUT_WIDTH_PX = 100
 export function TextInput(
     {
         inputState,
-        valueSetter
+        valueSetter,
+        textInputSizeSetter
     }:
     {
         inputState: TextInputState,
-        valueSetter: (value: string) => void
+        valueSetter: (value: string) => void,
+        textInputSizeSetter: (width: number, height: number) => void
     }
 ){
     const inputRef = useRef<HTMLInputElement>(null)
@@ -36,7 +40,10 @@ export function TextInput(
         if(spanRef.current)
         {
             const currentWidth = spanRef.current.offsetWidth
-            setWidth(spanRef.current.offsetWidth)
+            const currentHeight = spanRef.current.offsetHeight
+            // TODO: can we maybe get the height of the input, height of the span, subtract, then half of that is the distance between input and span?  const thing = inputRef.current?.offsetHeight.  then to shift from top left coordinates (input) to bottom left corrdinates (fill), we add the height of the input plus half of the height delta betwen span and input... right?  
+            setWidth(currentWidth)
+            textInputSizeSetter(currentWidth, currentHeight)
         }
     },[inputState.value])
 
