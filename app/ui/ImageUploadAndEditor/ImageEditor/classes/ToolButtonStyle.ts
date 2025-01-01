@@ -5,7 +5,7 @@ abstract class ToolButtonStyles {
     abstract thisToolType: DrawingTool;
 
     private outerSharedStyle = "hover:cursor-pointer"
-    private outerActiveStyle = "bg-red-500"
+    private outerActiveStyle = "bg-green-500"
 
     protected abstract outerFixedStyle: string;
     protected abstract outerInactiveStyle: string;
