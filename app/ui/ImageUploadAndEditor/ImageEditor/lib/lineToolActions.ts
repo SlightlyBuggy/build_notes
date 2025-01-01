@@ -37,6 +37,7 @@ export const mouseMoveLineTool = (currentX: number, currentY: number, contextTem
         contextTemp.beginPath();
         contextTemp.moveTo(startingCoords.startX, startingCoords.startY);
         contextTemp.lineTo(currentX, currentY);
+        contextTemp.lineWidth = 2
         contextTemp.stroke();
     }
 }

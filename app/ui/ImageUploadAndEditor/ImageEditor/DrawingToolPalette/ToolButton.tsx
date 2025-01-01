@@ -1,5 +1,5 @@
 import { DrawingTool } from "@/app/lib/util/enums";
-import { toolButtonStyleFactory } from "./classes/ToolButtonStyle";
+import { toolButtonStyleFactory } from "../classes/ToolButtonStyle";
 import { CursorArrowRaysIcon } from "@heroicons/react/20/solid";
 
 // TODO: inverse video when tool is selected?

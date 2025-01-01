@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react"
 import { DrawingTool } from "@/app/lib/util/enums";
 import { useDrawingTool } from "@/app/lib/hooks/useDrawingTools";
 import ImageAndCanvases from "./ImageAndCanvases";
-import DrawingToolPalette from "./DrawingToolPalette";
+import DrawingToolPalette from "./DrawingToolPalette/DrawingToolPalette";
 import SaveDrawingButton from "./SaveDrawingButton";
 import { DrawingCommand } from "@/app/lib/util/types";
 import { useDrawingCommands } from "@/app/lib/hooks/useDrawingCommands";
