@@ -11,6 +11,7 @@ import { useDrawingCommands } from "@/app/lib/hooks/useDrawingCommands";
 import { saveImage } from "@/app/lib/util/image";
 import { TextInputState} from "./TextInput";
 import { selectionIsInObject } from "@/app/lib/util/selectorDrawingTool";
+import { useTextInput } from "@/app/lib/hooks/useTextInput";
 
 
 
@@ -29,10 +30,10 @@ export default function ImageEditor({
     const [drawCommands, setDrawCommands] = useState<DrawingCommand[]>([])
     const [undoneDrawCommands, setUndoneDrawCommands] = useState<DrawingCommand[]>([])
 
-    const [textInputState, setTextInputState] = useState<TextInputState>({active: false, posX: 0, posY: 0, value: '', width: 0, height: 0})
-
     const [mouseLastCoords, setMouseLastCoords] = useState<{lastX: number, lastY: number}>()
     const [dragInProgress, setDragInProgress] = useState<boolean>(false)
+
+    const { textInputStateSetter, textInputValueSetter, textInputSizeSetter, textInputState } = useTextInput()
 
     const handleToolClick = (tool: DrawingTool) => {
         // only switch tools if we've clicked a different one
@@ -46,7 +47,7 @@ export default function ImageEditor({
         // made sure the text input is not visible
         if(textInputState.active)
         {
-            setTextInputState({...textInputState, active: false})
+            textInputStateSetter({...textInputState, active: false})
         }
     }
 
@@ -77,27 +78,6 @@ export default function ImageEditor({
             setDrawCommands([...drawCommands, commandToRedo])
             setUndoneDrawCommands(currentUndoneCommands)
         }
-    }
-
-    const textInputStateSetter = (newTextInputState: TextInputState) => {
-
-        // if the input is active and we click around, don't do anything, otherwise
-        // the input would move to wherever we click.  later we want to 'commit' the text by
-        // clicking outside the text field
-        if(textInputState.active && newTextInputState.active)
-        {
-            return
-        }
-
-        setTextInputState(newTextInputState)
-    }
-
-    const textInputValueSetter = (value: string) => {
-        setTextInputState({...textInputState, value: value})
-    }
-
-    const textInputSizeSetter = (width: number, height: number) => {
-        setTextInputState({...textInputState, width: width, height: height})
     }
 
     // later consider moving this into the useDrawingTool hook?
