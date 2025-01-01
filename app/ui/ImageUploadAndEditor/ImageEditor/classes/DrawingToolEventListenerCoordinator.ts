@@ -42,7 +42,7 @@ enum EventTypes {
     MouseMove = 'mousemove'
 } 
 
-abstract class DrawingToolEventListenerCoordinator {
+export abstract class DrawingToolEventListenerCoordinator {
 
     constructor(args: DrawingToolEventListenerCoordinatorArgs)
     {

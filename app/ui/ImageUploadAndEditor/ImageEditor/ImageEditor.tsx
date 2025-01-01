@@ -9,6 +9,7 @@ import SaveDrawingButton from "./SaveDrawingButton";
 import { DrawingCommand } from "@/app/lib/util/types";
 import { useDrawingCommands } from "@/app/lib/hooks/useDrawingCommands";
 import { saveImage } from "@/app/lib/util/image";
+import { useToolPalette } from "@/app/lib/hooks/useToolPalette";
 
 
 export default function ImageEditor({
@@ -20,63 +21,14 @@ export default function ImageEditor({
     const canvasRefPerm = useRef<HTMLCanvasElement>(null);
     const canvasRefTemp = useRef<HTMLCanvasElement>(null);
 
-    const [activeTool, setActiveTool] = useState<null|DrawingTool>(null);
-
-    const [drawCommands, setDrawCommands] = useState<DrawingCommand[]>([])
-    const [undoneDrawCommands, setUndoneDrawCommands] = useState<DrawingCommand[]>([])
-    
-    const drawCommandsSetter = (commands: DrawingCommand[]) => {
-        setDrawCommands(commands)
-    }
-
     const canvasHeight = imageData.height;
     const canvasWidth = imageData.width;
 
-    const addDrawingCommand = (command: DrawingCommand) => {
-        setDrawCommands([...drawCommands, command])
-        // when a new command is added, we clear the list of undone commands.  otherwise things could get confusing for the user.
-        setUndoneDrawCommands([])
-    }
+    const {handleToolClick, activeTool} = useToolPalette()
 
-    const undoLastDrawingCommand = () => {
-        const currentCommands = [...drawCommands]
-        const lastCommand : DrawingCommand | undefined = currentCommands.pop()
-        if(lastCommand)
-        {
-            setUndoneDrawCommands([...undoneDrawCommands, lastCommand])
-            setDrawCommands(currentCommands)
-        }
-    }
+    const {drawCommands, undoneDrawCommands, addDrawingCommand, drawCommandsSetter, undoLastDrawingCommand, redoLastUndoneCommand} = useDrawingCommands(canvasRefPerm);
 
-    const redoLastUndoneCommand = () => {
-        const currentUndoneCommands = [...undoneDrawCommands]
-        const commandToRedo = currentUndoneCommands.pop()
-        if(commandToRedo)
-        {
-            setDrawCommands([...drawCommands, commandToRedo])
-            setUndoneDrawCommands(currentUndoneCommands)
-        }
-    }
-
-    const handleToolClick = (tool: DrawingTool) => {
-        // only switch tools if we've clicked a different one
-        if(tool === activeTool)
-        {
-            return
-        }
-
-        setActiveTool(tool);
-
-        // made sure the text input is not visible
-        if(textInputState.active)
-        {
-            textInputStateSetter({...textInputState, active: false})
-        }
-    }
-
-    useDrawingCommands(canvasRefPerm, drawCommands);
-
-    const {textInputState, textInputValueSetter, textInputSizeSetter, textInputStateSetter} = useDrawingTool(canvasRefPerm, canvasRefTemp, activeTool, 
+    const {textInputState, textInputValueSetter, textInputSizeSetter} = useDrawingTool(canvasRefPerm, canvasRefTemp, activeTool, 
         canvasWidth, canvasHeight, drawCommands, addDrawingCommand, drawCommandsSetter);
 
 

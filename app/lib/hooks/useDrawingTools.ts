@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { DrawingTool } from "../util/enums";
 import { StartingCoords, LastCoords, DrawingCommand } from "../util/types";
-import { DrawingToolEventListenerCoordinatorArgs, drawingToolListenerCoordinatorFactory } from "@/app/ui/ImageUploadAndEditor/ImageEditor/classes/DrawingToolEventListenerCoordinator";
+import { DrawingToolEventListenerCoordinator, DrawingToolEventListenerCoordinatorArgs, drawingToolListenerCoordinatorFactory } from "@/app/ui/ImageUploadAndEditor/ImageEditor/classes/DrawingToolEventListenerCoordinator";
 import { TextInputState } from "@/app/ui/ImageUploadAndEditor/ImageEditor/TextInput";
 import { useTextInput } from "./useTextInput";
 import { useSelectionOnCanvas } from "./useSelectionOnCanvas";
@@ -70,7 +70,7 @@ export const useDrawingTool = (canvasRefPerm: React.RefObject<HTMLCanvasElement>
                     unSelectOnCanvas: unSelectOnCanvas
                 }
                 
-                const coordinator = drawingToolListenerCoordinatorFactory(args)
+                const coordinator: DrawingToolEventListenerCoordinator = drawingToolListenerCoordinatorFactory(args)
 
                 coordinator.addEventListenersToPermCanvas()
 
@@ -86,5 +86,13 @@ export const useDrawingTool = (canvasRefPerm: React.RefObject<HTMLCanvasElement>
         textInputState.value
     ]);
 
-    return { textInputState, textInputValueSetter, textInputSizeSetter, textInputStateSetter}
+    // make sure text input is not visible when it shouldn't be
+    useEffect(() => {
+        if(activeTool != DrawingTool.Text && textInputState.active)
+        {
+            textInputStateSetter({...textInputState, active: false})
+        }
+    }, [textInputState.active, activeTool])
+
+    return { textInputState, textInputValueSetter, textInputSizeSetter}
 }
