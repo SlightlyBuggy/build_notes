@@ -12,6 +12,7 @@ export const getObjectBoundaries = (inputs: GetObjectBoundariesInputs) : ObjectB
             console.log(inputs)
             if(inputs.endX && inputs.endY)
             {
+                // TODO: rename to "getBoundariesFromStartAndEndCoords" or similar
                 const lineBoundaries = getLineBoundaries(inputs.startX, inputs.startY, inputs.endX, inputs.endY)
                 return lineBoundaries
             }
