@@ -4,6 +4,8 @@ import  ImageEditor from '../../../../ui/ImageUploadAndEditor/ImageEditor/ImageE
 import React from 'react'
 import RV7A from '../../../../lib/images/RV7A.jpg'
 
+const ACTIVE_CLASS = 'bg-green-500'
+
 describe('ImageEditor', () => {
 
     beforeEach(() => {
@@ -25,35 +27,13 @@ describe('ImageEditor', () => {
         expect(tempCanvas).toBeInTheDocument()
     })
 
-    it('correctly styles the circle button on click', () => {
-        const circleToolContainer = screen.getByTestId('drawing-tool-button-circle')
-        const circleToolStyledDiv = circleToolContainer.querySelector('div')
-
-        expect(circleToolStyledDiv).toHaveClass('bg-green-500')
-
-        fireEvent.click(circleToolContainer)
-
-        expect(circleToolStyledDiv).toHaveClass('bg-red-500')
-    })
-
-    it('correctly styles the square button on click', () => {
-        const squareToolContainer = screen.getByTestId('drawing-tool-button-square')
-        const squareToolStyledDiv = squareToolContainer.querySelector('div')
-
-        expect(squareToolStyledDiv).toHaveClass('bg-yellow-300')
-
-        fireEvent.click(squareToolContainer)
-
-        expect(squareToolStyledDiv).toHaveClass('bg-red-500')
-    })
-
     it('correctly styles the line button on click', () => {
         const lineToolContainer = screen.getByTestId('drawing-tool-button-line')
         const lineToolStyledDiv = lineToolContainer.querySelector('div')
 
         fireEvent.click(lineToolContainer)
 
-        expect(lineToolStyledDiv).toHaveClass('bg-red-500')
+        expect(lineToolStyledDiv).toHaveClass(ACTIVE_CLASS)
     })
 
     it('correctly styles the radiused circle button on click', () => {
@@ -62,7 +42,16 @@ describe('ImageEditor', () => {
 
         fireEvent.click(radiusedCircleToolContainer)
 
-        expect(radiusedCircleToolStyledDiv).toHaveClass('bg-red-500')
+        expect(radiusedCircleToolStyledDiv).toHaveClass(ACTIVE_CLASS)
+    })
+
+    it('correctly styles the rectangle button on click', () => {
+        const rectangleToolContainer = screen.getByTestId('drawing-tool-button-rectangle')
+        const radiusedCircleToolStyledDiv = rectangleToolContainer.querySelector('div')
+
+        fireEvent.click(rectangleToolContainer)
+
+        expect(radiusedCircleToolStyledDiv).toHaveClass(ACTIVE_CLASS)
     })
 
     // TODO: text tool
