@@ -4,6 +4,7 @@ import ToolButton from "./ToolButton"
 import { DrawingTool } from "@/app/lib/util/enums"
 import UndoButton from "./UndoButton"
 import { DrawingCommand } from "@/app/lib/util/types"
+import StrokeWidthSelector from "./StrokeWidthSelector"
 
 export default function DrawingToolPalette(
     {
@@ -17,13 +18,19 @@ export default function DrawingToolPalette(
 ) {
 
     return (
-    <div className="flex flex-row p-5 select-none">
+    <div className="flex flex-row p-5 select-none max-h-20 relative z-10">
         <ToolButton tool={DrawingTool.Selector} activeTool={activeTool} handleToolClick={handleToolClick} />
         <ToolButton tool={DrawingTool.Line} activeTool={activeTool} handleToolClick={handleToolClick} />
         <ToolButton tool={DrawingTool.Rectangle} activeTool={activeTool} handleToolClick={handleToolClick} />
         <ToolButton tool={DrawingTool.RadiusedCircle} activeTool={activeTool} handleToolClick={handleToolClick}/>
         <ToolButton tool={DrawingTool.Text} activeTool={activeTool} handleToolClick={handleToolClick} innerText='T'/>
-        <div className="p-3" ></div>
+        <div className="p-3 flex items-center">
+            <div className="h-8 w-0.5 bg-slate-500"></div>
+        </div>
+        <StrokeWidthSelector />
+        <div className="p-3 flex items-center">
+            <div className="h-8 w-0.5 bg-slate-500"></div>
+        </div>
         <UndoButton undoLastDrawingCommand={undoLastDrawingCommand} drawingCommands={drawingCommands}/>
         <RedoButton redoLastUndoneCommand={redoLastUndoneCommand} undoneDrawCommands={undoneDrawCommands}/>
     </div>

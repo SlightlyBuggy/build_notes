@@ -27,7 +27,7 @@ export default function ImageAndCanvases({
 }) {
 
     return (
-        <div>
+        <div className="relative z-1">
             <img src={imageData.src} className="absolute"/>
             <PermAndTempCanvases 
                 canvasHeight={canvasHeight} 

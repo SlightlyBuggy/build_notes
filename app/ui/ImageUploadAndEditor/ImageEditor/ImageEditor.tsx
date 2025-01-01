@@ -33,7 +33,7 @@ export default function ImageEditor({
 
 
     return (
-        <div data-testid='image-editor'>
+        <div data-testid='image-editor' className="relative z-1">
             <DrawingToolPalette 
                 activeTool={activeTool} 
                 handleToolClick={handleToolClick} 
