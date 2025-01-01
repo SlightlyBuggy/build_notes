@@ -12,9 +12,8 @@ export const getObjectBoundaries = (inputs: GetObjectBoundariesInputs) : ObjectB
             console.log(inputs)
             if(inputs.endX && inputs.endY)
             {
-                // TODO: rename to "getBoundariesFromStartAndEndCoords" or similar
-                const lineBoundaries = getLineBoundaries(inputs.startX, inputs.startY, inputs.endX, inputs.endY)
-                return lineBoundaries
+                const boundaries = getBoundariesFromStartAndEndCoords(inputs.startX, inputs.startY, inputs.endX, inputs.endY)
+                return boundaries
             }
         case (DrawingTool.RadiusedCircle): 
             if(inputs.radius)
@@ -27,7 +26,7 @@ export const getObjectBoundaries = (inputs: GetObjectBoundariesInputs) : ObjectB
     }
 }
 
-const getLineBoundaries = (startX: number, startY: number, endX: number, endY: number): ObjectBoundaries => {
+const getBoundariesFromStartAndEndCoords = (startX: number, startY: number, endX: number, endY: number): ObjectBoundaries => {
     const leftX = Math.min(startX, endX)
     const rightX = Math.max(startX, endX)
     const topY = Math.min(startY, endY)
