@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react"
 import { DrawingTool } from "../util/enums";
 import { StartingCoords, LastCoords, DrawingCommand } from "../util/types";
 import { DrawingToolEventListenerCoordinator, DrawingToolEventListenerCoordinatorArgs, drawingToolListenerCoordinatorFactory } from "@/app/ui/ImageUploadAndEditor/ImageEditor/classes/DrawingToolEventListenerCoordinator";
-import { TextInputState } from "@/app/ui/ImageUploadAndEditor/ImageEditor/TextInput";
 import { useTextInput } from "./useTextInput";
 import { useSelectionOnCanvas } from "./useSelectionOnCanvas";
 
