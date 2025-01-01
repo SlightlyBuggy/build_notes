@@ -8,8 +8,7 @@ export const getObjectBoundaries = (inputs: GetObjectBoundariesInputs) : ObjectB
 
         case(DrawingTool.Line):
         case(DrawingTool.Text):
-            console.log("inputs")
-            console.log(inputs)
+        case(DrawingTool.Rectangle):
             if(inputs.endX && inputs.endY)
             {
                 const boundaries = getBoundariesFromStartAndEndCoords(inputs.startX, inputs.startY, inputs.endX, inputs.endY)

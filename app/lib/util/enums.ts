@@ -4,5 +4,6 @@ export enum DrawingTool {
     Line = 'line',
     RadiusedCircle = 'radiusedcircle',
     Text = 'text',
-    Selector = 'selector'
+    Selector = 'selector',
+    Rectangle = 'rectangle'
 }

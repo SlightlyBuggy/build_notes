@@ -60,6 +60,14 @@ class RadiusedCircleButtonStyles extends ToolButtonStyles {
     innerStyle = "h-5 w-5 rounded-full border-solid border-2 border-black"
 }
 
+class RectangleToolButonStyles extends ToolButtonStyles {
+    thisToolType = DrawingTool.Rectangle
+
+    outerFixedStyle = "h-6 w-6 flex items-center justify-center"
+    protected outerInactiveStyle = "hover:bg-yellow-100"
+    innerStyle = "h-5 w-5 border-solid border-2 border-black"
+}
+
 class TextToolButtonStyles extends ToolButtonStyles {
     thisToolType = DrawingTool.Text
 
@@ -88,6 +96,8 @@ export const toolButtonStyleFactory = (thisToolType: DrawingTool, activeToolType
             return new LineToolButtonStyles(activeToolType);
         case DrawingTool.RadiusedCircle:
             return new RadiusedCircleButtonStyles(activeToolType);
+        case DrawingTool.Rectangle:
+            return new RectangleToolButonStyles(activeToolType);
         case DrawingTool.Text:
             return new TextToolButtonStyles(activeToolType)
         case DrawingTool.Selector:

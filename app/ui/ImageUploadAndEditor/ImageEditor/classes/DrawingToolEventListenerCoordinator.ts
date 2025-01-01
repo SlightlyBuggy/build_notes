@@ -7,6 +7,7 @@ import { mouseDownRadiusedCircleTool, mouseMoveRadiusedCircleTool, mouseUpRadius
 import { mouesDownTextTool } from "../lib/textToolActions"
 import { TextInputState } from "../TextInput"
 import { mouseDownSelectorTool, mouseMoveSelectorTool, mouseUpSelectorTool } from "../lib/selectorToolActions"
+import { mouseDownRectangleTool, mouseMoveRectangleTool, mouseUpRectangleTool } from "../lib/rectangleToolActions"
 
 export interface DrawingToolEventListenerCoordinatorArgs {
     drawingTool: DrawingTool
@@ -215,6 +216,55 @@ class RadiusedCircleToolListenerCoordinator extends DrawingToolEventListenerCoor
     }
 }
 
+class RectangleToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
+    constructor(args: DrawingToolEventListenerCoordinatorArgs)
+    {
+        super(args)
+
+        this.contextTemp = args.contextTemp
+        this.startingCoords = args.startingCoords
+        this.lastCoords = args.lastCoords
+        this.canvasWidth = args.canvasWidth
+        this.canvasHeight = args.canvasHeight
+        this.painting = args.painting
+        this.paintingSetter = args.paintingSetter
+        this.startingCoordsSetter = args.startingCoordsSetter
+        this.lastCoordsSetter = args.lastCoordsSetter
+
+        this.createEventListenersWithHandlers()
+    }
+
+    private contextTemp: CanvasRenderingContext2D
+    private startingCoords: StartingCoords | null
+    private lastCoords: LastCoords | null
+    private canvasWidth: number
+    private canvasHeight: number
+    private painting: boolean
+    private paintingSetter: (paintingVal: boolean) => void
+    private startingCoordsSetter: (coords: StartingCoords | null) => void
+    private lastCoordsSetter: (coords: LastCoords | null) => void
+
+    protected createEventListenersWithHandlers = () => {
+        this.eventsWithHandlers.push({eventType: EventTypes.MouseDown, eventListener: this.mouseDownListener})
+        this.eventsWithHandlers.push({eventType: EventTypes.MouseUp, eventListener: this.mouseUpListener})
+        this.eventsWithHandlers.push({eventType: EventTypes.MouseMove, eventListener: this.mouseMoveListener})
+    }
+
+    private mouseDownListener = (ev: MouseEvent) => {
+        const {currentX, currentY} = getCurrentCoords(ev, this.rect)
+        mouseDownRectangleTool(currentX, currentY, this.paintingSetter, this.startingCoordsSetter)
+    }
+
+    private mouseUpListener = (ev: MouseEvent) => {
+        mouseUpRectangleTool(this.contextTemp, this.startingCoords, this.lastCoords, this.paintingSetter, this.startingCoordsSetter, this.lastCoordsSetter, this.canvasWidth, this.canvasHeight, this.addDrawingCommand)
+    }
+
+    private mouseMoveListener = (ev: MouseEvent) => {
+        const {currentX, currentY} = getCurrentCoords(ev, this.rect)
+        mouseMoveRectangleTool(currentX, currentY, this.contextTemp, this.painting, this.startingCoords, this.lastCoordsSetter, this.canvasWidth, this.canvasHeight)
+    }
+}
+
 const getCurrentCoords = (ev: MouseEvent, rect: DOMRect) => {
     const currentX = ev.clientX - rect.left;
     const currentY = ev.clientY - rect.top;
@@ -306,6 +356,8 @@ export const drawingToolListenerCoordinatorFactory = (args: DrawingToolEventList
             return new LineToolListenerCoordinator(args)
         case(DrawingTool.RadiusedCircle):
             return new RadiusedCircleToolListenerCoordinator(args)
+        case(DrawingTool.Rectangle):
+            return new RectangleToolListenerCoordinator(args)
         case(DrawingTool.Text):
             return new TextToolListenerCoordinator(args)
         case(DrawingTool.Selector):

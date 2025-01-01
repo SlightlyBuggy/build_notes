@@ -69,6 +69,20 @@ class RadiusedCircleCommandExecutor extends DrawingToolCommandExecutor {
     }
 }
 
+class RectangleToolCommandExecutor extends DrawingToolCommandExecutor {
+    protected _executeCommand(): void {
+        if(this.command.endX && this.command.endY)
+        {
+            this.drawingContext.strokeStyle = "#000";
+            const width = this.command.endX - this.command.startX 
+            const height = this.command.endY - this.command.startY
+            this.drawingContext.strokeRect(this.command.startX, this.command.startY, width, height);
+        } else {
+            throw new Error(`Missing required values in command for LineToolCommandExecutor.  Provided command values: ${JSON.stringify(this.command)}`)
+        }
+    }
+}
+
 class TextCommandExecutor extends DrawingToolCommandExecutor {
     protected _executeCommand(): void {
         if(this.command.text)
@@ -94,6 +108,8 @@ export const drawCommandExecutorFactory = (command: DrawingCommand, permDrawingC
             return new LineToolCommandExecutor(command, permDrawingContext)
         case(DrawingTool.RadiusedCircle):
             return new RadiusedCircleCommandExecutor(command, permDrawingContext)
+        case(DrawingTool.Rectangle):
+            return new RectangleToolCommandExecutor(command, permDrawingContext)
         case(DrawingTool.Text):
             return new TextCommandExecutor(command, permDrawingContext)
         default:
