@@ -3,16 +3,14 @@ import { DrawingTool } from "../util/enums";
 import { StartingCoords, LastCoords, DrawingCommand } from "../util/types";
 import { DrawingToolEventListenerCoordinatorArgs, drawingToolListenerCoordinatorFactory } from "@/app/ui/ImageUploadAndEditor/ImageEditor/classes/DrawingToolEventListenerCoordinator";
 import { TextInputState } from "@/app/ui/ImageUploadAndEditor/ImageEditor/TextInput";
+import { useTextInput } from "./useTextInput";
+import { useSelectionOnCanvas } from "./useSelectionOnCanvas";
 
 export const useDrawingTool = (canvasRefPerm: React.RefObject<HTMLCanvasElement>, canvasRefTemp: React.RefObject<HTMLCanvasElement>,
                          activeTool: DrawingTool | null, canvasWidth: number, canvasHeight: number, drawCommands: DrawingCommand[],
                          addDrawingCommand: (command: DrawingCommand) => void, 
-                         textInputStateSetter: (inputState: TextInputState) => void,
-                         textInputState: TextInputState,
-                         selectOnCanvas: (posX: number, posY: number) => void,
-                         dragInProgress: boolean,
-                         handleDragOnCanvas: (posX: number, posY: number) => void,
-                         unSelectOnCanvas: () => void
+                         drawCommandsSetter: (commands: DrawingCommand[]) => void
+
 ) => {
 
     const [startingCoords, setStartingCoords] = useState<StartingCoords | null>(null);
@@ -31,6 +29,9 @@ export const useDrawingTool = (canvasRefPerm: React.RefObject<HTMLCanvasElement>
     const lastCoordsSetter = (coords: LastCoords | null) => {
         setLastCoords(coords)
     }
+
+    const { textInputStateSetter, textInputValueSetter, textInputSizeSetter, textInputState } = useTextInput()
+    const {selectOnCanvas, handleDragOnCanvas, unSelectOnCanvas, dragInProgress} = useSelectionOnCanvas({drawCommands: drawCommands, drawCommandsSetter: drawCommandsSetter})
 
     useEffect(() => {
         if(canvasRefPerm.current && canvasRefTemp.current && activeTool)
@@ -84,4 +85,6 @@ export const useDrawingTool = (canvasRefPerm: React.RefObject<HTMLCanvasElement>
         lastCoords, drawCommands, textInputState.active,
         textInputState.value
     ]);
+
+    return { textInputState, textInputValueSetter, textInputSizeSetter, textInputStateSetter}
 }

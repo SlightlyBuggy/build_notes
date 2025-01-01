@@ -9,10 +9,6 @@ import SaveDrawingButton from "./SaveDrawingButton";
 import { DrawingCommand } from "@/app/lib/util/types";
 import { useDrawingCommands } from "@/app/lib/hooks/useDrawingCommands";
 import { saveImage } from "@/app/lib/util/image";
-import { useTextInput } from "@/app/lib/hooks/useTextInput";
-import { useSelectionOnCanvas } from "@/app/lib/hooks/useSelectionOnCanvas";
-
-
 
 
 export default function ImageEditor({
@@ -31,25 +27,6 @@ export default function ImageEditor({
     
     const drawCommandsSetter = (commands: DrawingCommand[]) => {
         setDrawCommands(commands)
-    }
-
-    const { textInputStateSetter, textInputValueSetter, textInputSizeSetter, textInputState } = useTextInput()
-
-
-    const handleToolClick = (tool: DrawingTool) => {
-        // only switch tools if we've clicked a different one
-        if(tool === activeTool)
-        {
-            return
-        }
-
-        setActiveTool(tool);
-
-        // made sure the text input is not visible
-        if(textInputState.active)
-        {
-            textInputStateSetter({...textInputState, active: false})
-        }
     }
 
     const canvasHeight = imageData.height;
@@ -81,14 +58,27 @@ export default function ImageEditor({
         }
     }
 
-    const {selectOnCanvas, handleDragOnCanvas, unSelectOnCanvas, dragInProgress} = useSelectionOnCanvas({drawCommands: drawCommands, drawCommandsSetter: drawCommandsSetter})
+    const handleToolClick = (tool: DrawingTool) => {
+        // only switch tools if we've clicked a different one
+        if(tool === activeTool)
+        {
+            return
+        }
+
+        setActiveTool(tool);
+
+        // made sure the text input is not visible
+        if(textInputState.active)
+        {
+            textInputStateSetter({...textInputState, active: false})
+        }
+    }
 
     useDrawingCommands(canvasRefPerm, drawCommands);
 
-    useDrawingTool(canvasRefPerm, canvasRefTemp, activeTool, 
-        canvasWidth, canvasHeight, drawCommands, addDrawingCommand, 
-        textInputStateSetter, textInputState, selectOnCanvas,
-    dragInProgress, handleDragOnCanvas, unSelectOnCanvas);
+    const {textInputState, textInputValueSetter, textInputSizeSetter, textInputStateSetter} = useDrawingTool(canvasRefPerm, canvasRefTemp, activeTool, 
+        canvasWidth, canvasHeight, drawCommands, addDrawingCommand, drawCommandsSetter);
+
 
     return (
         <div data-testid='image-editor'>
