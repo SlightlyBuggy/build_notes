@@ -28,22 +28,6 @@ abstract class ToolButtonStyles {
     }
 }
 
-class CircleToolButtonStyles extends ToolButtonStyles {
-    thisToolType = DrawingTool.Circle
-
-    outerFixedStyle = "h-5 w-5 rounded-full"
-    protected outerInactiveStyle = "hover:bg-yellow-100 bg-green-500"
-    innerStyle = ""
-}
-
-class SquareToolButtonStyles extends ToolButtonStyles {
-    thisToolType = DrawingTool.Square
-
-    outerFixedStyle = "h-6 w-6"
-    protected outerInactiveStyle = "hover:bg-yellow-100 bg-yellow-300"
-    innerStyle = ""
-}
-
 class LineToolButtonStyles extends ToolButtonStyles {
     thisToolType = DrawingTool.Line
 
@@ -88,10 +72,6 @@ export const toolButtonStyleFactory = (thisToolType: DrawingTool, activeToolType
 {
     switch(thisToolType)
     {
-        case(DrawingTool.Circle):
-            return new CircleToolButtonStyles(activeToolType);
-        case(DrawingTool.Square):
-            return new SquareToolButtonStyles(activeToolType);
         case DrawingTool.Line:
             return new LineToolButtonStyles(activeToolType);
         case DrawingTool.RadiusedCircle:

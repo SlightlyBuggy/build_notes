@@ -81,42 +81,6 @@ export abstract class DrawingToolEventListenerCoordinator {
     protected abstract createEventListenersWithHandlers: () => void
 }
 
-class SquareToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
-    constructor(args: DrawingToolEventListenerCoordinatorArgs)
-    {
-        super(args)
-        this.createEventListenersWithHandlers()
-    }
-
-    protected createEventListenersWithHandlers = () => {
-        const eventType = EventTypes.MouseDown
-        const eventTypeWithHandler: EventTypeWithListener = {eventType: eventType, eventListener: this.mouseDownListener}
-        this.eventsWithHandlers.push(eventTypeWithHandler)
-    }
-
-    private mouseDownListener = (ev: MouseEvent) => {
-        const {currentX, currentY} = getCurrentCoords(ev, this.rect)
-        mouseDownSquareTool(currentX, currentY, this.contextPerm, this.addDrawingCommand)
-    }
-}
-
-class CircleToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
-    constructor(args: DrawingToolEventListenerCoordinatorArgs)
-    {
-        super(args)
-        this.createEventListenersWithHandlers()
-    }
-
-    protected createEventListenersWithHandlers = () => {
-        this.eventsWithHandlers.push({eventType: EventTypes.MouseDown, eventListener: this.mouseDownListener})
-    }
-
-    private mouseDownListener = (ev: MouseEvent) => {
-        const {currentX, currentY} = getCurrentCoords(ev, this.rect)
-        mouseDownCircleTool(currentX, currentY, this.addDrawingCommand)
-    }
-}
-
 class LineToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
     constructor(args: DrawingToolEventListenerCoordinatorArgs)
     {
@@ -348,10 +312,6 @@ export const drawingToolListenerCoordinatorFactory = (args: DrawingToolEventList
     const drawingTool = args.drawingTool
     switch(drawingTool)
     {
-        case(DrawingTool.Square):
-            return new SquareToolListenerCoordinator(args)
-        case(DrawingTool.Circle):
-            return new CircleToolListenerCoordinator(args)
         case(DrawingTool.Line):
             return new LineToolListenerCoordinator(args)
         case(DrawingTool.RadiusedCircle):

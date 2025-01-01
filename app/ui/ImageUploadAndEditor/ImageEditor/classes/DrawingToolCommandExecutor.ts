@@ -22,24 +22,6 @@ abstract class DrawingToolCommandExecutor {
 
 }
 
-class CircleToolCommandExecutor extends DrawingToolCommandExecutor {
-    protected _executeCommand(): void {
-        this.drawingContext.beginPath();
-        this.drawingContext.arc(this.command.startX, this.command.startY, 10, 0, 2 * Math.PI);
-        this.drawingContext.fillStyle = 'green';
-        this.drawingContext.fill();
-    }
-}
-
-class SquareToolCommandExecutor extends DrawingToolCommandExecutor {
-    protected _executeCommand(): void {
-        this.drawingContext.beginPath();
-        this.drawingContext.rect(this.command.startX, this.command.startY, 10, 10);
-        this.drawingContext.fillStyle = 'yellow';
-        this.drawingContext.fill();
-    }
-}
-
 class LineToolCommandExecutor extends DrawingToolCommandExecutor {
     protected _executeCommand(): void {
         if(this.command.endX && this.command.endY)
@@ -100,10 +82,6 @@ export const drawCommandExecutorFactory = (command: DrawingCommand, permDrawingC
 {
     switch(command.drawingTool)
     {
-        case(DrawingTool.Circle):
-            return new CircleToolCommandExecutor(command, permDrawingContext)
-        case(DrawingTool.Square):
-            return new SquareToolCommandExecutor(command, permDrawingContext)
         case(DrawingTool.Line):
             return new LineToolCommandExecutor(command, permDrawingContext)
         case(DrawingTool.RadiusedCircle):
