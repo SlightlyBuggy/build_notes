@@ -1,27 +1,29 @@
-import { AvailableStroke } from "../StrokeWidthSelector"
+import { StrokeItem } from "../StrokeWidthSelector"
 import StrokeMenuItem from "./StrokeMenuItem"
 
 
 export default function StrokeMenu(
     {  
         closeMenu,
-        selectedStroke,
-        setSelectedStroke,
+        selectedStrokeItem,
+        setSelectedStrokeItem,
         availableStrokes
     }:{
         closeMenu: () => void,
-        selectedStroke: AvailableStroke,
-        setSelectedStroke: (stroke: AvailableStroke) => void,
-        availableStrokes: AvailableStroke[]
+        selectedStrokeItem: StrokeItem,
+        setSelectedStrokeItem: (strokeItem: StrokeItem) => void,
+        availableStrokes: StrokeItem[]
     }
 ) {
-    // TODO: pick up here
     return (
-        <div className="relative z-10 flex items-start">
+        <div className="relative z-10 flex items-start"
+            onMouseLeave={() => closeMenu()}
+        
+        >
             <div className="p-3">
                 {availableStrokes.map((val, idx) => {
                 return  (
-                    <StrokeMenuItem key={idx} widthPx={val.strokeWidthPx} />
+                    <StrokeMenuItem key={idx} thisStrokeItem={val} selectedStrokeItem={selectedStrokeItem} setSelectedStrokeItem={setSelectedStrokeItem}/>
                 )
                 })}
             </div>

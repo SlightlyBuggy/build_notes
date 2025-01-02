@@ -1,20 +1,27 @@
 import clsx from "clsx"
+import { StrokeItem } from "../StrokeWidthSelector"
 
 export default function StrokeMenuItem(
     {
-        widthPx,
+        thisStrokeItem,
+        selectedStrokeItem,
+        setSelectedStrokeItem,
 
     }:{
-        widthPx: number
+        thisStrokeItem: StrokeItem,
+        selectedStrokeItem: StrokeItem,
+        setSelectedStrokeItem: (strokeItem: StrokeItem) => void
     }
 ) {
-    const widthClass = `h-[${widthPx}px]`
+    const widthClass = `h-[${thisStrokeItem.strokeWidthPx}px]`
     return(
         <div 
             className={clsx(
-                "flex items-center hover:cursor-pointer bg-blue-300",
+                "flex items-center hover:cursor-pointer",
+                {"bg-blue-300": thisStrokeItem.strokeName != selectedStrokeItem.strokeName},
+                {"bg-green-500": thisStrokeItem.strokeName == selectedStrokeItem.strokeName},
             )}
-
+            onClick={() => {setSelectedStrokeItem(thisStrokeItem)}}
 
         >
             <div className="h-6 w-6 flex items-center justify-center hover:bg-yellow-100">

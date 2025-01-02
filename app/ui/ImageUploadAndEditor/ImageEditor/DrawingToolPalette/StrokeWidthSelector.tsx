@@ -5,12 +5,12 @@ import { useState } from "react"
 import SelectedStrokeButton from "./StrokeSelection/SelectedStrokeButton"
 import StrokeMenu from "./StrokeSelection/StrokeMenu"
 
-export interface AvailableStroke {
+export interface StrokeItem {
     strokeName: string
     strokeWidthPx: number
 }
 
-const availableStrokes: AvailableStroke[] = [
+const strokeItems: StrokeItem[] = [
     {strokeName: 'small', strokeWidthPx: 2},
     {strokeName: 'medium', strokeWidthPx: 3},
     {strokeName: 'large', strokeWidthPx: 4},
@@ -19,11 +19,10 @@ const availableStrokes: AvailableStroke[] = [
 export default function StrokeWidthSelector() {
 
     const [strokeMenuOpen, setStrokeMenuOpen] = useState<boolean>(false)
-    const [selectedStroke, setSelectedStroke] = useState<AvailableStroke>({strokeName: 'small', strokeWidthPx: 2})
+    const [selectedStrokeItem, setSelectedStrokeItem] = useState<StrokeItem>({strokeName: 'small', strokeWidthPx: 2})
 
     const openMenu = () => {
         setStrokeMenuOpen(true)
-
     }
 
     const closeMenu = () => {
@@ -38,7 +37,7 @@ export default function StrokeWidthSelector() {
     } else {
         return (
 
-            <StrokeMenu closeMenu={closeMenu} selectedStroke={selectedStroke} setSelectedStroke={setSelectedStroke} availableStrokes={availableStrokes}/>
+            <StrokeMenu closeMenu={closeMenu} selectedStrokeItem={selectedStrokeItem} setSelectedStrokeItem={setSelectedStrokeItem} availableStrokes={strokeItems}/>
         )
     }
 }

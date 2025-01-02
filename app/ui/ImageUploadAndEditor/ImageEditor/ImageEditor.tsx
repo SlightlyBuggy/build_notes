@@ -1,16 +1,13 @@
 'use client'
 import { StaticImageData } from "next/image";
-import React, { useRef, useState } from "react"
-import { DrawingTool } from "@/app/lib/util/enums";
+import React, { useRef } from "react"
 import { useDrawingTool } from "@/app/lib/hooks/useDrawingTools";
 import ImageAndCanvases from "./ImageAndCanvases";
 import DrawingToolPalette from "./DrawingToolPalette/DrawingToolPalette";
 import SaveDrawingButton from "./SaveDrawingButton";
-import { DrawingCommand } from "@/app/lib/util/types";
 import { useDrawingCommands } from "@/app/lib/hooks/useDrawingCommands";
 import { saveImage } from "@/app/lib/util/image";
 import { useToolPalette } from "@/app/lib/hooks/useToolPalette";
-
 
 export default function ImageEditor({
     imageData
@@ -30,7 +27,6 @@ export default function ImageEditor({
 
     const {textInputState, textInputValueSetter, textInputSizeSetter} = useDrawingTool(canvasRefPerm, canvasRefTemp, activeTool, 
         canvasWidth, canvasHeight, drawCommands, addDrawingCommand, drawCommandsSetter);
-
 
     return (
         <div data-testid='image-editor' className="relative z-1">
