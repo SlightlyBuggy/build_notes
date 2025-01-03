@@ -1,24 +1,28 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+## Install pnpm
 
-First, run the development server:
+The package management system in use is pnpm. See instructions here: https://pnpm.io/installation
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Install dependencies
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+In a terminal at the root of the project (same directory where this file lives) Run `pnpm install` to install all dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Run the local dev server
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+In a terminal at the root of the project, ttart the development server with `pnpm dev`. The app should start at [http://localhost:3000](http://localhost:3000).
+
+## Testing
+
+Tests live in the `__tests__` directory and are executed using Jest. Execute tests with `pnpm test`.
+
+## Linting
+
+The project is set up to use eslint with Prettier. Run `prettier --check <file name or path>` to check a file and `prettier --write <file name or path>` to reformat.
+
+With VSCode, this can be done on save. Install the "Prettier - Code formatter" app. Then search for the setting `Editor: Format On Save` and enable it. Then search for the setting `Editor: Default formatter` and set to `Prettier - Code formatter`.
+
+Please commit large reformatting changes separately from actual code changes. Please discuss with the team before changing any linting rules.
 
 ## Learn More
 
