@@ -196,6 +196,7 @@ class RadiusedCircleToolListenerCoordinator extends DrawingToolEventListenerCoor
     this.paintingSetter = args.paintingSetter;
     this.startingCoordsSetter = args.startingCoordsSetter;
     this.lastCoordsSetter = args.lastCoordsSetter;
+    this.selectedStrokeItem = args.selectedStrokeItem;
 
     this.createEventListenersWithHandlers();
   }
@@ -209,6 +210,7 @@ class RadiusedCircleToolListenerCoordinator extends DrawingToolEventListenerCoor
   private paintingSetter: (paintingVal: boolean) => void;
   private startingCoordsSetter: (coords: StartingCoords | null) => void;
   private lastCoordsSetter: (coords: LastCoords | null) => void;
+  private selectedStrokeItem: StrokeItem;
 
   protected createEventListenersWithHandlers = () => {
     this.eventsWithHandlers.push({
@@ -245,7 +247,8 @@ class RadiusedCircleToolListenerCoordinator extends DrawingToolEventListenerCoor
       this.lastCoordsSetter,
       this.canvasWidth,
       this.canvasHeight,
-      this.addDrawingCommand
+      this.addDrawingCommand,
+      this.selectedStrokeItem
     );
   };
 
@@ -259,7 +262,8 @@ class RadiusedCircleToolListenerCoordinator extends DrawingToolEventListenerCoor
       this.startingCoords,
       this.lastCoordsSetter,
       this.canvasWidth,
-      this.canvasHeight
+      this.canvasHeight,
+      this.selectedStrokeItem
     );
   };
 }
@@ -277,6 +281,7 @@ class RectangleToolListenerCoordinator extends DrawingToolEventListenerCoordinat
     this.paintingSetter = args.paintingSetter;
     this.startingCoordsSetter = args.startingCoordsSetter;
     this.lastCoordsSetter = args.lastCoordsSetter;
+    this.selectedStrokeItem = args.selectedStrokeItem;
 
     this.createEventListenersWithHandlers();
   }
@@ -290,6 +295,7 @@ class RectangleToolListenerCoordinator extends DrawingToolEventListenerCoordinat
   private paintingSetter: (paintingVal: boolean) => void;
   private startingCoordsSetter: (coords: StartingCoords | null) => void;
   private lastCoordsSetter: (coords: LastCoords | null) => void;
+  private selectedStrokeItem: StrokeItem;
 
   protected createEventListenersWithHandlers = () => {
     this.eventsWithHandlers.push({
@@ -326,7 +332,8 @@ class RectangleToolListenerCoordinator extends DrawingToolEventListenerCoordinat
       this.lastCoordsSetter,
       this.canvasWidth,
       this.canvasHeight,
-      this.addDrawingCommand
+      this.addDrawingCommand,
+      this.selectedStrokeItem
     );
   };
 
@@ -340,7 +347,8 @@ class RectangleToolListenerCoordinator extends DrawingToolEventListenerCoordinat
       this.startingCoords,
       this.lastCoordsSetter,
       this.canvasWidth,
-      this.canvasHeight
+      this.canvasHeight,
+      this.selectedStrokeItem
     );
   };
 }

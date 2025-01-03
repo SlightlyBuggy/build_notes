@@ -44,8 +44,9 @@ class LineToolCommandExecutor extends DrawingToolCommandExecutor {
 
 class RadiusedCircleCommandExecutor extends DrawingToolCommandExecutor {
   protected _executeCommand(): void {
-    if (this.command.radius) {
+    if (this.command.radius && this.command.strokeWidth) {
       this.drawingContext.strokeStyle = '#000';
+      this.drawingContext.lineWidth = this.command.strokeWidth;
       this.drawingContext.beginPath();
       this.drawingContext.arc(
         this.command.startX,
@@ -65,8 +66,9 @@ class RadiusedCircleCommandExecutor extends DrawingToolCommandExecutor {
 
 class RectangleToolCommandExecutor extends DrawingToolCommandExecutor {
   protected _executeCommand(): void {
-    if (this.command.endX && this.command.endY) {
+    if (this.command.endX && this.command.endY && this.command.strokeWidth) {
       this.drawingContext.strokeStyle = '#000';
+      this.drawingContext.lineWidth = this.command.strokeWidth;
       const width = this.command.endX - this.command.startX;
       const height = this.command.endY - this.command.startY;
       this.drawingContext.strokeRect(

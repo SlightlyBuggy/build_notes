@@ -7,6 +7,7 @@ import { distanceBetweenPoints } from '@/app/lib/util/formulae';
 import { DrawingTool } from '@/app/lib/util/enums';
 import { clearCanvas } from '@/app/lib/util/image';
 import { getObjectBoundaries } from '@/app/lib/util/selectorDrawingTool';
+import { StrokeItem } from '../DrawingToolPalette/StrokeWidthSelector';
 
 export const mouseUpRadiusedCircleTool = (
   contextTemp: CanvasRenderingContext2D,
@@ -17,7 +18,8 @@ export const mouseUpRadiusedCircleTool = (
   lastCoordsSetter: (coords: LastCoords | null) => void,
   canvasWidth: number,
   canvasHeight: number,
-  addDrawingCommand: (command: DrawingCommand) => void
+  addDrawingCommand: (command: DrawingCommand) => void,
+  selectedStrokeItem: StrokeItem
 ) => {
   if (startingCoords && lastCoords) {
     paintingSetter(false);
@@ -33,6 +35,7 @@ export const mouseUpRadiusedCircleTool = (
       startX: startingCoords.startX,
       startY: startingCoords.startY,
       radius: radius,
+      strokeWidth: selectedStrokeItem.strokeWidthPx,
     };
 
     const objectBoundaries = getObjectBoundaries({
@@ -60,11 +63,13 @@ export const mouseMoveRadiusedCircleTool = (
   startingCoords: StartingCoords | null,
   lastCoordsSetter: (coords: LastCoords) => void,
   canvasWidth: number,
-  canvasHeight: number
+  canvasHeight: number,
+  selectedStrokeItem: StrokeItem
 ) => {
   if (painting && startingCoords) {
     lastCoordsSetter({ lastX: currentX, lastY: currentY });
     contextTemp.clearRect(0, 0, canvasWidth, canvasHeight);
+    contextTemp.lineWidth = selectedStrokeItem.strokeWidthPx;
     contextTemp.beginPath();
     const radius = distanceBetweenPoints(
       startingCoords.startX,
