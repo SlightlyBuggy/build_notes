@@ -1,9 +1,7 @@
-'use client'
+'use client';
 
-import ImageUploadAndEditor from "@/app/ui/ImageUploadAndEditor/ImageUploadAndEdtior";
+import ImageUploadAndEditor from '@/app/ui/ImageUploadAndEditor/ImageUploadAndEdtior';
 
 export default function Page() {
-    return (
-        <ImageUploadAndEditor />
-    )
+  return <ImageUploadAndEditor />;
 }
