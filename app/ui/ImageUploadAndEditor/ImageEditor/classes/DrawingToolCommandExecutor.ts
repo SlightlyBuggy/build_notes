@@ -27,8 +27,9 @@ abstract class DrawingToolCommandExecutor {
 
 class LineToolCommandExecutor extends DrawingToolCommandExecutor {
   protected _executeCommand(): void {
-    if (this.command.endX && this.command.endY) {
+    if (this.command.endX && this.command.endY && this.command.strokeWidth) {
       this.drawingContext.strokeStyle = '#000';
+      this.drawingContext.lineWidth = this.command.strokeWidth;
       this.drawingContext.beginPath();
       this.drawingContext.moveTo(this.command.startX, this.command.startY);
       this.drawingContext.lineTo(this.command.endX, this.command.endY);

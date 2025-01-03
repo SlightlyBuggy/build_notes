@@ -6,6 +6,7 @@ import {
 } from '@/app/lib/util/types';
 import { clearCanvas } from '@/app/lib/util/image';
 import { getObjectBoundaries } from '@/app/lib/util/selectorDrawingTool';
+import { StrokeItem } from '../DrawingToolPalette/StrokeWidthSelector';
 // TODO: find  way to reduce the number of arguments for all action functinos
 export const mouseUpLineTool = (
   contextTemp: CanvasRenderingContext2D,
@@ -16,7 +17,8 @@ export const mouseUpLineTool = (
   lastCoordsSetter: (coords: LastCoords | null) => void,
   canvasWidth: number,
   canvasHeight: number,
-  addDrawingCommand: (command: DrawingCommand) => void
+  addDrawingCommand: (command: DrawingCommand) => void,
+  selectedStrokeItem: StrokeItem
 ) => {
   if (startingCoords && lastCoords) {
     // TODO: find a more seamless way to do this.  drawingCommandFactory or whatever
@@ -26,6 +28,7 @@ export const mouseUpLineTool = (
       startY: startingCoords.startY,
       endX: lastCoords.lastX,
       endY: lastCoords.lastY,
+      strokeWidth: selectedStrokeItem.strokeWidthPx,
     };
 
     const objectBoundaries = getObjectBoundaries({
@@ -55,7 +58,8 @@ export const mouseMoveLineTool = (
   startingCoords: StartingCoords | null,
   lastCoordsSetter: (coords: LastCoords) => void,
   canvasWidth: number,
-  canvasHeight: number
+  canvasHeight: number,
+  selectedStrokeItem: StrokeItem
 ) => {
   if (painting && startingCoords) {
     lastCoordsSetter({ lastX: currentX, lastY: currentY });
@@ -63,7 +67,7 @@ export const mouseMoveLineTool = (
     contextTemp.beginPath();
     contextTemp.moveTo(startingCoords.startX, startingCoords.startY);
     contextTemp.lineTo(currentX, currentY);
-    contextTemp.lineWidth = 2;
+    contextTemp.lineWidth = selectedStrokeItem.strokeWidthPx;
     contextTemp.stroke();
   }
 };

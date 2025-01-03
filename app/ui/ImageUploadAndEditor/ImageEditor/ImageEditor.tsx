@@ -37,7 +37,7 @@ export default function ImageEditor({
   } = useDrawingCommands(canvasRefPerm);
 
   const { textInputState, textInputValueSetter, textInputSizeSetter } =
-    useDrawingTool(
+    useDrawingTool({
       canvasRefPerm,
       canvasRefTemp,
       activeTool,
@@ -45,8 +45,9 @@ export default function ImageEditor({
       canvasHeight,
       drawCommands,
       addDrawingCommand,
-      drawCommandsSetter
-    );
+      drawCommandsSetter,
+      selectedStrokeItem,
+    });
 
   return (
     <div data-testid="image-editor" className="relative z-1">

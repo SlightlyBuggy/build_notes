@@ -26,6 +26,7 @@ import {
   mouseMoveRectangleTool,
   mouseUpRectangleTool,
 } from '../lib/rectangleToolActions';
+import { StrokeItem } from '../DrawingToolPalette/StrokeWidthSelector';
 
 export interface DrawingToolEventListenerCoordinatorArgs {
   drawingTool: DrawingTool;
@@ -48,6 +49,7 @@ export interface DrawingToolEventListenerCoordinatorArgs {
   dragInProgress: boolean;
   handleDragOnCanvas: (posX: number, posY: number) => void;
   unSelectOnCanvas: () => void;
+  selectedStrokeItem: StrokeItem;
 }
 
 interface EventTypeWithListener {
@@ -109,6 +111,7 @@ class LineToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
     this.paintingSetter = args.paintingSetter;
     this.startingCoordsSetter = args.startingCoordsSetter;
     this.lastCoordsSetter = args.lastCoordsSetter;
+    this.selectedStrokeItem = args.selectedStrokeItem;
 
     this.createEventListenersWithHandlers();
   }
@@ -122,6 +125,7 @@ class LineToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
   private paintingSetter: (paintingVal: boolean) => void;
   private startingCoordsSetter: (coords: StartingCoords | null) => void;
   private lastCoordsSetter: (coords: LastCoords | null) => void;
+  private selectedStrokeItem: StrokeItem;
 
   protected createEventListenersWithHandlers = () => {
     this.eventsWithHandlers.push({
@@ -158,7 +162,8 @@ class LineToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
       this.lastCoordsSetter,
       this.canvasWidth,
       this.canvasHeight,
-      this.addDrawingCommand
+      this.addDrawingCommand,
+      this.selectedStrokeItem
     );
   };
 
@@ -172,7 +177,8 @@ class LineToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
       this.startingCoords,
       this.lastCoordsSetter,
       this.canvasWidth,
-      this.canvasHeight
+      this.canvasHeight,
+      this.selectedStrokeItem
     );
   };
 }

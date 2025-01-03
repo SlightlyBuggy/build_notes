@@ -36,5 +36,6 @@ export type DrawingCommand = {
   radius?: number;
   text?: string;
   selected?: boolean;
-  objectBoundaries?: ObjectBoundaries; // TODO: make mandatory after implementations all completeß
+  objectBoundaries?: ObjectBoundaries; // TODO: make mandatory after implementations all complete
+  strokeWidth?: number;
 };

@@ -8,17 +8,29 @@ import {
 } from '@/app/ui/ImageUploadAndEditor/ImageEditor/classes/DrawingToolEventListenerCoordinator';
 import { useTextInput } from './useTextInput';
 import { useSelectionOnCanvas } from './useSelectionOnCanvas';
+import { StrokeItem } from '@/app/ui/ImageUploadAndEditor/ImageEditor/DrawingToolPalette/StrokeWidthSelector';
 
-export const useDrawingTool = (
-  canvasRefPerm: React.RefObject<HTMLCanvasElement>,
-  canvasRefTemp: React.RefObject<HTMLCanvasElement>,
-  activeTool: DrawingTool | null,
-  canvasWidth: number,
-  canvasHeight: number,
-  drawCommands: DrawingCommand[],
-  addDrawingCommand: (command: DrawingCommand) => void,
-  drawCommandsSetter: (commands: DrawingCommand[]) => void
-) => {
+export const useDrawingTool = ({
+  canvasRefPerm,
+  canvasRefTemp,
+  activeTool,
+  canvasWidth,
+  canvasHeight,
+  drawCommands,
+  addDrawingCommand,
+  drawCommandsSetter,
+  selectedStrokeItem,
+}: {
+  canvasRefPerm: React.RefObject<HTMLCanvasElement>;
+  canvasRefTemp: React.RefObject<HTMLCanvasElement>;
+  activeTool: DrawingTool | null;
+  canvasWidth: number;
+  canvasHeight: number;
+  drawCommands: DrawingCommand[];
+  addDrawingCommand: (command: DrawingCommand) => void;
+  drawCommandsSetter: (commands: DrawingCommand[]) => void;
+  selectedStrokeItem: StrokeItem;
+}) => {
   const [startingCoords, setStartingCoords] = useState<StartingCoords | null>(
     null
   );
@@ -86,6 +98,7 @@ export const useDrawingTool = (
           dragInProgress: dragInProgress,
           handleDragOnCanvas: handleDragOnCanvas,
           unSelectOnCanvas: unSelectOnCanvas,
+          selectedStrokeItem: selectedStrokeItem,
         };
 
         const coordinator: DrawingToolEventListenerCoordinator =
