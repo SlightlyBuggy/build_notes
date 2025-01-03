@@ -21,7 +21,7 @@ export default function ImageEditor({
     const canvasHeight = imageData.height;
     const canvasWidth = imageData.width;
 
-    const {handleToolClick, activeTool} = useToolPalette()
+    const {handleToolClick, activeTool, selectedStrokeItem, setSelectedStrokeItem} = useToolPalette()
 
     const {drawCommands, undoneDrawCommands, addDrawingCommand, drawCommandsSetter, undoLastDrawingCommand, redoLastUndoneCommand} = useDrawingCommands(canvasRefPerm);
 
@@ -37,6 +37,8 @@ export default function ImageEditor({
                 drawingCommands={drawCommands}
                 redoLastUndoneCommand={redoLastUndoneCommand}
                 undoneDrawCommands={undoneDrawCommands}
+                selectedStrokeItem={selectedStrokeItem}
+                setSelectedStrokeItem={setSelectedStrokeItem}
             />
             <ImageAndCanvases 
                 imageData={imageData} 

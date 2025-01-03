@@ -16,10 +16,17 @@ const strokeItems: StrokeItem[] = [
     {strokeName: 'large', strokeWidthPx: 4},
 ]
 
-export default function StrokeWidthSelector() {
+export default function StrokeWidthSelector(
+    {
+        selectedStrokeItem,
+        setSelectedStrokeItem
+    }:{
+        selectedStrokeItem: StrokeItem,
+        setSelectedStrokeItem: (strokeItem: StrokeItem) => void
+    }
+) {
 
     const [strokeMenuOpen, setStrokeMenuOpen] = useState<boolean>(false)
-    const [selectedStrokeItem, setSelectedStrokeItem] = useState<StrokeItem>({strokeName: 'small', strokeWidthPx: 2})
 
     const openMenu = () => {
         setStrokeMenuOpen(true)
