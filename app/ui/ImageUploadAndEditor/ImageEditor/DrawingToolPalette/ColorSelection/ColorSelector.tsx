@@ -22,7 +22,7 @@ export default function ColorSelector({
     setColorSelectorOpen(false);
   };
 
-  const colorPickerRef = useClickOutsideDiv(() => closeColorSelector());
+  const colorPickerRef = useClickOutsideDiv(closeColorSelector);
 
   if (!colorSelectorOpen) {
     return (
