@@ -34,7 +34,13 @@ export default function StrokeWidthSelector({
   };
 
   if (!strokeMenuOpen) {
-    return <SelectedStrokeButton openMenu={openMenu} />;
+    return (
+      <SelectedStrokeButton
+        openMenu={openMenu}
+        selectedStrokeItem={selectedStrokeItem}
+        strokeItems={strokeItems}
+      />
+    );
   } else {
     return (
       <StrokeMenu
