@@ -18,7 +18,8 @@ export const mouseUpRectangleTool = (
   canvasWidth: number,
   canvasHeight: number,
   addDrawingCommand: (command: DrawingCommand) => void,
-  selectedStrokeItem: StrokeItem
+  selectedStrokeItem: StrokeItem,
+  selectedColor: string
 ) => {
   if (startingCoords && lastCoords) {
     // TODO: find a more seamless way to do this.  drawingCommandFactory or whatever
@@ -29,6 +30,7 @@ export const mouseUpRectangleTool = (
       endX: lastCoords.lastX,
       endY: lastCoords.lastY,
       strokeWidth: selectedStrokeItem.strokeWidthPx,
+      color: selectedColor,
     };
 
     const objectBoundaries = getObjectBoundaries({
@@ -59,7 +61,8 @@ export const mouseMoveRectangleTool = (
   lastCoordsSetter: (coords: LastCoords) => void,
   canvasWidth: number,
   canvasHeight: number,
-  selectedStrokeItem: StrokeItem
+  selectedStrokeItem: StrokeItem,
+  selectedColor: string
 ) => {
   if (painting && startingCoords) {
     lastCoordsSetter({ lastX: currentX, lastY: currentY });
@@ -67,6 +70,7 @@ export const mouseMoveRectangleTool = (
 
     const width = currentX - startingCoords.startX;
     const height = currentY - startingCoords.startY;
+    contextTemp.strokeStyle = selectedColor;
     contextTemp.lineWidth = selectedStrokeItem.strokeWidthPx;
     contextTemp.strokeRect(
       startingCoords.startX,

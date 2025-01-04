@@ -19,7 +19,8 @@ export const mouseUpRadiusedCircleTool = (
   canvasWidth: number,
   canvasHeight: number,
   addDrawingCommand: (command: DrawingCommand) => void,
-  selectedStrokeItem: StrokeItem
+  selectedStrokeItem: StrokeItem,
+  selectedColor: string
 ) => {
   if (startingCoords && lastCoords) {
     paintingSetter(false);
@@ -36,6 +37,7 @@ export const mouseUpRadiusedCircleTool = (
       startY: startingCoords.startY,
       radius: radius,
       strokeWidth: selectedStrokeItem.strokeWidthPx,
+      color: selectedColor,
     };
 
     const objectBoundaries = getObjectBoundaries({
@@ -64,10 +66,12 @@ export const mouseMoveRadiusedCircleTool = (
   lastCoordsSetter: (coords: LastCoords) => void,
   canvasWidth: number,
   canvasHeight: number,
-  selectedStrokeItem: StrokeItem
+  selectedStrokeItem: StrokeItem,
+  selectedColor: string
 ) => {
   if (painting && startingCoords) {
     lastCoordsSetter({ lastX: currentX, lastY: currentY });
+    contextTemp.strokeStyle = selectedColor;
     contextTemp.clearRect(0, 0, canvasWidth, canvasHeight);
     contextTemp.lineWidth = selectedStrokeItem.strokeWidthPx;
     contextTemp.beginPath();

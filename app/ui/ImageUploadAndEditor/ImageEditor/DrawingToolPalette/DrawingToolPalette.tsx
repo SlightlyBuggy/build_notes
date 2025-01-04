@@ -18,6 +18,8 @@ export default function DrawingToolPalette({
   undoneDrawCommands,
   selectedStrokeItem,
   setSelectedStrokeItem,
+  selectedColor,
+  setSelectedColor,
 }: {
   activeTool: DrawingTool | null;
   handleToolClick: (tool: DrawingTool) => void;
@@ -27,6 +29,8 @@ export default function DrawingToolPalette({
   undoneDrawCommands: DrawingCommand[];
   selectedStrokeItem: StrokeItem;
   setSelectedStrokeItem: (strokeItem: StrokeItem) => void;
+  selectedColor: string;
+  setSelectedColor: (color: string) => void;
 }) {
   return (
     <div className="flex flex-row p-5 select-none max-h-20 relative">
@@ -63,7 +67,10 @@ export default function DrawingToolPalette({
         selectedStrokeItem={selectedStrokeItem}
         setSelectedStrokeItem={setSelectedStrokeItem}
       />
-      <ColorSelector />
+      <ColorSelector
+        selectedColor={selectedColor}
+        setSelectedColor={setSelectedColor}
+      />
       <div className="p-3 flex items-center">
         <div className="h-8 w-0.5 bg-slate-500"></div>
       </div>

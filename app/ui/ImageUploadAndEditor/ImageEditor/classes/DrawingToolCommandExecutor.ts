@@ -27,8 +27,13 @@ abstract class DrawingToolCommandExecutor {
 
 class LineToolCommandExecutor extends DrawingToolCommandExecutor {
   protected _executeCommand(): void {
-    if (this.command.endX && this.command.endY && this.command.strokeWidth) {
-      this.drawingContext.strokeStyle = '#000';
+    if (
+      this.command.endX &&
+      this.command.endY &&
+      this.command.strokeWidth &&
+      this.command.color
+    ) {
+      this.drawingContext.strokeStyle = this.command.color;
       this.drawingContext.lineWidth = this.command.strokeWidth;
       this.drawingContext.beginPath();
       this.drawingContext.moveTo(this.command.startX, this.command.startY);
@@ -44,8 +49,8 @@ class LineToolCommandExecutor extends DrawingToolCommandExecutor {
 
 class RadiusedCircleCommandExecutor extends DrawingToolCommandExecutor {
   protected _executeCommand(): void {
-    if (this.command.radius && this.command.strokeWidth) {
-      this.drawingContext.strokeStyle = '#000';
+    if (this.command.radius && this.command.strokeWidth && this.command.color) {
+      this.drawingContext.strokeStyle = this.command.color;
       this.drawingContext.lineWidth = this.command.strokeWidth;
       this.drawingContext.beginPath();
       this.drawingContext.arc(
@@ -66,8 +71,13 @@ class RadiusedCircleCommandExecutor extends DrawingToolCommandExecutor {
 
 class RectangleToolCommandExecutor extends DrawingToolCommandExecutor {
   protected _executeCommand(): void {
-    if (this.command.endX && this.command.endY && this.command.strokeWidth) {
-      this.drawingContext.strokeStyle = '#000';
+    if (
+      this.command.endX &&
+      this.command.endY &&
+      this.command.strokeWidth &&
+      this.command.color
+    ) {
+      this.drawingContext.strokeStyle = this.command.color;
       this.drawingContext.lineWidth = this.command.strokeWidth;
       const width = this.command.endX - this.command.startX;
       const height = this.command.endY - this.command.startY;

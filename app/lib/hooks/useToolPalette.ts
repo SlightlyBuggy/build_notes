@@ -11,6 +11,8 @@ export const useToolPalette = () => {
     strokeWidthPx: 2,
   });
 
+  const [selectedColor, setSelectedColor] = useState<string>('#000000');
+
   const handleToolClick = (tool: DrawingTool) => {
     // only switch tools if we've clicked a different oneß
     if (tool === activeTool) {
@@ -25,5 +27,7 @@ export const useToolPalette = () => {
     activeTool,
     selectedStrokeItem,
     setSelectedStrokeItem,
+    selectedColor,
+    setSelectedColor,
   };
 };

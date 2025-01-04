@@ -20,6 +20,7 @@ export const useDrawingTool = ({
   addDrawingCommand,
   drawCommandsSetter,
   selectedStrokeItem,
+  selectedColor,
 }: {
   canvasRefPerm: React.RefObject<HTMLCanvasElement>;
   canvasRefTemp: React.RefObject<HTMLCanvasElement>;
@@ -30,6 +31,7 @@ export const useDrawingTool = ({
   addDrawingCommand: (command: DrawingCommand) => void;
   drawCommandsSetter: (commands: DrawingCommand[]) => void;
   selectedStrokeItem: StrokeItem;
+  selectedColor: string;
 }) => {
   const [startingCoords, setStartingCoords] = useState<StartingCoords | null>(
     null
@@ -99,6 +101,7 @@ export const useDrawingTool = ({
           handleDragOnCanvas: handleDragOnCanvas,
           unSelectOnCanvas: unSelectOnCanvas,
           selectedStrokeItem: selectedStrokeItem,
+          selectedColor: selectedColor,
         };
 
         const coordinator: DrawingToolEventListenerCoordinator =

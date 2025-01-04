@@ -38,4 +38,5 @@ export type DrawingCommand = {
   selected?: boolean;
   objectBoundaries?: ObjectBoundaries; // TODO: make mandatory after implementations all complete
   strokeWidth?: number;
+  color?: string;
 };

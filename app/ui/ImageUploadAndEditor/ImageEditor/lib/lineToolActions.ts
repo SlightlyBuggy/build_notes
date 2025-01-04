@@ -18,7 +18,8 @@ export const mouseUpLineTool = (
   canvasWidth: number,
   canvasHeight: number,
   addDrawingCommand: (command: DrawingCommand) => void,
-  selectedStrokeItem: StrokeItem
+  selectedStrokeItem: StrokeItem,
+  selectedColor: string
 ) => {
   if (startingCoords && lastCoords) {
     // TODO: find a more seamless way to do this.  drawingCommandFactory or whatever
@@ -29,6 +30,7 @@ export const mouseUpLineTool = (
       endX: lastCoords.lastX,
       endY: lastCoords.lastY,
       strokeWidth: selectedStrokeItem.strokeWidthPx,
+      color: selectedColor,
     };
 
     const objectBoundaries = getObjectBoundaries({
@@ -59,11 +61,13 @@ export const mouseMoveLineTool = (
   lastCoordsSetter: (coords: LastCoords) => void,
   canvasWidth: number,
   canvasHeight: number,
-  selectedStrokeItem: StrokeItem
+  selectedStrokeItem: StrokeItem,
+  selectedColor: string
 ) => {
   if (painting && startingCoords) {
     lastCoordsSetter({ lastX: currentX, lastY: currentY });
     clearCanvas(contextTemp, canvasWidth, canvasHeight);
+    contextTemp.strokeStyle = selectedColor;
     contextTemp.beginPath();
     contextTemp.moveTo(startingCoords.startX, startingCoords.startY);
     contextTemp.lineTo(currentX, currentY);

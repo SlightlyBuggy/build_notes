@@ -1,13 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import SelectedColorButton from './SelectedColorButton';
+import { HexColorPicker } from 'react-colorful';
+import { useClickOutsideDiv } from '@/app/lib/hooks/useClickOutside';
 
-export default function ColorSelector() {
+export default function ColorSelector({
+  selectedColor,
+  setSelectedColor,
+}: {
+  selectedColor: string;
+  setSelectedColor: (color: string) => void;
+}) {
   const [colorSelectorOpen, setColorSelectorOpen] = useState<boolean>(false);
-
-  // TODO: color selection will need to be moved into useToolPalette hook
-  const [selectedColor, setSelectedColor] = useState<string>('#000000');
 
   const openColorSelector = () => {
     setColorSelectorOpen(true);
@@ -17,14 +22,20 @@ export default function ColorSelector() {
     setColorSelectorOpen(false);
   };
 
+  const colorPickerRef = useClickOutsideDiv(() => closeColorSelector());
+
   if (!colorSelectorOpen) {
     return (
       <SelectedColorButton
-        openColorSelector={openColorSelector}
+        openColorSelector={() => openColorSelector()}
         selectedColor={selectedColor}
       />
     );
   } else {
-    return <div>Open</div>;
+    return (
+      <div className="relative z-10" ref={colorPickerRef}>
+        <HexColorPicker color={selectedColor} onChange={setSelectedColor} />
+      </div>
+    );
   }
 }
