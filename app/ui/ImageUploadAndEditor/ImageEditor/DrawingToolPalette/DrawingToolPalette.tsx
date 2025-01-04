@@ -7,6 +7,7 @@ import { DrawingCommand } from '@/app/lib/util/types';
 import StrokeWidthSelector, {
   StrokeItem,
 } from './StrokeSelection/StrokeWidthSelector';
+import ColorSelector from './ColorSelection/ColorSelector';
 
 export default function DrawingToolPalette({
   activeTool,
@@ -62,6 +63,7 @@ export default function DrawingToolPalette({
         selectedStrokeItem={selectedStrokeItem}
         setSelectedStrokeItem={setSelectedStrokeItem}
       />
+      <ColorSelector />
       <div className="p-3 flex items-center">
         <div className="h-8 w-0.5 bg-slate-500"></div>
       </div>

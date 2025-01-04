@@ -20,13 +20,14 @@ export default function SelectedStrokeButton({
           }}
         >
           {strokeItems.map((strokeItem, idx) => {
-            const heightClass = `h-[${strokeItem.strokeWidthPx}px] w-5`;
+            const heightClass = `h-[${strokeItem.strokeWidthPx}px]`;
             const thisItemIsActive =
               strokeItem.strokeWidthPx == selectedStrokeItem.strokeWidthPx;
             return (
               <div
                 className={clsx(
                   heightClass,
+                  'w-5',
                   thisItemIsActive && 'bg-green-500',
                   !thisItemIsActive && 'bg-black'
                 )}
