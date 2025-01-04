@@ -7,7 +7,7 @@ import { distanceBetweenPoints } from '@/app/lib/util/formulae';
 import { DrawingTool } from '@/app/lib/util/enums';
 import { clearCanvas } from '@/app/lib/util/image';
 import { getObjectBoundaries } from '@/app/lib/util/selectorDrawingTool';
-import { StrokeItem } from '../DrawingToolPalette/StrokeWidthSelector';
+import { StrokeItem } from '../DrawingToolPalette/StrokeSelection/StrokeWidthSelector';
 
 export const mouseUpRadiusedCircleTool = (
   contextTemp: CanvasRenderingContext2D,

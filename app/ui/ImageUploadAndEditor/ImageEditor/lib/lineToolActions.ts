@@ -6,7 +6,7 @@ import {
 } from '@/app/lib/util/types';
 import { clearCanvas } from '@/app/lib/util/image';
 import { getObjectBoundaries } from '@/app/lib/util/selectorDrawingTool';
-import { StrokeItem } from '../DrawingToolPalette/StrokeWidthSelector';
+import { StrokeItem } from '../DrawingToolPalette/StrokeSelection/StrokeWidthSelector';
 // TODO: find  way to reduce the number of arguments for all action functinos
 export const mouseUpLineTool = (
   contextTemp: CanvasRenderingContext2D,

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { StrokeItem } from '../StrokeWidthSelector';
+import { StrokeItem } from './StrokeWidthSelector';
 
 export default function SelectedStrokeButton({
   openMenu,

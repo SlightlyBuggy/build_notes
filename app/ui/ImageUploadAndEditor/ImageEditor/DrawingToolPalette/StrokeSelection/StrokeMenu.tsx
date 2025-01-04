@@ -1,4 +1,4 @@
-import { StrokeItem } from '../StrokeWidthSelector';
+import { StrokeItem } from './StrokeWidthSelector';
 import StrokeMenuItem from './StrokeMenuItem';
 
 export default function StrokeMenu({

@@ -2,8 +2,8 @@
 
 import clsx from 'clsx';
 import { useState } from 'react';
-import SelectedStrokeButton from './StrokeSelection/SelectedStrokeButton';
-import StrokeMenu from './StrokeSelection/StrokeMenu';
+import SelectedStrokeButton from './SelectedStrokeButton';
+import StrokeMenu from './StrokeMenu';
 
 export interface StrokeItem {
   strokeName: string;

@@ -8,7 +8,7 @@ import {
 } from '@/app/ui/ImageUploadAndEditor/ImageEditor/classes/DrawingToolEventListenerCoordinator';
 import { useTextInput } from './useTextInput';
 import { useSelectionOnCanvas } from './useSelectionOnCanvas';
-import { StrokeItem } from '@/app/ui/ImageUploadAndEditor/ImageEditor/DrawingToolPalette/StrokeWidthSelector';
+import { StrokeItem } from '@/app/ui/ImageUploadAndEditor/ImageEditor/DrawingToolPalette/StrokeSelection/StrokeWidthSelector';
 
 export const useDrawingTool = ({
   canvasRefPerm,

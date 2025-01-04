@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { DrawingTool } from '../util/enums';
-import { StrokeItem } from '@/app/ui/ImageUploadAndEditor/ImageEditor/DrawingToolPalette/StrokeWidthSelector';
+import { StrokeItem } from '@/app/ui/ImageUploadAndEditor/ImageEditor/DrawingToolPalette/StrokeSelection/StrokeWidthSelector';
 
 export const useToolPalette = () => {
   const [activeTool, setActiveTool] = useState<DrawingTool>(

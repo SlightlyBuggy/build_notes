@@ -4,7 +4,9 @@ import ToolButton from './ToolButton';
 import { DrawingTool } from '@/app/lib/util/enums';
 import UndoButton from './UndoButton';
 import { DrawingCommand } from '@/app/lib/util/types';
-import StrokeWidthSelector, { StrokeItem } from './StrokeWidthSelector';
+import StrokeWidthSelector, {
+  StrokeItem,
+} from './StrokeSelection/StrokeWidthSelector';
 
 export default function DrawingToolPalette({
   activeTool,

@@ -26,7 +26,7 @@ import {
   mouseMoveRectangleTool,
   mouseUpRectangleTool,
 } from '../lib/rectangleToolActions';
-import { StrokeItem } from '../DrawingToolPalette/StrokeWidthSelector';
+import { StrokeItem } from '../DrawingToolPalette/StrokeSelection/StrokeWidthSelector';
 
 export interface DrawingToolEventListenerCoordinatorArgs {
   drawingTool: DrawingTool;
