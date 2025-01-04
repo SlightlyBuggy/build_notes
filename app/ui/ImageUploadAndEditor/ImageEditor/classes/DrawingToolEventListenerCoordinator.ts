@@ -151,7 +151,8 @@ class LineToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
       currentX,
       currentY,
       this.paintingSetter,
-      this.startingCoordsSetter
+      this.startingCoordsSetter,
+      this.lastCoordsSetter
     );
   };
 
@@ -241,7 +242,8 @@ class RadiusedCircleToolListenerCoordinator extends DrawingToolEventListenerCoor
       currentX,
       currentY,
       this.paintingSetter,
-      this.startingCoordsSetter
+      this.startingCoordsSetter,
+      this.lastCoordsSetter
     );
   };
 
@@ -330,7 +332,8 @@ class RectangleToolListenerCoordinator extends DrawingToolEventListenerCoordinat
       currentX,
       currentY,
       this.paintingSetter,
-      this.startingCoordsSetter
+      this.startingCoordsSetter,
+      this.lastCoordsSetter
     );
   };
 

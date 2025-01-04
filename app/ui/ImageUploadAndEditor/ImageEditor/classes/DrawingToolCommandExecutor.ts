@@ -33,12 +33,21 @@ class LineToolCommandExecutor extends DrawingToolCommandExecutor {
       this.command.strokeWidth &&
       this.command.color
     ) {
-      this.drawingContext.strokeStyle = this.command.color;
-      this.drawingContext.lineWidth = this.command.strokeWidth;
-      this.drawingContext.beginPath();
-      this.drawingContext.moveTo(this.command.startX, this.command.startY);
-      this.drawingContext.lineTo(this.command.endX, this.command.endY);
-      this.drawingContext.stroke();
+      // its possible someone has just clicked but not actually drawn a line.  if so, ignore that
+      // TODO: find a better way to accomplish this filtering, preferrably before the command gets into the command queue
+      if (
+        !(
+          this.command.startX == this.command.endX &&
+          this.command.startY == this.command.endY
+        )
+      ) {
+        this.drawingContext.strokeStyle = this.command.color;
+        this.drawingContext.lineWidth = this.command.strokeWidth;
+        this.drawingContext.beginPath();
+        this.drawingContext.moveTo(this.command.startX, this.command.startY);
+        this.drawingContext.lineTo(this.command.endX, this.command.endY);
+        this.drawingContext.stroke();
+      }
     } else {
       throw new Error(
         `Missing required values in command for LineToolCommandExecutor.  Provided command values: ${JSON.stringify(this.command)}`
@@ -49,17 +58,26 @@ class LineToolCommandExecutor extends DrawingToolCommandExecutor {
 
 class RadiusedCircleCommandExecutor extends DrawingToolCommandExecutor {
   protected _executeCommand(): void {
-    if (this.command.radius && this.command.strokeWidth && this.command.color) {
-      this.drawingContext.strokeStyle = this.command.color;
-      this.drawingContext.lineWidth = this.command.strokeWidth;
-      this.drawingContext.beginPath();
-      this.drawingContext.arc(
-        this.command.startX,
-        this.command.startY,
-        this.command.radius,
-        0,
-        2 * Math.PI
-      );
+    if (
+      this.command.strokeWidth &&
+      this.command.color &&
+      this.command.radius != undefined
+    ) {
+      // if radius is 0, then the user may have clicked without dragging.  ignore
+      // TODO: find a better way to accomplish this filtering, preferrably before the command gets into the command queue
+      if (this.command.radius) {
+        console.log(`Radius: ${this.command.radius}`);
+        this.drawingContext.strokeStyle = this.command.color;
+        this.drawingContext.lineWidth = this.command.strokeWidth;
+        this.drawingContext.beginPath();
+        this.drawingContext.arc(
+          this.command.startX,
+          this.command.startY,
+          this.command.radius,
+          0,
+          2 * Math.PI
+        );
+      }
       this.drawingContext.stroke();
     } else {
       throw new Error(
@@ -77,16 +95,25 @@ class RectangleToolCommandExecutor extends DrawingToolCommandExecutor {
       this.command.strokeWidth &&
       this.command.color
     ) {
-      this.drawingContext.strokeStyle = this.command.color;
-      this.drawingContext.lineWidth = this.command.strokeWidth;
-      const width = this.command.endX - this.command.startX;
-      const height = this.command.endY - this.command.startY;
-      this.drawingContext.strokeRect(
-        this.command.startX,
-        this.command.startY,
-        width,
-        height
-      );
+      // its possible someone has just clicked but not actually drawn a rectangle.  if so, ignore that
+      // TODO: find a better way to accomplish this filtering, preferrably before the command gets into the command queue
+      if (
+        !(
+          this.command.startX == this.command.endX &&
+          this.command.startY == this.command.endY
+        )
+      ) {
+        this.drawingContext.strokeStyle = this.command.color;
+        this.drawingContext.lineWidth = this.command.strokeWidth;
+        const width = this.command.endX - this.command.startX;
+        const height = this.command.endY - this.command.startY;
+        this.drawingContext.strokeRect(
+          this.command.startX,
+          this.command.startY,
+          width,
+          height
+        );
+      }
     } else {
       throw new Error(
         `Missing required values in command for LineToolCommandExecutor.  Provided command values: ${JSON.stringify(this.command)}`

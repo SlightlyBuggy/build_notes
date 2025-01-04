@@ -80,8 +80,10 @@ export const mouseDownLineTool = (
   currentX: number,
   currentY: number,
   paintingSetter: (paintingVal: boolean) => void,
-  startingCoordsSetter: (coords: StartingCoords) => void
+  startingCoordsSetter: (coords: StartingCoords) => void,
+  lastCoordsSetter: (lastCoords: LastCoords) => void
 ) => {
   startingCoordsSetter({ startX: currentX, startY: currentY });
+  lastCoordsSetter({ lastX: currentX, lastY: currentY });
   paintingSetter(true);
 };

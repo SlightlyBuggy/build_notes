@@ -24,7 +24,7 @@ export const getObjectBoundaries = (
         return boundaries;
       }
     case DrawingTool.RadiusedCircle:
-      if (inputs.radius) {
+      if (inputs.radius != undefined) {
         const boundaries = getRadiusedCircleBoundaries(
           inputs.startX,
           inputs.startY,
@@ -52,18 +52,6 @@ const getBoundariesFromStartAndEndCoords = (
 
   const { newLeftX, newRightX, newTopY, newBottomY } =
     resizeBounadiresToRespectMinimums(leftX, rightX, topY, bottomY);
-
-  if (leftX != newLeftX) {
-    console.log(
-      `Resized X dimensions (min, max) ${leftX}, ${rightX} -> ${newLeftX}, ${newRightX}`
-    );
-  }
-
-  if (topY != newTopY) {
-    console.log(
-      `Resized Y dimensions (min, max) ${topY}, ${bottomY} -> ${newTopY}, ${newBottomY}`
-    );
-  }
 
   return {
     leftX: newLeftX,
