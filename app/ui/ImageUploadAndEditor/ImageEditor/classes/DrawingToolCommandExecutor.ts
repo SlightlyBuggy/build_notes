@@ -1,5 +1,5 @@
 import { DrawingTool } from '@/app/lib/util/enums';
-import { DrawingCommand } from '@/app/lib/util/types';
+import { StyledDrawingCommand } from '@/app/lib/util/types';
 
 abstract class DrawingToolCommandExecutor {
   public executeCommand(): void {
@@ -14,10 +14,10 @@ abstract class DrawingToolCommandExecutor {
 
   protected abstract _executeCommand(): void;
   protected drawingContext: CanvasRenderingContext2D;
-  protected command: DrawingCommand;
+  protected command: StyledDrawingCommand;
 
   constructor(
-    command: DrawingCommand,
+    command: StyledDrawingCommand,
     drawingContext: CanvasRenderingContext2D
   ) {
     this.command = command;
@@ -66,7 +66,6 @@ class RadiusedCircleCommandExecutor extends DrawingToolCommandExecutor {
       // if radius is 0, then the user may have clicked without dragging.  ignore
       // TODO: find a better way to accomplish this filtering, preferrably before the command gets into the command queue
       if (this.command.radius) {
-        console.log(`Radius: ${this.command.radius}`);
         this.drawingContext.strokeStyle = this.command.color;
         this.drawingContext.lineWidth = this.command.strokeWidth;
         this.drawingContext.beginPath();
@@ -136,7 +135,7 @@ class TextCommandExecutor extends DrawingToolCommandExecutor {
 }
 
 export const drawCommandExecutorFactory = (
-  command: DrawingCommand,
+  command: StyledDrawingCommand,
   permDrawingContext: CanvasRenderingContext2D
 ): DrawingToolCommandExecutor => {
   switch (command.drawingTool) {

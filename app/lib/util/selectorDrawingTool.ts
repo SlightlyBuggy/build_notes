@@ -1,6 +1,6 @@
 import { DrawingTool } from './enums';
 import {
-  DrawingCommand,
+  StyledDrawingCommand,
   GetObjectBoundariesInputs,
   ObjectBoundaries,
 } from './types';
@@ -122,7 +122,7 @@ const resizeBoundaryToRespectMinimuims = (
 };
 
 export const selectionIsInObject = (
-  command: DrawingCommand,
+  command: StyledDrawingCommand,
   posX: number,
   posY: number
 ) => {

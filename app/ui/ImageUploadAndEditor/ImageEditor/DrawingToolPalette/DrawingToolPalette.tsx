@@ -3,7 +3,7 @@ import RedoButton from './RedoButton';
 import ToolButton from './ToolButton';
 import { DrawingTool } from '@/app/lib/util/enums';
 import UndoButton from './UndoButton';
-import { DrawingCommand } from '@/app/lib/util/types';
+import { StyledDrawingCommand } from '@/app/lib/util/types';
 import StrokeWidthSelector, {
   StrokeItem,
 } from './StrokeSelection/StrokeWidthSelector';
@@ -24,9 +24,9 @@ export default function DrawingToolPalette({
   activeTool: DrawingTool | null;
   handleToolClick: (tool: DrawingTool) => void;
   undoLastDrawingCommand: () => void;
-  drawingCommands: DrawingCommand[];
+  drawingCommands: StyledDrawingCommand[];
   redoLastUndoneCommand: () => void;
-  undoneDrawCommands: DrawingCommand[];
+  undoneDrawCommands: StyledDrawingCommand[];
   selectedStrokeItem: StrokeItem;
   setSelectedStrokeItem: (strokeItem: StrokeItem) => void;
   selectedColor: string;

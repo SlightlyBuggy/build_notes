@@ -1,4 +1,4 @@
-import { DrawingCommand } from '@/app/lib/util/types';
+import { StyledDrawingCommand } from '@/app/lib/util/types';
 import { TextInputState } from '../TextInput';
 import { DrawingTool } from '@/app/lib/util/enums';
 import { getObjectBoundaries } from '@/app/lib/util/selectorDrawingTool';
@@ -8,7 +8,7 @@ export const mouesDownTextTool = (
   currentY: number,
   textInputState: TextInputState,
   textInputStateSetter: (inputState: TextInputState) => void,
-  addDrawingCommand: (command: DrawingCommand) => void
+  addDrawingCommand: (command: StyledDrawingCommand) => void
 ) => {
   if (textInputState.active) {
     if (textInputState.value) {
@@ -18,7 +18,7 @@ export const mouesDownTextTool = (
       // the text input (tried that, shifted too much), so is that the height of the font itself?
       // if so we need to understand the height between the border of the input and the texts element itself
       // or maybe we can get that coordinate directly.  see command in TextInput for more info
-      const command: DrawingCommand = {
+      const command: StyledDrawingCommand = {
         drawingTool: DrawingTool.Text,
         startX: textInputState.posX,
         startY: textInputState.posY + 23,

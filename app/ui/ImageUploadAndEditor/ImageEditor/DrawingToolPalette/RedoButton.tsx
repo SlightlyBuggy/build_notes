@@ -1,4 +1,4 @@
-import { DrawingCommand } from '@/app/lib/util/types';
+import { StyledDrawingCommand } from '@/app/lib/util/types';
 import { ArrowUturnRightIcon } from '@heroicons/react/20/solid';
 import clsx from 'clsx';
 
@@ -7,7 +7,7 @@ export default function RedoButton({
   undoneDrawCommands,
 }: {
   redoLastUndoneCommand: () => void;
-  undoneDrawCommands: DrawingCommand[];
+  undoneDrawCommands: StyledDrawingCommand[];
 }) {
   return (
     <div

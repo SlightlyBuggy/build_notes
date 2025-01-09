@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { DrawingCommand } from '../util/types';
+import { StyledDrawingCommand } from '../util/types';
 import { selectionIsInObject } from '../util/selectorDrawingTool';
 
 export const useSelectionOnCanvas = ({
   drawCommands,
   drawCommandsSetter,
 }: {
-  drawCommands: DrawingCommand[];
-  drawCommandsSetter: (commands: DrawingCommand[]) => void;
+  drawCommands: StyledDrawingCommand[];
+  drawCommandsSetter: (commands: StyledDrawingCommand[]) => void;
 }) => {
   const [mouseLastCoords, setMouseLastCoords] = useState<{
     lastX: number;

@@ -1,4 +1,4 @@
-import { DrawingCommand } from '@/app/lib/util/types';
+import { StyledDrawingCommand } from '@/app/lib/util/types';
 import { ArrowUturnLeftIcon } from '@heroicons/react/20/solid';
 import clsx from 'clsx';
 // TODO: support undo hotkey
@@ -7,7 +7,7 @@ export default function UndoButton({
   drawingCommands,
 }: {
   undoLastDrawingCommand: () => void;
-  drawingCommands: DrawingCommand[];
+  drawingCommands: StyledDrawingCommand[];
 }) {
   // TODO: cursor is pointer only when clickable
   return (

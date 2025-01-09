@@ -1,5 +1,5 @@
 import {
-  DrawingCommand,
+  UnstyledDrawingCommand,
   LastCoords,
   StartingCoords,
 } from '@/app/lib/util/types';
@@ -31,15 +31,11 @@ import { StrokeItem } from '../DrawingToolPalette/StrokeSelection/StrokeWidthSel
 export interface DrawingToolEventListenerCoordinatorArgs {
   drawingTool: DrawingTool;
   canvasPerm: HTMLCanvasElement;
-  contextPerm: CanvasRenderingContext2D;
-  contextTemp: CanvasRenderingContext2D;
   rect: DOMRect;
   startingCoords: StartingCoords | null;
   lastCoords: LastCoords | null;
-  canvasWidth: number;
-  canvasHeight: number;
   painting: boolean;
-  addDrawingCommand: (command: DrawingCommand) => void;
+  addDrawingCommand: (command: UnstyledDrawingCommand) => void;
   paintingSetter: (paintingVal: boolean) => void;
   startingCoordsSetter: (coords: StartingCoords | null) => void;
   lastCoordsSetter: (coords: LastCoords | null) => void;
@@ -49,9 +45,7 @@ export interface DrawingToolEventListenerCoordinatorArgs {
   dragInProgress: boolean;
   handleDragOnCanvas: (posX: number, posY: number) => void;
   unSelectOnCanvas: () => void;
-  selectedStrokeItem: StrokeItem;
-  selectedColor: string;
-  tempDrawCommandSetter: (command: DrawingCommand) => void;
+  tempDrawCommandSetter: (command: UnstyledDrawingCommand) => void;
 }
 
 interface EventTypeWithListener {
@@ -67,9 +61,8 @@ enum EventTypes {
 
 export abstract class DrawingToolEventListenerCoordinator {
   constructor(args: DrawingToolEventListenerCoordinatorArgs) {
-    const { canvasPerm, contextPerm, rect, addDrawingCommand } = args;
+    const { canvasPerm, rect, addDrawingCommand } = args;
     this.canvasPerm = canvasPerm;
-    this.contextPerm = contextPerm;
     this.rect = rect;
     this.addDrawingCommand = addDrawingCommand;
   }
@@ -93,9 +86,8 @@ export abstract class DrawingToolEventListenerCoordinator {
   protected eventsWithHandlers: EventTypeWithListener[] = [];
 
   protected canvasPerm: HTMLCanvasElement;
-  protected contextPerm: CanvasRenderingContext2D;
   protected rect: DOMRect;
-  protected addDrawingCommand: (command: DrawingCommand) => void;
+  protected addDrawingCommand: (command: UnstyledDrawingCommand) => void;
 
   protected abstract createEventListenersWithHandlers: () => void;
 }
@@ -104,34 +96,24 @@ class LineToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
   constructor(args: DrawingToolEventListenerCoordinatorArgs) {
     super(args);
 
-    this.contextTemp = args.contextTemp;
     this.startingCoords = args.startingCoords;
     this.lastCoords = args.lastCoords;
-    this.canvasWidth = args.canvasWidth;
-    this.canvasHeight = args.canvasHeight;
     this.painting = args.painting;
     this.paintingSetter = args.paintingSetter;
     this.startingCoordsSetter = args.startingCoordsSetter;
     this.lastCoordsSetter = args.lastCoordsSetter;
-    this.selectedStrokeItem = args.selectedStrokeItem;
-    this.selectedColor = args.selectedColor;
     this.tempDrawCommandSetter = args.tempDrawCommandSetter;
 
     this.createEventListenersWithHandlers();
   }
 
-  private contextTemp: CanvasRenderingContext2D;
   private startingCoords: StartingCoords | null;
   private lastCoords: LastCoords | null;
-  private canvasWidth: number;
-  private canvasHeight: number;
   private painting: boolean;
   private paintingSetter: (paintingVal: boolean) => void;
   private startingCoordsSetter: (coords: StartingCoords | null) => void;
   private lastCoordsSetter: (coords: LastCoords | null) => void;
-  private selectedStrokeItem: StrokeItem;
-  private selectedColor: string;
-  private tempDrawCommandSetter: (command: DrawingCommand) => void;
+  private tempDrawCommandSetter: (command: UnstyledDrawingCommand) => void;
 
   protected createEventListenersWithHandlers = () => {
     this.eventsWithHandlers.push({
@@ -161,17 +143,12 @@ class LineToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
 
   private mouseUpListener = (ev: MouseEvent) => {
     mouseUpLineTool(
-      this.contextTemp,
       this.startingCoords,
       this.lastCoords,
       this.paintingSetter,
       this.startingCoordsSetter,
       this.lastCoordsSetter,
-      this.canvasWidth,
-      this.canvasHeight,
-      this.addDrawingCommand,
-      this.selectedStrokeItem,
-      this.selectedColor
+      this.addDrawingCommand
     );
   };
 
@@ -183,8 +160,6 @@ class LineToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
       this.painting,
       this.startingCoords,
       this.lastCoordsSetter,
-      this.selectedStrokeItem,
-      this.selectedColor,
       this.tempDrawCommandSetter
     );
   };
@@ -194,34 +169,24 @@ class RadiusedCircleToolListenerCoordinator extends DrawingToolEventListenerCoor
   constructor(args: DrawingToolEventListenerCoordinatorArgs) {
     super(args);
 
-    this.contextTemp = args.contextTemp;
     this.startingCoords = args.startingCoords;
     this.lastCoords = args.lastCoords;
-    this.canvasWidth = args.canvasWidth;
-    this.canvasHeight = args.canvasHeight;
     this.painting = args.painting;
     this.paintingSetter = args.paintingSetter;
     this.startingCoordsSetter = args.startingCoordsSetter;
     this.lastCoordsSetter = args.lastCoordsSetter;
-    this.selectedStrokeItem = args.selectedStrokeItem;
-    this.selectedColor = args.selectedColor;
     this.tempDrawCommandSetter = args.tempDrawCommandSetter;
 
     this.createEventListenersWithHandlers();
   }
 
-  private contextTemp: CanvasRenderingContext2D;
   private startingCoords: StartingCoords | null;
   private lastCoords: LastCoords | null;
-  private canvasWidth: number;
-  private canvasHeight: number;
   private painting: boolean;
   private paintingSetter: (paintingVal: boolean) => void;
   private startingCoordsSetter: (coords: StartingCoords | null) => void;
   private lastCoordsSetter: (coords: LastCoords | null) => void;
-  private selectedStrokeItem: StrokeItem;
-  private selectedColor: string;
-  tempDrawCommandSetter: (command: DrawingCommand) => void;
+  tempDrawCommandSetter: (command: UnstyledDrawingCommand) => void;
 
   protected createEventListenersWithHandlers = () => {
     this.eventsWithHandlers.push({
@@ -252,17 +217,12 @@ class RadiusedCircleToolListenerCoordinator extends DrawingToolEventListenerCoor
 
   private mouseUpListener = (ev: MouseEvent) => {
     mouseUpRadiusedCircleTool(
-      this.contextTemp,
       this.startingCoords,
       this.lastCoords,
       this.paintingSetter,
       this.startingCoordsSetter,
       this.lastCoordsSetter,
-      this.canvasWidth,
-      this.canvasHeight,
-      this.addDrawingCommand,
-      this.selectedStrokeItem,
-      this.selectedColor
+      this.addDrawingCommand
     );
   };
 
@@ -274,8 +234,6 @@ class RadiusedCircleToolListenerCoordinator extends DrawingToolEventListenerCoor
       this.painting,
       this.startingCoords,
       this.lastCoordsSetter,
-      this.selectedStrokeItem,
-      this.selectedColor,
       this.tempDrawCommandSetter
     );
   };
@@ -285,34 +243,24 @@ class RectangleToolListenerCoordinator extends DrawingToolEventListenerCoordinat
   constructor(args: DrawingToolEventListenerCoordinatorArgs) {
     super(args);
 
-    this.contextTemp = args.contextTemp;
     this.startingCoords = args.startingCoords;
     this.lastCoords = args.lastCoords;
-    this.canvasWidth = args.canvasWidth;
-    this.canvasHeight = args.canvasHeight;
     this.painting = args.painting;
     this.paintingSetter = args.paintingSetter;
     this.startingCoordsSetter = args.startingCoordsSetter;
     this.lastCoordsSetter = args.lastCoordsSetter;
-    this.selectedStrokeItem = args.selectedStrokeItem;
-    this.selectedColor = args.selectedColor;
     this.tempDrawCommandSetter = args.tempDrawCommandSetter;
 
     this.createEventListenersWithHandlers();
   }
 
-  private contextTemp: CanvasRenderingContext2D;
   private startingCoords: StartingCoords | null;
   private lastCoords: LastCoords | null;
-  private canvasWidth: number;
-  private canvasHeight: number;
   private painting: boolean;
   private paintingSetter: (paintingVal: boolean) => void;
   private startingCoordsSetter: (coords: StartingCoords | null) => void;
   private lastCoordsSetter: (coords: LastCoords | null) => void;
-  private selectedStrokeItem: StrokeItem;
-  private selectedColor: string;
-  private tempDrawCommandSetter: (command: DrawingCommand) => void;
+  private tempDrawCommandSetter: (command: UnstyledDrawingCommand) => void;
 
   protected createEventListenersWithHandlers = () => {
     this.eventsWithHandlers.push({
@@ -342,17 +290,12 @@ class RectangleToolListenerCoordinator extends DrawingToolEventListenerCoordinat
 
   private mouseUpListener = (ev: MouseEvent) => {
     mouseUpRectangleTool(
-      this.contextTemp,
       this.startingCoords,
       this.lastCoords,
       this.paintingSetter,
       this.startingCoordsSetter,
       this.lastCoordsSetter,
-      this.canvasWidth,
-      this.canvasHeight,
-      this.addDrawingCommand,
-      this.selectedStrokeItem,
-      this.selectedColor
+      this.addDrawingCommand
     );
   };
 
@@ -364,13 +307,11 @@ class RectangleToolListenerCoordinator extends DrawingToolEventListenerCoordinat
       this.painting,
       this.startingCoords,
       this.lastCoordsSetter,
-      this.selectedStrokeItem,
-      this.selectedColor,
       this.tempDrawCommandSetter
     );
   };
 }
-
+// would be better to have currentX, currentY passed into the coordinator
 const getCurrentCoords = (ev: MouseEvent, rect: DOMRect) => {
   const currentX = ev.clientX - rect.left;
   const currentY = ev.clientY - rect.top;

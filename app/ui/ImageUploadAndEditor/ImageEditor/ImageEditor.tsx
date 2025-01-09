@@ -38,20 +38,21 @@ export default function ImageEditor({
     undoLastDrawingCommand,
     redoLastUndoneCommand,
     tempDrawCommandSetter,
-  } = useDrawingCommands(canvasRefPerm, canvasRefTemp);
+  } = useDrawingCommands(
+    canvasRefPerm,
+    canvasRefTemp,
+    selectedColor,
+    selectedStrokeItem
+  );
 
   const { textInputState, textInputValueSetter, textInputSizeSetter } =
     useDrawingTool({
       canvasRefPerm,
       canvasRefTemp,
       activeTool,
-      canvasWidth,
-      canvasHeight,
       drawCommands,
       addDrawingCommand,
       drawCommandsSetter,
-      selectedStrokeItem,
-      selectedColor,
       tempDrawCommandSetter,
     });
 

@@ -27,7 +27,8 @@ export type GetObjectBoundariesInputs = {
 };
 
 // this will need so much more.  think about an abstract class with subclasses for each type of tool.
-export type DrawingCommand = {
+
+export interface UnstyledDrawingCommand {
   drawingTool: DrawingTool;
   startX: number;
   startY: number;
@@ -36,7 +37,10 @@ export type DrawingCommand = {
   radius?: number;
   text?: string;
   selected?: boolean;
-  objectBoundaries?: ObjectBoundaries; // TODO: make mandatory after implementations all complete
-  strokeWidth?: number;
-  color?: string;
-};
+  objectBoundaries?: ObjectBoundaries; // TODO: need a different interface for things with boundaries (drawn on perm) and things without (drawing on temp?)
+}
+
+export interface StyledDrawingCommand extends UnstyledDrawingCommand {
+  strokeWidth: number;
+  color: string;
+}

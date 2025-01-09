@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { DrawingTool } from '../util/enums';
-import { StartingCoords, LastCoords, DrawingCommand } from '../util/types';
+import {
+  StartingCoords,
+  LastCoords,
+  StyledDrawingCommand,
+  UnstyledDrawingCommand,
+} from '../util/types';
 import {
   DrawingToolEventListenerCoordinator,
   DrawingToolEventListenerCoordinatorArgs,
@@ -14,26 +19,18 @@ export const useDrawingTool = ({
   canvasRefPerm,
   canvasRefTemp,
   activeTool,
-  canvasWidth,
-  canvasHeight,
   drawCommands,
   addDrawingCommand,
   drawCommandsSetter,
-  selectedStrokeItem,
-  selectedColor,
   tempDrawCommandSetter,
 }: {
   canvasRefPerm: React.RefObject<HTMLCanvasElement>;
   canvasRefTemp: React.RefObject<HTMLCanvasElement>;
   activeTool: DrawingTool | null;
-  canvasWidth: number;
-  canvasHeight: number;
-  drawCommands: DrawingCommand[];
-  addDrawingCommand: (command: DrawingCommand) => void;
-  drawCommandsSetter: (commands: DrawingCommand[]) => void;
-  selectedStrokeItem: StrokeItem;
-  selectedColor: string;
-  tempDrawCommandSetter: (command: DrawingCommand) => void;
+  drawCommands: StyledDrawingCommand[];
+  addDrawingCommand: (command: UnstyledDrawingCommand) => void;
+  drawCommandsSetter: (commands: StyledDrawingCommand[]) => void;
+  tempDrawCommandSetter: (command: UnstyledDrawingCommand) => void;
 }) => {
   const [startingCoords, setStartingCoords] = useState<StartingCoords | null>(
     null
@@ -84,13 +81,9 @@ export const useDrawingTool = ({
         const args: DrawingToolEventListenerCoordinatorArgs = {
           drawingTool: activeTool,
           canvasPerm: canvasPerm,
-          contextPerm: contextPerm,
-          contextTemp: contextTemp,
           rect: rect,
           startingCoords: startingCoords,
           lastCoords: lastCoords,
-          canvasWidth: canvasWidth,
-          canvasHeight: canvasHeight,
           painting: painting,
           addDrawingCommand: addDrawingCommand,
           paintingSetter: paintingSetter,
@@ -102,8 +95,6 @@ export const useDrawingTool = ({
           dragInProgress: dragInProgress,
           handleDragOnCanvas: handleDragOnCanvas,
           unSelectOnCanvas: unSelectOnCanvas,
-          selectedStrokeItem: selectedStrokeItem,
-          selectedColor: selectedColor,
           tempDrawCommandSetter: tempDrawCommandSetter,
         };
 

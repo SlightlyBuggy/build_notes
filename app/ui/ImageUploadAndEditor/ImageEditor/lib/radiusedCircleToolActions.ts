@@ -1,26 +1,19 @@
 import {
   StartingCoords,
   LastCoords,
-  DrawingCommand,
+  UnstyledDrawingCommand,
 } from '@/app/lib/util/types';
 import { distanceBetweenPoints } from '@/app/lib/util/formulae';
 import { DrawingTool } from '@/app/lib/util/enums';
-import { clearCanvas } from '@/app/lib/util/image';
 import { getObjectBoundaries } from '@/app/lib/util/selectorDrawingTool';
-import { StrokeItem } from '../DrawingToolPalette/StrokeSelection/StrokeWidthSelector';
 
 export const mouseUpRadiusedCircleTool = (
-  contextTemp: CanvasRenderingContext2D,
   startingCoords: StartingCoords | null,
   lastCoords: LastCoords | null,
   paintingSetter: (paintingVal: boolean) => void,
   startingCoordsSetter: (startingCoords: StartingCoords | null) => void,
   lastCoordsSetter: (coords: LastCoords | null) => void,
-  canvasWidth: number,
-  canvasHeight: number,
-  addDrawingCommand: (command: DrawingCommand) => void,
-  selectedStrokeItem: StrokeItem,
-  selectedColor: string
+  addDrawingCommand: (command: UnstyledDrawingCommand) => void
 ) => {
   if (startingCoords && lastCoords) {
     paintingSetter(false);
@@ -31,13 +24,11 @@ export const mouseUpRadiusedCircleTool = (
       lastCoords.lastX,
       lastCoords.lastY
     );
-    const command: DrawingCommand = {
+    const command: UnstyledDrawingCommand = {
       drawingTool: DrawingTool.RadiusedCircle,
       startX: startingCoords.startX,
       startY: startingCoords.startY,
       radius: radius,
-      strokeWidth: selectedStrokeItem.strokeWidthPx,
-      color: selectedColor,
     };
 
     const objectBoundaries = getObjectBoundaries({
@@ -52,8 +43,6 @@ export const mouseUpRadiusedCircleTool = (
 
     startingCoordsSetter(null);
     lastCoordsSetter(null);
-
-    clearCanvas(contextTemp, canvasWidth, canvasHeight);
   }
 };
 
@@ -63,9 +52,7 @@ export const mouseMoveRadiusedCircleTool = (
   painting: boolean,
   startingCoords: StartingCoords | null,
   lastCoordsSetter: (coords: LastCoords) => void,
-  selectedStrokeItem: StrokeItem,
-  selectedColor: string,
-  tempDrawCommandSetter: (command: DrawingCommand) => void
+  tempDrawCommandSetter: (command: UnstyledDrawingCommand) => void
 ) => {
   if (painting && startingCoords) {
     lastCoordsSetter({ lastX: currentX, lastY: currentY });
@@ -77,13 +64,11 @@ export const mouseMoveRadiusedCircleTool = (
       currentY
     );
 
-    const command: DrawingCommand = {
+    const command: UnstyledDrawingCommand = {
       drawingTool: DrawingTool.RadiusedCircle,
       startX: startingCoords.startX,
       startY: startingCoords.startY,
       radius: radius,
-      strokeWidth: selectedStrokeItem.strokeWidthPx,
-      color: selectedColor,
     };
 
     tempDrawCommandSetter(command);
