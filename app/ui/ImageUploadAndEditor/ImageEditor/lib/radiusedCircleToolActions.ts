@@ -60,35 +60,33 @@ export const mouseUpRadiusedCircleTool = (
 export const mouseMoveRadiusedCircleTool = (
   currentX: number,
   currentY: number,
-  contextTemp: CanvasRenderingContext2D,
   painting: boolean,
   startingCoords: StartingCoords | null,
   lastCoordsSetter: (coords: LastCoords) => void,
-  canvasWidth: number,
-  canvasHeight: number,
   selectedStrokeItem: StrokeItem,
-  selectedColor: string
+  selectedColor: string,
+  tempDrawCommandSetter: (command: DrawingCommand) => void
 ) => {
   if (painting && startingCoords) {
     lastCoordsSetter({ lastX: currentX, lastY: currentY });
-    contextTemp.strokeStyle = selectedColor;
-    contextTemp.clearRect(0, 0, canvasWidth, canvasHeight);
-    contextTemp.lineWidth = selectedStrokeItem.strokeWidthPx;
-    contextTemp.beginPath();
+
     const radius = distanceBetweenPoints(
       startingCoords.startX,
       startingCoords.startY,
       currentX,
       currentY
     );
-    contextTemp.arc(
-      startingCoords.startX,
-      startingCoords.startY,
-      radius,
-      0,
-      2 * Math.PI
-    );
-    contextTemp.stroke();
+
+    const command: DrawingCommand = {
+      drawingTool: DrawingTool.RadiusedCircle,
+      startX: startingCoords.startX,
+      startY: startingCoords.startY,
+      radius: radius,
+      strokeWidth: selectedStrokeItem.strokeWidthPx,
+      color: selectedColor,
+    };
+
+    tempDrawCommandSetter(command);
   }
 };
 

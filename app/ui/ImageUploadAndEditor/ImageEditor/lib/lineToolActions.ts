@@ -55,24 +55,25 @@ export const mouseUpLineTool = (
 export const mouseMoveLineTool = (
   currentX: number,
   currentY: number,
-  contextTemp: CanvasRenderingContext2D,
   painting: boolean,
   startingCoords: StartingCoords | null,
   lastCoordsSetter: (coords: LastCoords) => void,
-  canvasWidth: number,
-  canvasHeight: number,
   selectedStrokeItem: StrokeItem,
-  selectedColor: string
+  selectedColor: string,
+  tempDrawCommandSetter: (command: DrawingCommand) => void
 ) => {
   if (painting && startingCoords) {
+    const command: DrawingCommand = {
+      drawingTool: DrawingTool.Line,
+      startX: startingCoords.startX,
+      startY: startingCoords.startY,
+      endX: currentX,
+      endY: currentY,
+      strokeWidth: selectedStrokeItem.strokeWidthPx,
+      color: selectedColor,
+    };
+    tempDrawCommandSetter(command);
     lastCoordsSetter({ lastX: currentX, lastY: currentY });
-    clearCanvas(contextTemp, canvasWidth, canvasHeight);
-    contextTemp.strokeStyle = selectedColor;
-    contextTemp.beginPath();
-    contextTemp.moveTo(startingCoords.startX, startingCoords.startY);
-    contextTemp.lineTo(currentX, currentY);
-    contextTemp.lineWidth = selectedStrokeItem.strokeWidthPx;
-    contextTemp.stroke();
   }
 };
 

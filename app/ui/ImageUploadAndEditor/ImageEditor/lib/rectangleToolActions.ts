@@ -55,29 +55,27 @@ export const mouseUpRectangleTool = (
 export const mouseMoveRectangleTool = (
   currentX: number,
   currentY: number,
-  contextTemp: CanvasRenderingContext2D,
   painting: boolean,
   startingCoords: StartingCoords | null,
   lastCoordsSetter: (coords: LastCoords) => void,
-  canvasWidth: number,
-  canvasHeight: number,
   selectedStrokeItem: StrokeItem,
-  selectedColor: string
+  selectedColor: string,
+  tempDrawCommandSetter: (command: DrawingCommand) => void
 ) => {
   if (painting && startingCoords) {
     lastCoordsSetter({ lastX: currentX, lastY: currentY });
-    clearCanvas(contextTemp, canvasWidth, canvasHeight);
 
-    const width = currentX - startingCoords.startX;
-    const height = currentY - startingCoords.startY;
-    contextTemp.strokeStyle = selectedColor;
-    contextTemp.lineWidth = selectedStrokeItem.strokeWidthPx;
-    contextTemp.strokeRect(
-      startingCoords.startX,
-      startingCoords.startY,
-      width,
-      height
-    );
+    const command: DrawingCommand = {
+      drawingTool: DrawingTool.Rectangle,
+      startX: startingCoords.startX,
+      startY: startingCoords.startY,
+      endX: currentX,
+      endY: currentY,
+      strokeWidth: selectedStrokeItem.strokeWidthPx,
+      color: selectedColor,
+    };
+
+    tempDrawCommandSetter(command);
   }
 };
 
