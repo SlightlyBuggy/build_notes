@@ -43,12 +43,9 @@ export const mouseMoveRadiusedCircleTool = (
   currentY: number,
   painting: boolean,
   startingCoords: StartingCoords | null,
-  lastCoordsSetter: (coords: LastCoords) => void,
-  tempDrawCommandSetter: (command: UnstyledDrawingCommand) => void
+  setTempDrawCommandAndLastCoords: (command: UnstyledDrawingCommand) => void
 ) => {
   if (painting && startingCoords) {
-    lastCoordsSetter({ lastX: currentX, lastY: currentY });
-
     const radius = distanceBetweenPoints(
       startingCoords.startX,
       startingCoords.startY,
@@ -63,7 +60,7 @@ export const mouseMoveRadiusedCircleTool = (
       radius: radius,
     };
 
-    tempDrawCommandSetter(command);
+    setTempDrawCommandAndLastCoords(command);
   }
 };
 

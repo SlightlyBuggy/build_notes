@@ -36,15 +36,14 @@ export interface DrawingToolEventListenerCoordinatorArgs {
   lastCoords: LastCoords | null;
   painting: boolean;
   addDrawingCommand: (command: UnstyledDrawingCommand) => void;
-  lastCoordsSetter: (coords: LastCoords | null) => void;
   textInputState: TextInputState;
   textInputStateSetter: (inputState: TextInputState) => void;
   selectOnCanvas: (posX: number, posY: number) => void;
   dragInProgress: boolean;
   handleDragOnCanvas: (posX: number, posY: number) => void;
   unSelectOnCanvas: () => void;
-  tempDrawCommandSetter: (command: UnstyledDrawingCommand) => void;
   mouseDownHandlerForToolsWithPreview: (coords: StartingCoords) => void;
+  setTempDrawCommandAndLastCoords: (command: UnstyledDrawingCommand) => void;
 }
 
 interface EventTypeWithListener {
@@ -98,10 +97,9 @@ class LineToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
     this.startingCoords = args.startingCoords;
     this.lastCoords = args.lastCoords;
     this.painting = args.painting;
-    this.lastCoordsSetter = args.lastCoordsSetter;
-    this.tempDrawCommandSetter = args.tempDrawCommandSetter;
     this.mouseDownHandlerForToolsWithPreview =
       args.mouseDownHandlerForToolsWithPreview;
+    this.setTempDrawCommandAndLastCoords = args.setTempDrawCommandAndLastCoords;
 
     this.createEventListenersWithHandlers();
   }
@@ -109,9 +107,10 @@ class LineToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
   private startingCoords: StartingCoords | null;
   private lastCoords: LastCoords | null;
   private painting: boolean;
-  private lastCoordsSetter: (coords: LastCoords | null) => void;
-  private tempDrawCommandSetter: (command: UnstyledDrawingCommand) => void;
   private mouseDownHandlerForToolsWithPreview: (coords: StartingCoords) => void;
+  private setTempDrawCommandAndLastCoords: (
+    command: UnstyledDrawingCommand
+  ) => void;
 
   protected createEventListenersWithHandlers = () => {
     this.eventsWithHandlers.push({
@@ -152,8 +151,7 @@ class LineToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
       currentY,
       this.painting,
       this.startingCoords,
-      this.lastCoordsSetter,
-      this.tempDrawCommandSetter
+      this.setTempDrawCommandAndLastCoords
     );
   };
 }
@@ -165,10 +163,9 @@ class RadiusedCircleToolListenerCoordinator extends DrawingToolEventListenerCoor
     this.startingCoords = args.startingCoords;
     this.lastCoords = args.lastCoords;
     this.painting = args.painting;
-    this.lastCoordsSetter = args.lastCoordsSetter;
-    this.tempDrawCommandSetter = args.tempDrawCommandSetter;
     this.mouseDownHandlerForToolsWithPreview =
       args.mouseDownHandlerForToolsWithPreview;
+    this.setTempDrawCommandAndLastCoords = args.setTempDrawCommandAndLastCoords;
 
     this.createEventListenersWithHandlers();
   }
@@ -176,9 +173,10 @@ class RadiusedCircleToolListenerCoordinator extends DrawingToolEventListenerCoor
   private startingCoords: StartingCoords | null;
   private lastCoords: LastCoords | null;
   private painting: boolean;
-  private lastCoordsSetter: (coords: LastCoords | null) => void;
-  private tempDrawCommandSetter: (command: UnstyledDrawingCommand) => void;
   private mouseDownHandlerForToolsWithPreview: (coords: StartingCoords) => void;
+  private setTempDrawCommandAndLastCoords: (
+    command: UnstyledDrawingCommand
+  ) => void;
 
   protected createEventListenersWithHandlers = () => {
     this.eventsWithHandlers.push({
@@ -220,8 +218,7 @@ class RadiusedCircleToolListenerCoordinator extends DrawingToolEventListenerCoor
       currentY,
       this.painting,
       this.startingCoords,
-      this.lastCoordsSetter,
-      this.tempDrawCommandSetter
+      this.setTempDrawCommandAndLastCoords
     );
   };
 }
@@ -233,10 +230,9 @@ class RectangleToolListenerCoordinator extends DrawingToolEventListenerCoordinat
     this.startingCoords = args.startingCoords;
     this.lastCoords = args.lastCoords;
     this.painting = args.painting;
-    this.lastCoordsSetter = args.lastCoordsSetter;
-    this.tempDrawCommandSetter = args.tempDrawCommandSetter;
     this.mouseDownHandlerForToolsWithPreview =
       args.mouseDownHandlerForToolsWithPreview;
+    this.setTempDrawCommandAndLastCoords = args.setTempDrawCommandAndLastCoords;
 
     this.createEventListenersWithHandlers();
   }
@@ -244,9 +240,10 @@ class RectangleToolListenerCoordinator extends DrawingToolEventListenerCoordinat
   private startingCoords: StartingCoords | null;
   private lastCoords: LastCoords | null;
   private painting: boolean;
-  private lastCoordsSetter: (coords: LastCoords | null) => void;
-  private tempDrawCommandSetter: (command: UnstyledDrawingCommand) => void;
   private mouseDownHandlerForToolsWithPreview: (coords: StartingCoords) => void;
+  private setTempDrawCommandAndLastCoords: (
+    command: UnstyledDrawingCommand
+  ) => void;
 
   protected createEventListenersWithHandlers = () => {
     this.eventsWithHandlers.push({
@@ -287,8 +284,7 @@ class RectangleToolListenerCoordinator extends DrawingToolEventListenerCoordinat
       currentY,
       this.painting,
       this.startingCoords,
-      this.lastCoordsSetter,
-      this.tempDrawCommandSetter
+      this.setTempDrawCommandAndLastCoords
     );
   };
 }

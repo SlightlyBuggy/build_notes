@@ -13,7 +13,6 @@ import {
 } from '@/app/ui/ImageUploadAndEditor/ImageEditor/classes/DrawingToolEventListenerCoordinator';
 import { useTextInput } from './useTextInput';
 import { useSelectionOnCanvas } from './useSelectionOnCanvas';
-import { StrokeItem } from '@/app/ui/ImageUploadAndEditor/ImageEditor/DrawingToolPalette/StrokeSelection/StrokeWidthSelector';
 
 export const useDrawingTool = ({
   canvasRefPerm,
@@ -38,8 +37,12 @@ export const useDrawingTool = ({
   const [painting, setPainting] = useState<boolean>(false);
   const [lastCoords, setLastCoords] = useState<LastCoords | null>(null);
 
-  const lastCoordsSetter = (coords: LastCoords | null) => {
-    setLastCoords(coords);
+  const setTempDrawCommandAndLastCoords = (command: UnstyledDrawingCommand) => {
+    // TODO: evaluate if it would be good to have a type that definitely has endX/endY
+    if (command.endX && command.endY) {
+      setLastCoords({ lastX: command.endX, lastY: command.endY });
+    }
+    tempDrawCommandSetter(command);
   };
 
   const mouseDownHandlerForToolsWithPreview = (coords: StartingCoords) => {
@@ -83,16 +86,15 @@ export const useDrawingTool = ({
           lastCoords: lastCoords,
           painting: painting,
           addDrawingCommand: addDrawingCommand,
-          lastCoordsSetter: lastCoordsSetter,
           textInputState: textInputState,
           textInputStateSetter: textInputStateSetter,
           selectOnCanvas: selectOnCanvas,
           dragInProgress: dragInProgress,
           handleDragOnCanvas: handleDragOnCanvas,
           unSelectOnCanvas: unSelectOnCanvas,
-          tempDrawCommandSetter: tempDrawCommandSetter,
           mouseDownHandlerForToolsWithPreview:
             mouseDownHandlerForToolsWithPreview,
+          setTempDrawCommandAndLastCoords: setTempDrawCommandAndLastCoords,
         };
 
         const coordinator: DrawingToolEventListenerCoordinator =

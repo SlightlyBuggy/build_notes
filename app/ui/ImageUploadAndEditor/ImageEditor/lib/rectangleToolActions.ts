@@ -38,12 +38,9 @@ export const mouseMoveRectangleTool = (
   currentY: number,
   painting: boolean,
   startingCoords: StartingCoords | null,
-  lastCoordsSetter: (coords: LastCoords) => void,
-  tempDrawCommandSetter: (command: UnstyledDrawingCommand) => void
+  setTempDrawCommandAndLastCoords: (command: UnstyledDrawingCommand) => void
 ) => {
   if (painting && startingCoords) {
-    lastCoordsSetter({ lastX: currentX, lastY: currentY });
-
     const command: UnstyledDrawingCommand = {
       drawingTool: DrawingTool.Rectangle,
       startX: startingCoords.startX,
@@ -52,7 +49,7 @@ export const mouseMoveRectangleTool = (
       endY: currentY,
     };
 
-    tempDrawCommandSetter(command);
+    setTempDrawCommandAndLastCoords(command);
   }
 };
 

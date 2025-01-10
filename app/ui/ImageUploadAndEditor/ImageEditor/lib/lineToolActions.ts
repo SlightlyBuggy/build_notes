@@ -38,8 +38,7 @@ export const mouseMoveLineTool = (
   currentY: number,
   painting: boolean,
   startingCoords: StartingCoords | null,
-  lastCoordsSetter: (coords: LastCoords) => void,
-  tempDrawCommandSetter: (command: UnstyledDrawingCommand) => void
+  setTempDrawCommandAndLastCoords: (command: UnstyledDrawingCommand) => void
 ) => {
   if (painting && startingCoords) {
     const command: UnstyledDrawingCommand = {
@@ -49,8 +48,7 @@ export const mouseMoveLineTool = (
       endX: currentX,
       endY: currentY,
     };
-    tempDrawCommandSetter(command);
-    lastCoordsSetter({ lastX: currentX, lastY: currentY });
+    setTempDrawCommandAndLastCoords(command);
   }
 };
 

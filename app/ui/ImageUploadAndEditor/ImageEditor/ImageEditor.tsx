@@ -28,8 +28,7 @@ export default function ImageEditor({
     selectedColor,
     setSelectedColor,
   } = useToolPalette();
-  // TODO: pass selectedStrokeItem and selectedColor into useDrawingCommands instead of useDrawingTool.  Have a styled and unstyled command type
-  // then event listeners only have to be concerned with geometry.  style can be added in addDrawingCommand.
+
   const {
     drawCommands,
     undoneDrawCommands,
