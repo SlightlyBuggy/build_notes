@@ -38,17 +38,14 @@ export const useDrawingTool = ({
   const [painting, setPainting] = useState<boolean>(false);
   const [lastCoords, setLastCoords] = useState<LastCoords | null>(null);
 
-  // TODO: this should be something like "finishDraw" which cleans up starting and last coordinates as well as painting
-  const paintingSetter = (paintingVal: boolean) => {
-    setPainting(paintingVal);
-  };
-
-  const startingCoordsSetter = (coords: StartingCoords | null) => {
-    setStartingCoords(coords);
-  };
-
   const lastCoordsSetter = (coords: LastCoords | null) => {
     setLastCoords(coords);
+  };
+
+  const mouseDownHandlerForToolsWithPreview = (coords: StartingCoords) => {
+    setStartingCoords({ startX: coords.startX, startY: coords.startY });
+    setLastCoords({ lastX: coords.startX, lastY: coords.startY });
+    setPainting(true);
   };
 
   const {
@@ -86,8 +83,6 @@ export const useDrawingTool = ({
           lastCoords: lastCoords,
           painting: painting,
           addDrawingCommand: addDrawingCommand,
-          paintingSetter: paintingSetter,
-          startingCoordsSetter: startingCoordsSetter,
           lastCoordsSetter: lastCoordsSetter,
           textInputState: textInputState,
           textInputStateSetter: textInputStateSetter,
@@ -96,6 +91,8 @@ export const useDrawingTool = ({
           handleDragOnCanvas: handleDragOnCanvas,
           unSelectOnCanvas: unSelectOnCanvas,
           tempDrawCommandSetter: tempDrawCommandSetter,
+          mouseDownHandlerForToolsWithPreview:
+            mouseDownHandlerForToolsWithPreview,
         };
 
         const coordinator: DrawingToolEventListenerCoordinator =

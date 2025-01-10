@@ -57,11 +57,7 @@ export const mouseMoveLineTool = (
 export const mouseDownLineTool = (
   currentX: number,
   currentY: number,
-  paintingSetter: (paintingVal: boolean) => void,
-  startingCoordsSetter: (coords: StartingCoords) => void,
-  lastCoordsSetter: (lastCoords: LastCoords) => void
+  mouseDownHandlerForToolsWithPreview: (coords: StartingCoords) => void
 ) => {
-  startingCoordsSetter({ startX: currentX, startY: currentY });
-  lastCoordsSetter({ lastX: currentX, lastY: currentY });
-  paintingSetter(true);
+  mouseDownHandlerForToolsWithPreview({ startX: currentX, startY: currentY });
 };

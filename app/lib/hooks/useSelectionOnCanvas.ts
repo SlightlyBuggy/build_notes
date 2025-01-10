@@ -57,6 +57,8 @@ export const useSelectionOnCanvas = ({
             command.objectBoundaries.topY += deltaY;
           }
           setMouseLastCoords({ lastX: posX, lastY: posY });
+          console.log('Setting new draw commands');
+          console.log(drawCommandsCopy);
           drawCommandsSetter(drawCommandsCopy);
           break;
         }

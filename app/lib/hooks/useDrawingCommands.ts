@@ -59,13 +59,14 @@ export const useDrawingCommands = (
   };
 
   const clearTempCanvas = () => {
+    console.log('Attempting to clear temp canvas');
     const canvasTemp = canvasRefTemp.current;
     if (canvasTemp) {
       const contextTemp = canvasTemp.getContext('2d');
 
       if (contextTemp) {
         const rect = canvasTemp.getBoundingClientRect();
-
+        console.log('Clearing temp canvas');
         contextTemp.clearRect(0, 0, rect.width, rect.height);
       }
     }
@@ -78,7 +79,7 @@ export const useDrawingCommands = (
 
       if (contextPerm) {
         const rect = canvasPerm.getBoundingClientRect();
-
+        console.log('Clearing perm canvas');
         contextPerm.clearRect(0, 0, rect.width, rect.height);
       }
     }
@@ -86,13 +87,13 @@ export const useDrawingCommands = (
 
   // hanadle drawing command on temp canvas
   useEffect(() => {
+    clearTempCanvas();
+
     if (canvasRefTemp.current) {
       const canvasTemp = canvasRefTemp.current;
       const contextTemp = canvasTemp.getContext('2d');
 
       if (contextTemp && tempDrawCommand) {
-        clearTempCanvas();
-
         const drawCommandExecutor = drawCommandExecutorFactory(
           tempDrawCommand,
           contextTemp
@@ -104,16 +105,14 @@ export const useDrawingCommands = (
 
   // handle drawing commands on permanent canvas
   useEffect(() => {
-    // when draw commands change, clear canvas and replay all commands
+    // when draw commands change, clear canvases and replay all commands
+    clearPermCanvas();
+    clearTempCanvas();
     if (canvasRefPerm.current) {
       const canvasPerm = canvasRefPerm.current;
       const contextPerm = canvasPerm.getContext('2d');
 
-      const rect = canvasPerm.getBoundingClientRect();
-
       if (contextPerm) {
-        contextPerm.clearRect(0, 0, rect.width, rect.height);
-
         for (let command of drawCommands) {
           const drawCommandExecutor = drawCommandExecutorFactory(
             command,

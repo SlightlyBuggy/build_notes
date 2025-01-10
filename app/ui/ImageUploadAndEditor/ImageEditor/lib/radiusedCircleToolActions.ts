@@ -10,12 +10,9 @@ import { getObjectBoundaries } from '@/app/lib/util/selectorDrawingTool';
 export const mouseUpRadiusedCircleTool = (
   startingCoords: StartingCoords | null,
   lastCoords: LastCoords | null,
-  paintingSetter: (paintingVal: boolean) => void,
   addDrawingCommand: (command: UnstyledDrawingCommand) => void
 ) => {
   if (startingCoords && lastCoords) {
-    paintingSetter(false);
-
     const radius = distanceBetweenPoints(
       startingCoords.startX,
       startingCoords.startY,
@@ -73,11 +70,7 @@ export const mouseMoveRadiusedCircleTool = (
 export const mouseDownRadiusedCircleTool = (
   currentX: number,
   currentY: number,
-  paintingSetter: (paintingVal: boolean) => void,
-  startingCoordsSetter: (coords: StartingCoords) => void,
-  lastCoordsSetter: (lastCoords: LastCoords) => void
+  mouseDownHandlerForToolsWithPreview: (coords: StartingCoords) => void
 ) => {
-  startingCoordsSetter({ startX: currentX, startY: currentY });
-  lastCoordsSetter({ lastX: currentX, lastY: currentY });
-  paintingSetter(true);
+  mouseDownHandlerForToolsWithPreview({ startX: currentX, startY: currentY });
 };
