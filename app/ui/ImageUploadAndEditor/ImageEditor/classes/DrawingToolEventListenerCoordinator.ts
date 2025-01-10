@@ -145,9 +145,6 @@ class LineToolListenerCoordinator extends DrawingToolEventListenerCoordinator {
     mouseUpLineTool(
       this.startingCoords,
       this.lastCoords,
-      this.paintingSetter,
-      this.startingCoordsSetter,
-      this.lastCoordsSetter,
       this.addDrawingCommand
     );
   };
@@ -220,8 +217,6 @@ class RadiusedCircleToolListenerCoordinator extends DrawingToolEventListenerCoor
       this.startingCoords,
       this.lastCoords,
       this.paintingSetter,
-      this.startingCoordsSetter,
-      this.lastCoordsSetter,
       this.addDrawingCommand
     );
   };
@@ -292,9 +287,6 @@ class RectangleToolListenerCoordinator extends DrawingToolEventListenerCoordinat
     mouseUpRectangleTool(
       this.startingCoords,
       this.lastCoords,
-      this.paintingSetter,
-      this.startingCoordsSetter,
-      this.lastCoordsSetter,
       this.addDrawingCommand
     );
   };

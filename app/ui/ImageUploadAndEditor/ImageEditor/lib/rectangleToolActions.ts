@@ -8,9 +8,6 @@ import { getObjectBoundaries } from '@/app/lib/util/selectorDrawingTool';
 export const mouseUpRectangleTool = (
   startingCoords: StartingCoords | null,
   lastCoords: LastCoords | null,
-  paintingSetter: (paintingVal: boolean) => void,
-  startingCoordsSetter: (startingCoords: StartingCoords | null) => void,
-  lastCoordsSetter: (coords: LastCoords | null) => void,
   addDrawingCommand: (command: UnstyledDrawingCommand) => void
 ) => {
   if (startingCoords && lastCoords) {
@@ -33,10 +30,6 @@ export const mouseUpRectangleTool = (
     command.objectBoundaries = objectBoundaries;
 
     addDrawingCommand(command);
-
-    paintingSetter(false);
-    startingCoordsSetter(null);
-    lastCoordsSetter(null);
   }
 };
 

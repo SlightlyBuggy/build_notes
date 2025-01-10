@@ -11,8 +11,6 @@ export const mouseUpRadiusedCircleTool = (
   startingCoords: StartingCoords | null,
   lastCoords: LastCoords | null,
   paintingSetter: (paintingVal: boolean) => void,
-  startingCoordsSetter: (startingCoords: StartingCoords | null) => void,
-  lastCoordsSetter: (coords: LastCoords | null) => void,
   addDrawingCommand: (command: UnstyledDrawingCommand) => void
 ) => {
   if (startingCoords && lastCoords) {
@@ -40,9 +38,6 @@ export const mouseUpRadiusedCircleTool = (
     command.objectBoundaries = objectBoundaries;
 
     addDrawingCommand(command);
-
-    startingCoordsSetter(null);
-    lastCoordsSetter(null);
   }
 };
 

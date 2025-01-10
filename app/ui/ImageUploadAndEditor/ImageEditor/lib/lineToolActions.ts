@@ -9,13 +9,9 @@ import { getObjectBoundaries } from '@/app/lib/util/selectorDrawingTool';
 export const mouseUpLineTool = (
   startingCoords: StartingCoords | null,
   lastCoords: LastCoords | null,
-  paintingSetter: (paintingVal: boolean) => void,
-  startingCoordsSetter: (startingCoords: StartingCoords | null) => void,
-  lastCoordsSetter: (coords: LastCoords | null) => void,
   addDrawingCommand: (command: UnstyledDrawingCommand) => void
 ) => {
   if (startingCoords && lastCoords) {
-    // TODO: find a more seamless way to do this.  drawingCommandFactory or whatever
     const command: UnstyledDrawingCommand = {
       drawingTool: DrawingTool.Line,
       startX: startingCoords.startX,
@@ -34,10 +30,6 @@ export const mouseUpLineTool = (
     command.objectBoundaries = objectBoundaries;
 
     addDrawingCommand(command);
-
-    paintingSetter(false);
-    startingCoordsSetter(null);
-    lastCoordsSetter(null);
   }
 };
 

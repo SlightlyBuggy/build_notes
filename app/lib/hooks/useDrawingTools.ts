@@ -125,5 +125,12 @@ export const useDrawingTool = ({
     }
   }, [textInputState.active, activeTool]);
 
+  // clean up when a command changes
+  useEffect(() => {
+    setPainting(false);
+    setStartingCoords(null);
+    setLastCoords(null);
+  }, [drawCommands]);
+
   return { textInputState, textInputValueSetter, textInputSizeSetter };
 };
