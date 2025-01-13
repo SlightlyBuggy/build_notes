@@ -4,13 +4,7 @@ import {
   StartingCoords,
 } from '@/app/lib/util/types';
 import { DrawingTool } from '@/app/lib/util/enums';
-import { mouesDownTextTool } from '../lib/textToolActions';
 import { TextInputState } from '../TextInput';
-import {
-  mouseDownSelectorTool,
-  mouseMoveSelectorTool,
-  mouseUpSelectorTool,
-} from '../lib/selectorToolActions';
 
 export interface DrawingToolEventListenerCoordinatorArgs {
   drawingTool: DrawingTool;
