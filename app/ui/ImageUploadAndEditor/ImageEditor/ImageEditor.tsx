@@ -16,6 +16,7 @@ export default function ImageEditor({
 }) {
   const canvasRefPerm = useRef<HTMLCanvasElement>(null);
   const canvasRefTemp = useRef<HTMLCanvasElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
 
   const canvasHeight = imageData.height;
   const canvasWidth = imageData.width;
@@ -37,6 +38,8 @@ export default function ImageEditor({
     undoLastDrawingCommand,
     redoLastUndoneCommand,
     tempDrawCommandSetter,
+    executeDrawCommands,
+    clearPermCanvas,
   } = useDrawingCommands(
     canvasRefPerm,
     canvasRefTemp,
@@ -78,8 +81,18 @@ export default function ImageEditor({
         textInputState={textInputState}
         textInputValueSetter={textInputValueSetter}
         textInputSizeSetter={textInputSizeSetter}
+        imageRef={imageRef}
       />
-      <SaveDrawingButton saveImage={() => saveImage(canvasRefPerm)} />
+      <SaveDrawingButton
+        saveImage={() =>
+          saveImage(
+            canvasRefPerm,
+            imageRef,
+            executeDrawCommands,
+            clearPermCanvas
+          )
+        }
+      />
     </div>
   );
 }

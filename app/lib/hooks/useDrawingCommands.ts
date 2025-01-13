@@ -108,6 +108,10 @@ export const useDrawingCommands = (
     // when draw commands change, clear canvases and replay all commands
     clearPermCanvas();
     clearTempCanvas();
+    executeDrawCommands();
+  }, [drawCommands]);
+
+  const executeDrawCommands = () => {
     if (canvasRefPerm.current) {
       const canvasPerm = canvasRefPerm.current;
       const contextPerm = canvasPerm.getContext('2d');
@@ -122,7 +126,7 @@ export const useDrawingCommands = (
         }
       }
     }
-  }, [drawCommands]);
+  };
 
   return {
     drawCommands,
@@ -132,5 +136,7 @@ export const useDrawingCommands = (
     undoLastDrawingCommand,
     redoLastUndoneCommand,
     tempDrawCommandSetter,
+    executeDrawCommands,
+    clearPermCanvas,
   };
 };

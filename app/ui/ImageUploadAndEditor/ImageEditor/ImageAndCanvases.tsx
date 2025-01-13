@@ -14,6 +14,7 @@ export default function ImageAndCanvases({
   textInputState,
   textInputValueSetter,
   textInputSizeSetter,
+  imageRef,
 }: {
   imageData: StaticImageData;
   canvasHeight: number;
@@ -23,10 +24,11 @@ export default function ImageAndCanvases({
   textInputState: TextInputState;
   textInputValueSetter: (value: string) => void;
   textInputSizeSetter: (width: number, height: number) => void;
+  imageRef: React.RefObject<HTMLImageElement>;
 }) {
   return (
     <div className="relative z-1">
-      <img src={imageData.src} className="absolute" />
+      <img src={imageData.src} ref={imageRef} className="absolute" />
       <PermAndTempCanvases
         canvasHeight={canvasHeight}
         canvasWidth={canvasWidth}
