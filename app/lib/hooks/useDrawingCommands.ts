@@ -17,6 +17,8 @@ export const useDrawingCommands = (
   >([]);
 
   const drawCommandsSetter = (commands: StyledDrawingCommand[]) => {
+    console.log('drawCommandsSetter');
+    console.log(commands);
     setDrawCommands(commands);
   };
 
@@ -35,8 +37,9 @@ export const useDrawingCommands = (
       color: selectedColor,
       strokeWidth: selectedStrokeItem.strokeWidthPx,
     };
+    console.log('addDrawingCommand');
+    console.log(command);
     setDrawCommands([...drawCommands, styledCommand]);
-    // when a new command is added, we clear the list of undone commands.  otherwise things could get confusing for the user.
     setUndoneDrawCommands([]);
   };
 
@@ -59,14 +62,12 @@ export const useDrawingCommands = (
   };
 
   const clearTempCanvas = () => {
-    console.log('Attempting to clear temp canvas');
     const canvasTemp = canvasRefTemp.current;
     if (canvasTemp) {
       const contextTemp = canvasTemp.getContext('2d');
 
       if (contextTemp) {
         const rect = canvasTemp.getBoundingClientRect();
-        console.log('Clearing temp canvas');
         contextTemp.clearRect(0, 0, rect.width, rect.height);
       }
     }
@@ -79,7 +80,6 @@ export const useDrawingCommands = (
 
       if (contextPerm) {
         const rect = canvasPerm.getBoundingClientRect();
-        console.log('Clearing perm canvas');
         contextPerm.clearRect(0, 0, rect.width, rect.height);
       }
     }

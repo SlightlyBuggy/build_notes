@@ -9,10 +9,10 @@ import {
 import {
   DrawingToolEventListenerCoordinator,
   DrawingToolEventListenerCoordinatorArgs,
-  drawingToolListenerCoordinatorFactory,
 } from '@/app/ui/ImageUploadAndEditor/ImageEditor/classes/DrawingToolEventListenerCoordinator';
 import { useTextInput } from './useTextInput';
 import { useSelectionOnCanvas } from './useSelectionOnCanvas';
+import { drawingToolListenerCoordinatorFactory } from '@/app/ui/ImageUploadAndEditor/ImageEditor/classes/DrawingToolEventListenerCoordinatorFactory';
 
 export const useDrawingTool = ({
   canvasRefPerm,
@@ -37,11 +37,13 @@ export const useDrawingTool = ({
   const [painting, setPainting] = useState<boolean>(false);
   const [lastCoords, setLastCoords] = useState<LastCoords | null>(null);
 
-  const setTempDrawCommandAndLastCoords = (command: UnstyledDrawingCommand) => {
-    // TODO: evaluate if it would be good to have a type that definitely has endX/endY
-    if (command.endX && command.endY) {
-      setLastCoords({ lastX: command.endX, lastY: command.endY });
-    }
+  const setTempDrawCommandAndLastCoords = (
+    command: UnstyledDrawingCommand,
+    lastX: number,
+    lastY: number
+  ) => {
+    setLastCoords({ lastX: lastX, lastY: lastY });
+
     tempDrawCommandSetter(command);
   };
 
