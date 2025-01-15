@@ -32,7 +32,7 @@ export default function ImageEditor({
 
   const {
     drawCommands,
-    undoneDrawCommands,
+    undoneDrawCommandHistories,
     addDrawingCommand,
     drawCommandsSetter,
     undoLastDrawingCommand,
@@ -40,6 +40,9 @@ export default function ImageEditor({
     tempDrawCommandSetter,
     executeDrawCommands,
     clearPermCanvas,
+    handleCommandSelectionByIndex,
+    handleSelectedCommandDrag,
+    handleCommandUnselect,
   } = useDrawingCommands(
     canvasRefPerm,
     canvasRefTemp,
@@ -56,6 +59,9 @@ export default function ImageEditor({
       addDrawingCommand,
       drawCommandsSetter,
       tempDrawCommandSetter,
+      handleCommandSelectionByIndex,
+      handleSelectedCommandDrag,
+      handleCommandUnselect,
     });
 
   return (
@@ -66,7 +72,7 @@ export default function ImageEditor({
         undoLastDrawingCommand={undoLastDrawingCommand}
         drawingCommands={drawCommands}
         redoLastUndoneCommand={redoLastUndoneCommand}
-        undoneDrawCommands={undoneDrawCommands}
+        undoneDrawCommandHistories={undoneDrawCommandHistories}
         selectedStrokeItem={selectedStrokeItem}
         setSelectedStrokeItem={setSelectedStrokeItem}
         selectedColor={selectedColor}

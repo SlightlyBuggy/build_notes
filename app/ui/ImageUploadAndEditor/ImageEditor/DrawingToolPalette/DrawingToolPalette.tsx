@@ -15,7 +15,7 @@ export default function DrawingToolPalette({
   undoLastDrawingCommand,
   drawingCommands,
   redoLastUndoneCommand,
-  undoneDrawCommands,
+  undoneDrawCommandHistories,
   selectedStrokeItem,
   setSelectedStrokeItem,
   selectedColor,
@@ -26,7 +26,7 @@ export default function DrawingToolPalette({
   undoLastDrawingCommand: () => void;
   drawingCommands: StyledDrawingCommand[];
   redoLastUndoneCommand: () => void;
-  undoneDrawCommands: StyledDrawingCommand[];
+  undoneDrawCommandHistories: Array<StyledDrawingCommand[]>;
   selectedStrokeItem: StrokeItem;
   setSelectedStrokeItem: (strokeItem: StrokeItem) => void;
   selectedColor: string;
@@ -80,7 +80,7 @@ export default function DrawingToolPalette({
       />
       <RedoButton
         redoLastUndoneCommand={redoLastUndoneCommand}
-        undoneDrawCommands={undoneDrawCommands}
+        undoneDrawCommandHistories={undoneDrawCommandHistories}
       />
     </div>
   );

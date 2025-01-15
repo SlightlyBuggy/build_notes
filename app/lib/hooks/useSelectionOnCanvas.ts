@@ -4,10 +4,14 @@ import { selectionIsInObject } from '../util/selectorDrawingTool';
 
 export const useSelectionOnCanvas = ({
   drawCommands,
-  drawCommandsSetter,
+  handleCommandSelectionByIndex,
+  handleSelectedCommandDrag,
+  handleCommandUnselect,
 }: {
   drawCommands: StyledDrawingCommand[];
-  drawCommandsSetter: (commands: StyledDrawingCommand[]) => void;
+  handleCommandSelectionByIndex: (index: number) => void;
+  handleSelectedCommandDrag: (deltaX: number, deltaY: number) => void;
+  handleCommandUnselect: () => void;
 }) => {
   const [mouseLastCoords, setMouseLastCoords] = useState<{
     lastX: number;
@@ -16,20 +20,17 @@ export const useSelectionOnCanvas = ({
   const [dragInProgress, setDragInProgress] = useState<boolean>(false);
 
   const selectOnCanvas = (posX: number, posY: number) => {
-    const drawCommandsCopy = [...drawCommands];
-    for (let command of drawCommandsCopy) {
+    drawCommands.forEach((command, idx) => {
       const commandSelected = selectionIsInObject(command, posX, posY);
 
       if (commandSelected) {
+        handleCommandSelectionByIndex(idx);
         setMouseLastCoords({ lastX: posX, lastY: posY });
         setDragInProgress(true);
-        command.selected = true;
-        drawCommandsSetter(drawCommandsCopy);
-        break;
       } else {
         console.log(`Selection is not in a command`);
       }
-    }
+    });
   };
 
   const handleDragOnCanvas = (posX: number, posY: number) => {
@@ -37,45 +38,14 @@ export const useSelectionOnCanvas = ({
       const deltaX = posX - mouseLastCoords.lastX;
       const deltaY = posY - mouseLastCoords.lastY;
 
-      //TODO: optimize by storing array ID of thing being dragged in state
-      const drawCommandsCopy = [...drawCommands];
-      for (let command of drawCommandsCopy) {
-        if (command.selected) {
-          command.startX += deltaX;
-          command.startY += deltaY;
-          if (command.endX) {
-            command.endX += deltaX;
-          }
-          if (command.endY) {
-            command.endY += deltaY;
-          }
-          if (command.objectBoundaries) {
-            command.objectBoundaries.leftX += deltaX;
-            command.objectBoundaries.rightX += deltaX;
-
-            command.objectBoundaries.bottomY += deltaY;
-            command.objectBoundaries.topY += deltaY;
-          }
-          setMouseLastCoords({ lastX: posX, lastY: posY });
-          console.log('Setting new draw commands');
-          console.log(drawCommandsCopy);
-          drawCommandsSetter(drawCommandsCopy);
-          break;
-        }
-      }
+      handleSelectedCommandDrag(deltaX, deltaY);
+      setMouseLastCoords({ lastX: posX, lastY: posY });
     }
   };
 
   const unSelectOnCanvas = () => {
-    const drawCommandsCopy = [...drawCommands];
-    for (let command of drawCommandsCopy) {
-      if (command.selected) {
-        command.selected = false;
-        break;
-      }
-    }
+    handleCommandUnselect();
     setDragInProgress(false);
-    drawCommandsSetter(drawCommandsCopy);
   };
 
   return {

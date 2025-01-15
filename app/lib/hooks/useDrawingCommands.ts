@@ -9,17 +9,94 @@ export const useDrawingCommands = (
   selectedColor: string,
   selectedStrokeItem: StrokeItem
 ) => {
-  const [drawCommands, setDrawCommands] = useState<StyledDrawingCommand[]>([]);
+  const [drawCommandsHistory, setDrawCommandsHistory] = useState<
+    Array<StyledDrawingCommand[]>
+  >([[]]);
+
   const [tempDrawCommand, setTemptDrawCommand] =
     useState<StyledDrawingCommand>();
-  const [undoneDrawCommands, setUndoneDrawCommands] = useState<
-    StyledDrawingCommand[]
+
+  const [undoneDrawCommandHistories, setUndoneDrawCommandHistories] = useState<
+    Array<StyledDrawingCommand[]>
   >([]);
 
+  const getLatestDrawCommandsCopy = () => {
+    const latestHistory =
+      (drawCommandsHistory.length &&
+        drawCommandsHistory[drawCommandsHistory.length - 1]) ||
+      [];
+    return JSON.parse(JSON.stringify(latestHistory));
+  };
+
+  const addDrawCommandListToHistory = (newCommands: StyledDrawingCommand[]) => {
+    const newDrawCommandsHistory = [...drawCommandsHistory, newCommands];
+    setDrawCommandsHistory(newDrawCommandsHistory);
+  };
+
   const drawCommandsSetter = (commands: StyledDrawingCommand[]) => {
-    console.log('drawCommandsSetter');
-    console.log(commands);
-    setDrawCommands(commands);
+    // setDrawCommands(commands);
+    addDrawCommandListToHistory(commands);
+  };
+
+  // on selection, make a new history with the selected item selected
+  const handleCommandSelectionByIndex = (index: number) => {
+    const newHistory = getLatestDrawCommandsCopy();
+    newHistory[index].selected = true;
+    setDrawCommandsHistory([...drawCommandsHistory, newHistory]);
+  };
+
+  // on movement, replace the latest history with a new one with updated coordinates for the selected command
+  const handleSelectedCommandDrag = (deltaX: number, deltaY: number) => {
+    const latestCommandsCopy = getLatestDrawCommandsCopy();
+    for (let command of latestCommandsCopy) {
+      if (command.selected) {
+        command.startX += deltaX;
+        command.startY += deltaY;
+
+        if (command.endX !== undefined) {
+          command.endX += deltaX;
+        }
+
+        if (command.endY !== undefined) {
+          command.endY += deltaY;
+        }
+
+        if (command.objectBoundaries) {
+          command.objectBoundaries.leftX += deltaX;
+          command.objectBoundaries.rightX += deltaX;
+
+          command.objectBoundaries.bottomY += deltaY;
+          command.objectBoundaries.topY += deltaY;
+        }
+        break;
+      }
+    }
+
+    const drawCommandHistoryCopy = JSON.parse(
+      JSON.stringify(drawCommandsHistory)
+    );
+    drawCommandHistoryCopy[drawCommandHistoryCopy.length - 1] =
+      latestCommandsCopy;
+
+    setDrawCommandsHistory(drawCommandHistoryCopy);
+  };
+
+  // on unselect, simply set the 'selected' property to false
+  const handleCommandUnselect = () => {
+    const drawCommandHistoryCopy = JSON.parse(
+      JSON.stringify(drawCommandsHistory)
+    );
+    const latestDrawCommandHistory = getLatestDrawCommandsCopy();
+    for (let command of latestDrawCommandHistory) {
+      if (command.selected) {
+        command.selected = false;
+        break;
+      }
+    }
+    drawCommandHistoryCopy[drawCommandHistoryCopy.length - 1] =
+      latestDrawCommandHistory;
+
+    setDrawCommandsHistory(drawCommandHistoryCopy);
   };
 
   const tempDrawCommandSetter = (command: UnstyledDrawingCommand) => {
@@ -28,6 +105,7 @@ export const useDrawingCommands = (
       color: selectedColor,
       strokeWidth: selectedStrokeItem.strokeWidthPx,
     };
+
     setTemptDrawCommand(styledCommand);
   };
 
@@ -37,27 +115,33 @@ export const useDrawingCommands = (
       color: selectedColor,
       strokeWidth: selectedStrokeItem.strokeWidthPx,
     };
-    console.log('addDrawingCommand');
-    console.log(command);
-    setDrawCommands([...drawCommands, styledCommand]);
-    setUndoneDrawCommands([]);
+
+    const latestDrawCommands = getLatestDrawCommandsCopy();
+    addDrawCommandListToHistory([...latestDrawCommands, styledCommand]);
+    setUndoneDrawCommandHistories([]);
   };
 
   const undoLastDrawingCommand = () => {
-    const currentCommands = [...drawCommands];
-    const lastCommand: StyledDrawingCommand | undefined = currentCommands.pop();
-    if (lastCommand) {
-      setUndoneDrawCommands([...undoneDrawCommands, lastCommand]);
-      setDrawCommands(currentCommands);
+    const drawCommandHistoryCopy = [...drawCommandsHistory];
+    const lastHistory: StyledDrawingCommand[] | undefined =
+      drawCommandHistoryCopy.pop();
+    if (lastHistory) {
+      setUndoneDrawCommandHistories([
+        ...undoneDrawCommandHistories,
+        lastHistory,
+      ]);
+      setDrawCommandsHistory(drawCommandHistoryCopy);
     }
   };
 
   const redoLastUndoneCommand = () => {
-    const currentUndoneCommands = [...undoneDrawCommands];
-    const commandToRedo = currentUndoneCommands.pop();
-    if (commandToRedo) {
-      setDrawCommands([...drawCommands, commandToRedo]);
-      setUndoneDrawCommands(currentUndoneCommands);
+    const undoneDrawCommandHistoriesCopy = JSON.parse(
+      JSON.stringify(undoneDrawCommandHistories)
+    );
+    const historyToRedo = undoneDrawCommandHistoriesCopy.pop();
+    if (historyToRedo) {
+      setDrawCommandsHistory([...drawCommandsHistory, historyToRedo]);
+      setUndoneDrawCommandHistories(undoneDrawCommandHistoriesCopy);
     }
   };
 
@@ -103,21 +187,28 @@ export const useDrawingCommands = (
     }
   }, [tempDrawCommand]);
 
-  // handle drawing commands on permanent canvas
+  // draw when the command history changes
   useEffect(() => {
     // when draw commands change, clear canvases and replay all commands
     clearPermCanvas();
     clearTempCanvas();
     executeDrawCommands();
-  }, [drawCommands]);
+  }, [drawCommandsHistory.length]);
+
+  useEffect(() => {
+    clearPermCanvas();
+    clearTempCanvas();
+    executeDrawCommands();
+  }, [drawCommandsHistory[drawCommandsHistory.length - 1]]);
 
   const executeDrawCommands = () => {
     if (canvasRefPerm.current) {
       const canvasPerm = canvasRefPerm.current;
       const contextPerm = canvasPerm.getContext('2d');
 
+      const latestDrawCommands = getLatestDrawCommandsCopy();
       if (contextPerm) {
-        for (let command of drawCommands) {
+        for (let command of latestDrawCommands) {
           const drawCommandExecutor = drawCommandExecutorFactory(
             command,
             contextPerm
@@ -129,8 +220,8 @@ export const useDrawingCommands = (
   };
 
   return {
-    drawCommands,
-    undoneDrawCommands,
+    drawCommands: getLatestDrawCommandsCopy(),
+    undoneDrawCommandHistories,
     addDrawingCommand,
     drawCommandsSetter,
     undoLastDrawingCommand,
@@ -138,5 +229,8 @@ export const useDrawingCommands = (
     tempDrawCommandSetter,
     executeDrawCommands,
     clearPermCanvas,
+    handleCommandSelectionByIndex,
+    handleSelectedCommandDrag,
+    handleCommandUnselect,
   };
 };

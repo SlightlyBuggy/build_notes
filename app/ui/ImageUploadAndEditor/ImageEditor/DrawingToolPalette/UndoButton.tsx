@@ -14,7 +14,8 @@ export default function UndoButton({
     <div
       data-testid="undo-button"
       className={clsx('p-3 flex items-center', {
-        'select-none text-gray-400': drawingCommands.length == 0,
+        'select-none text-gray-400 pointer-events-none':
+          drawingCommands.length == 0,
       })}
       onClick={undoLastDrawingCommand}
     >

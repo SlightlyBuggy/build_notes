@@ -84,6 +84,7 @@ export class LineToolListenerCoordinator extends DrawingToolEventListenerCoordin
 
   private mouseMoveListener = (ev: MouseEvent) => {
     const { currentX, currentY } = getCurrentCoords(ev, this.rect);
+
     if (this.painting && this.startingCoords) {
       const command: UnstyledDrawingCommand = {
         drawingTool: DrawingTool.Line,
@@ -92,6 +93,7 @@ export class LineToolListenerCoordinator extends DrawingToolEventListenerCoordin
         endX: currentX,
         endY: currentY,
       };
+
       this.setTempDrawCommandAndLastCoords(command, currentX, currentY);
     }
   };

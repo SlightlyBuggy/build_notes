@@ -22,6 +22,9 @@ export const useDrawingTool = ({
   addDrawingCommand,
   drawCommandsSetter,
   tempDrawCommandSetter,
+  handleCommandSelectionByIndex,
+  handleSelectedCommandDrag,
+  handleCommandUnselect,
 }: {
   canvasRefPerm: React.RefObject<HTMLCanvasElement>;
   canvasRefTemp: React.RefObject<HTMLCanvasElement>;
@@ -30,6 +33,9 @@ export const useDrawingTool = ({
   addDrawingCommand: (command: UnstyledDrawingCommand) => void;
   drawCommandsSetter: (commands: StyledDrawingCommand[]) => void;
   tempDrawCommandSetter: (command: UnstyledDrawingCommand) => void;
+  handleCommandSelectionByIndex: (index: number) => void;
+  handleSelectedCommandDrag: (deltaX: number, deltaY: number) => void;
+  handleCommandUnselect: () => void;
 }) => {
   const [startingCoords, setStartingCoords] = useState<StartingCoords | null>(
     null
@@ -66,7 +72,9 @@ export const useDrawingTool = ({
     dragInProgress,
   } = useSelectionOnCanvas({
     drawCommands: drawCommands,
-    drawCommandsSetter: drawCommandsSetter,
+    handleCommandSelectionByIndex: handleCommandSelectionByIndex,
+    handleSelectedCommandDrag: handleSelectedCommandDrag,
+    handleCommandUnselect: handleCommandUnselect,
   });
 
   useEffect(() => {
@@ -126,12 +134,16 @@ export const useDrawingTool = ({
     }
   }, [textInputState.active, activeTool]);
 
-  // clean up when a command changes
+  // clean up when a command is added or removed
   useEffect(() => {
     setPainting(false);
     setStartingCoords(null);
     setLastCoords(null);
-  }, [drawCommands]);
+  }, [drawCommands.length]);
 
-  return { textInputState, textInputValueSetter, textInputSizeSetter };
+  return {
+    textInputState,
+    textInputValueSetter,
+    textInputSizeSetter,
+  };
 };

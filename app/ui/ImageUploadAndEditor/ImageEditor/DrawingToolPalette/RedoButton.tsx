@@ -4,16 +4,17 @@ import clsx from 'clsx';
 
 export default function RedoButton({
   redoLastUndoneCommand,
-  undoneDrawCommands,
+  undoneDrawCommandHistories,
 }: {
   redoLastUndoneCommand: () => void;
-  undoneDrawCommands: StyledDrawingCommand[];
+  undoneDrawCommandHistories: Array<StyledDrawingCommand[]>;
 }) {
   return (
     <div
       data-testid="redo-button"
       className={clsx('p-3 flex items-center', {
-        'select-none text-gray-400': undoneDrawCommands.length == 0,
+        'select-none text-gray-400 pointer-events-none':
+          undoneDrawCommandHistories.length == 0,
       })}
       onClick={redoLastUndoneCommand}
     >
