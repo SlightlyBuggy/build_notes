@@ -7,7 +7,7 @@ import SaveDrawingButton from './SaveDrawingButton';
 import { useDrawingCommands } from '@/app/lib/hooks/useDrawingCommands';
 import { saveImage } from '@/app/lib/util/image';
 import { useToolPalette } from '@/app/lib/hooks/useToolPalette';
-import PermAndTempCanvases from './PermAndTempCanvases';
+import CanvasesAndTextInput from './CanvasesAndTextInput';
 
 export default function ImageEditor({
   imageData,
@@ -80,7 +80,7 @@ export default function ImageEditor({
       />
       <div className="relative z-1">
         <img src={imageData.src} ref={imageRef} className="absolute" />
-        <PermAndTempCanvases
+        <CanvasesAndTextInput
           canvasHeight={canvasHeight}
           canvasWidth={canvasWidth}
           canvasRefPerm={canvasRefPerm}

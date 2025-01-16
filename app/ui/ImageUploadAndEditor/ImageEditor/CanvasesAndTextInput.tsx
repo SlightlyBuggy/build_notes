@@ -2,7 +2,7 @@
 
 import { TextInput, TextInputState } from './TextInput';
 
-export default function PermAndTempCanvases({
+export default function CanvasesAndTextInput({
   canvasHeight,
   canvasWidth,
   canvasRefPerm,
