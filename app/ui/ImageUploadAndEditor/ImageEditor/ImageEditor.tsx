@@ -2,12 +2,12 @@
 import { StaticImageData } from 'next/image';
 import React, { useRef } from 'react';
 import { useDrawingTool } from '@/app/lib/hooks/useDrawingTools';
-import ImageAndCanvases from './ImageAndCanvases';
 import DrawingToolPalette from './DrawingToolPalette/DrawingToolPalette';
 import SaveDrawingButton from './SaveDrawingButton';
 import { useDrawingCommands } from '@/app/lib/hooks/useDrawingCommands';
 import { saveImage } from '@/app/lib/util/image';
 import { useToolPalette } from '@/app/lib/hooks/useToolPalette';
+import PermAndTempCanvases from './PermAndTempCanvases';
 
 export default function ImageEditor({
   imageData,
@@ -78,18 +78,19 @@ export default function ImageEditor({
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
       />
-      <ImageAndCanvases
-        imageData={imageData}
-        canvasHeight={canvasHeight}
-        canvasWidth={canvasWidth}
-        canvasRefPerm={canvasRefPerm}
-        canvasRefTemp={canvasRefTemp}
-        textInputState={textInputState}
-        textInputValueSetter={textInputValueSetter}
-        textInputSizeSetter={textInputSizeSetter}
-        imageRef={imageRef}
-        selectedColor={selectedColor}
-      />
+      <div className="relative z-1">
+        <img src={imageData.src} ref={imageRef} className="absolute" />
+        <PermAndTempCanvases
+          canvasHeight={canvasHeight}
+          canvasWidth={canvasWidth}
+          canvasRefPerm={canvasRefPerm}
+          canvasRefTemp={canvasRefTemp}
+          textInputState={textInputState}
+          textInputValueSetter={textInputValueSetter}
+          textInputSizeSetter={textInputSizeSetter}
+          selectedColor={selectedColor}
+        />
+      </div>
       <SaveDrawingButton
         saveImage={() =>
           saveImage(
