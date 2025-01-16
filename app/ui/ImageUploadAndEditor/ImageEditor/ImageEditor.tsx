@@ -88,6 +88,7 @@ export default function ImageEditor({
         textInputValueSetter={textInputValueSetter}
         textInputSizeSetter={textInputSizeSetter}
         imageRef={imageRef}
+        selectedColor={selectedColor}
       />
       <SaveDrawingButton
         saveImage={() =>

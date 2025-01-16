@@ -15,10 +15,12 @@ export function TextInput({
   inputState,
   valueSetter,
   textInputSizeSetter,
+  selectedColor,
 }: {
   inputState: TextInputState;
   valueSetter: (value: string) => void;
   textInputSizeSetter: (width: number, height: number) => void;
+  selectedColor: string;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const spanRef = useRef<HTMLSpanElement>(null);
@@ -71,6 +73,7 @@ export function TextInput({
           width: width,
           position: 'relative',
           minWidth: MIN_INPUT_WIDTH_PX,
+          color: selectedColor,
         }}
         size={10}
         onChange={(e) => valueSetter(e.target.value)}

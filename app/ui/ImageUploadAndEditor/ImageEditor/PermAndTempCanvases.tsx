@@ -10,6 +10,7 @@ export default function PermAndTempCanvases({
   textInputState,
   textInputValueSetter,
   textInputSizeSetter,
+  selectedColor,
 }: {
   canvasHeight: number;
   canvasWidth: number;
@@ -18,6 +19,7 @@ export default function PermAndTempCanvases({
   textInputState: TextInputState;
   textInputValueSetter: (value: string) => void;
   textInputSizeSetter: (width: number, height: number) => void;
+  selectedColor: string;
 }) {
   return (
     <div className="z-1 relative">
@@ -38,6 +40,7 @@ export default function PermAndTempCanvases({
         inputState={textInputState}
         valueSetter={textInputValueSetter}
         textInputSizeSetter={textInputSizeSetter}
+        selectedColor={selectedColor}
       />
     </div>
   );

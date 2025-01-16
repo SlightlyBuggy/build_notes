@@ -36,18 +36,19 @@ export class TextToolListenerCoordinator extends DrawingToolEventListenerCoordin
     ev.preventDefault();
     const { currentX, currentY } = getCurrentCoords(ev, this.rect);
 
+    // if already active, need to process value and set to inactive
     if (this.textInputState.active) {
       if (this.textInputState.value) {
-        // TODO: get rid of this magic number for startY.  Right now this accounts for the coordinates anchoring an input's top left corner,
+        // TODO: get rid of this magic number for startY so we can support more font sizes.  Right now this accounts for the coordinates anchoring an input's top left corner,
         // while they anchor the context fillText command's bottom left
-        // this means we need to shift the fill command down, but not sure why 23 works.  it doesnt appear to be the height of
+        // this means we need to shift the fill command down, but not sure why 22 works.  it doesnt appear to be the height of
         // the text input (tried that, shifted too much), so is that the height of the font itself?
         // if so we need to understand the height between the border of the input and the texts element itself
         // or maybe we can get that coordinate directly.  see command in TextInput for more info
         const command: UnstyledDrawingCommand = {
           drawingTool: DrawingTool.Text,
           startX: this.textInputState.posX,
-          startY: this.textInputState.posY + 23,
+          startY: this.textInputState.posY + 22,
           text: this.textInputState.value,
         };
 

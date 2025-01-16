@@ -125,6 +125,7 @@ class TextCommandExecutor extends DrawingToolCommandExecutor {
   protected _executeCommand(): void {
     if (this.command.text) {
       this.drawingContext.font = '1.25em Arial';
+      this.drawingContext.fillStyle = this.command.color;
       this.drawingContext.fillText(
         this.command.text,
         this.command.startX,
