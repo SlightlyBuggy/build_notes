@@ -20,17 +20,18 @@ export const useSelectionOnCanvas = ({
   const [dragInProgress, setDragInProgress] = useState<boolean>(false);
 
   const selectOnCanvas = (posX: number, posY: number) => {
-    drawCommands.forEach((command, idx) => {
-      const commandSelected = selectionIsInObject(command, posX, posY);
+    for (let i = drawCommands.length - 1; i >= 0; i--) {
+      const commandSelected = selectionIsInObject(drawCommands[i], posX, posY);
 
       if (commandSelected) {
-        handleCommandSelectionByIndex(idx);
+        handleCommandSelectionByIndex(i);
         setMouseLastCoords({ lastX: posX, lastY: posY });
         setDragInProgress(true);
+        break;
       } else {
         console.log(`Selection is not in a command`);
       }
-    });
+    }
   };
 
   const handleDragOnCanvas = (posX: number, posY: number) => {
