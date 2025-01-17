@@ -21,6 +21,10 @@ export const getObjectBoundaries = (
           inputs.endX,
           inputs.endY
         );
+        // TODO: need to get rid of magic number nonsense
+        if (inputs.toolType == DrawingTool.Text) {
+          boundaries.bottomY -= 22;
+        }
         return boundaries;
       }
     case DrawingTool.RadiusedCircle:

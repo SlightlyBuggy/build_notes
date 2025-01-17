@@ -1,16 +1,55 @@
 import { DrawingTool } from '@/app/lib/util/enums';
-import { StyledDrawingCommand } from '@/app/lib/util/types';
+import { ObjectBoundaries, StyledDrawingCommand } from '@/app/lib/util/types';
 
 abstract class DrawingToolCommandExecutor {
   public executeCommand(): void {
     try {
       this._executeCommand();
+      this.drawBoxAroundSelectedCommand();
     } catch (error) {
       console.error(
         `Unable to implement drawing command: ${JSON.stringify(this.command)}`
       );
     }
   }
+
+  private selectedCommandBorderOffsetPx = 10;
+  private selectedCommandBorderColor = '#38ffff';
+
+  private drawBoxAroundSelectedCommand = () => {
+    if (this.command.selected && this.command.objectBoundaries) {
+      const selectionBoxBoundaries = this.getSelectedCommandBorderCoords(
+        this.command.objectBoundaries
+      );
+
+      const width =
+        selectionBoxBoundaries.rightX - selectionBoxBoundaries.leftX;
+      const height =
+        selectionBoxBoundaries.bottomY - selectionBoxBoundaries.topY;
+
+      this.drawingContext.strokeStyle = this.selectedCommandBorderColor;
+      this.drawingContext.setLineDash([10, 10]);
+
+      this.drawingContext.strokeRect(
+        selectionBoxBoundaries.leftX,
+        selectionBoxBoundaries.topY,
+        width,
+        height
+      );
+      this.drawingContext.setLineDash([]);
+    }
+  };
+
+  private getSelectedCommandBorderCoords = (boundaries: ObjectBoundaries) => {
+    const selectedCommandBorderBoundaries: ObjectBoundaries = {
+      leftX: boundaries.leftX - this.selectedCommandBorderOffsetPx,
+      rightX: boundaries.rightX + this.selectedCommandBorderOffsetPx,
+      topY: boundaries.topY - this.selectedCommandBorderOffsetPx,
+      bottomY: boundaries.bottomY + this.selectedCommandBorderOffsetPx,
+    };
+
+    return selectedCommandBorderBoundaries;
+  };
 
   protected abstract _executeCommand(): void;
   protected drawingContext: CanvasRenderingContext2D;
