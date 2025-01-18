@@ -50,6 +50,7 @@ export class TextToolListenerCoordinator extends DrawingToolEventListenerCoordin
           startX: this.textInputState.posX,
           startY: this.textInputState.posY + 22,
           text: this.textInputState.value,
+          selected: false,
         };
 
         const endX = command.startX + this.textInputState.width;

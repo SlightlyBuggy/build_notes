@@ -81,11 +81,12 @@ export const useDrawingCommands = (
     setDrawCommandsHistory(drawCommandHistoryCopy);
   };
 
-  // on unselect, simply set the 'selected' property to false
+  // handle unselection of object
   const handleCommandUnselect = () => {
     const drawCommandHistoryCopy = JSON.parse(
       JSON.stringify(drawCommandsHistory)
     );
+
     const latestDrawCommandHistory = getLatestDrawCommandsCopy();
     for (let command of latestDrawCommandHistory) {
       if (command.selected) {
@@ -95,6 +96,20 @@ export const useDrawingCommands = (
     }
     drawCommandHistoryCopy[drawCommandHistoryCopy.length - 1] =
       latestDrawCommandHistory;
+
+    // remove the latest history if it exactly matches the one prior
+    // this happens on select/unselect with no other action
+    if (drawCommandHistoryCopy.length >= 3) {
+      const latestMinusOneDrawCommandHistory =
+        drawCommandHistoryCopy[drawCommandsHistory.length - 2];
+
+      if (
+        JSON.stringify(latestMinusOneDrawCommandHistory) ==
+        JSON.stringify(latestDrawCommandHistory)
+      ) {
+        drawCommandHistoryCopy.pop();
+      }
+    }
 
     setDrawCommandsHistory(drawCommandHistoryCopy);
   };

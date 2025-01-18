@@ -36,7 +36,7 @@ export interface UnstyledDrawingCommand {
   endY?: number;
   radius?: number;
   text?: string;
-  selected?: boolean;
+  selected: boolean;
   objectBoundaries?: ObjectBoundaries; // TODO: need a different interface for things with boundaries (drawn on perm) and things without (drawing on temp?)
 }
 
