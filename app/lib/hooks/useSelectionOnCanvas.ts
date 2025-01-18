@@ -22,7 +22,7 @@ export const useSelectionOnCanvas = ({
   }>();
   const [dragInProgress, setDragInProgress] = useState<boolean>(false);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-
+  // TODO: pull loops into getObjectInCoords(posX, posY)
   const selectOnCanvas = (posX: number, posY: number) => {
     // if an object is already selected, unselect if selection is outside it
     // TODO: later expand to allow selection of object drawn earlier in history
@@ -46,7 +46,6 @@ export const useSelectionOnCanvas = ({
         if (commandSelected) {
           handleCommandSelectionByIndex(i);
           setSelectedIndex(i);
-          setMouseLastCoords({ lastX: posX, lastY: posY });
           break;
         }
       }
@@ -63,6 +62,7 @@ export const useSelectionOnCanvas = ({
       );
       if (coordsInSelectedObject) {
         console.log('Startind drag in progress');
+        setMouseLastCoords({ lastX: posX, lastY: posY });
         setDragInProgress(true);
       }
     } else {
@@ -89,7 +89,6 @@ export const useSelectionOnCanvas = ({
   }, [selectedDrawingTool]);
 
   const handleDragOnCanvas = (posX: number, posY: number) => {
-    console.log('Handle canvas drag');
     if (dragInProgress && mouseLastCoords) {
       const deltaX = posX - mouseLastCoords.lastX;
       const deltaY = posY - mouseLastCoords.lastY;
@@ -101,8 +100,8 @@ export const useSelectionOnCanvas = ({
 
   const unSelectOnCanvas = () => {
     handleCommandUnselect();
-    setDragInProgress(false);
     setSelectedIndex(null);
+    setDragInProgress(false);
   };
 
   return {
