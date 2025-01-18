@@ -70,11 +70,13 @@ export const useDrawingTool = ({
     handleDragOnCanvas,
     unSelectOnCanvas,
     dragInProgress,
+    startDragOnCanvas,
   } = useSelectionOnCanvas({
     drawCommands: drawCommands,
     handleCommandSelectionByIndex: handleCommandSelectionByIndex,
     handleSelectedCommandDrag: handleSelectedCommandDrag,
     handleCommandUnselect: handleCommandUnselect,
+    selectedDrawingTool: activeTool,
   });
 
   useEffect(() => {
@@ -105,6 +107,7 @@ export const useDrawingTool = ({
           mouseDownHandlerForToolsWithPreview:
             mouseDownHandlerForToolsWithPreview,
           setTempDrawCommandAndLastCoords: setTempDrawCommandAndLastCoords,
+          startDragOnCanvas: startDragOnCanvas,
         };
 
         const coordinator: DrawingToolEventListenerCoordinator =

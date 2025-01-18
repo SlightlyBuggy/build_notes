@@ -26,6 +26,8 @@ export interface DrawingToolEventListenerCoordinatorArgs {
     lastX: number,
     lastY: number
   ) => void;
+
+  startDragOnCanvas: (posX: number, posY: number) => void;
 }
 
 interface EventTypeWithListener {
@@ -37,6 +39,7 @@ export enum EventTypes {
   MouseDown = 'mousedown',
   MouseUp = 'mouseup',
   MouseMove = 'mousemove',
+  Click = 'click',
 }
 
 export abstract class DrawingToolEventListenerCoordinator {

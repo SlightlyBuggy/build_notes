@@ -12,6 +12,7 @@ export class SelectorToolListenerCoordinator extends DrawingToolEventListenerCoo
     this.dragInProgress = args.dragInProgress;
     this.handleDragOnCanvas = args.handleDragOnCanvas;
     this.unSelectOncanvas = args.unSelectOnCanvas;
+    this.startDragOnCanvas = args.startDragOnCanvas;
 
     this.createEventListenersWithHandlers();
   }
@@ -19,10 +20,11 @@ export class SelectorToolListenerCoordinator extends DrawingToolEventListenerCoo
   private dragInProgress: boolean;
   private handleDragOnCanvas: (posX: number, posY: number) => void;
   private unSelectOncanvas: () => void;
+  private startDragOnCanvas: (posX: number, posY: number) => void;
   protected createEventListenersWithHandlers = () => {
     this.eventsWithHandlers.push({
-      eventType: EventTypes.MouseDown,
-      eventListener: this.mouseDownListener,
+      eventType: EventTypes.Click,
+      eventListener: this.mouseClickListener,
     });
     this.eventsWithHandlers.push({
       eventType: EventTypes.MouseMove,
@@ -32,13 +34,24 @@ export class SelectorToolListenerCoordinator extends DrawingToolEventListenerCoo
       eventType: EventTypes.MouseUp,
       eventListener: this.mouseUpEventListener,
     });
+    this.eventsWithHandlers.push({
+      eventType: EventTypes.MouseDown,
+      eventListener: this.mouseDownListener,
+    });
+  };
+
+  private mouseClickListener = (ev: MouseEvent) => {
+    ev.preventDefault();
+
+    const { currentX, currentY } = getCurrentCoords(ev, this.rect);
+    this.selectOnCanvas(currentX, currentY);
   };
 
   private mouseDownListener = (ev: MouseEvent) => {
     ev.preventDefault();
 
     const { currentX, currentY } = getCurrentCoords(ev, this.rect);
-    this.selectOnCanvas(currentX, currentY);
+    this.startDragOnCanvas(currentX, currentY);
   };
 
   private mouseMoveListener = (ev: MouseEvent) => {
@@ -46,9 +59,7 @@ export class SelectorToolListenerCoordinator extends DrawingToolEventListenerCoo
 
     const { currentX, currentY } = getCurrentCoords(ev, this.rect);
 
-    if (this.dragInProgress) {
-      this.handleDragOnCanvas(currentX, currentY);
-    }
+    this.handleDragOnCanvas(currentX, currentY);
   };
 
   private mouseUpEventListener = (ev: MouseEvent) => {
