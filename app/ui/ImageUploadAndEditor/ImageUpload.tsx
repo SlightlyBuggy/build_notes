@@ -2,6 +2,9 @@ import { useState, DragEvent } from 'react';
 import clsx from 'clsx';
 import { StaticImageData } from 'next/image';
 
+// TODO: should this be dynamic?
+const MAX_IMAGE_PX = 1000;
+
 export default function ImageUpload({
   setImageData,
 }: {
@@ -20,14 +23,32 @@ export default function ImageUpload({
     // TODO: filter out anything that's not an image file
     if (fileArray.length > 0) {
       reader.onload = function (file) {
-        console.log(reader.result);
         if (file.target && file.target.result) {
           const image = new Image();
           image.src = file.target.result as string; // TODO this sseem like a hack
-          setImageData(image);
+
           image.onload = function () {
-            console.log(`width: ${image.width}, height: ${image.height}`);
+            console.log(`before w: ${image.width}, h: ${image.height}`);
+            if (image.width > MAX_IMAGE_PX || image.height > MAX_IMAGE_PX) {
+              let scaleFactor = 1;
+              if (image.width > MAX_IMAGE_PX) {
+                scaleFactor = MAX_IMAGE_PX / image.width;
+              }
+              if (image.height > MAX_IMAGE_PX) {
+                const heightScaleFactor = MAX_IMAGE_PX / image.height;
+                scaleFactor =
+                  heightScaleFactor < scaleFactor
+                    ? heightScaleFactor
+                    : scaleFactor;
+              }
+
+              image.width = image.width * scaleFactor;
+              image.height = image.height * scaleFactor;
+            }
+            console.log(`after w: ${image.width}, h: ${image.height}`);
           };
+
+          setImageData(image);
         }
       };
       reader.readAsDataURL(fileArray[0]);
