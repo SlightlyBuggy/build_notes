@@ -63,7 +63,6 @@ export class RadiusedCircleToolListenerCoordinator extends DrawingToolEventListe
   };
 
   private mouseUpListener = (ev: MouseEvent) => {
-    console.log('Attempting to add circle command');
     if (this.startingCoords && this.lastCoords) {
       const radius = distanceBetweenPoints(
         this.startingCoords.startX,
@@ -86,9 +85,6 @@ export class RadiusedCircleToolListenerCoordinator extends DrawingToolEventListe
         radius: command.radius,
       });
       command.objectBoundaries = objectBoundaries;
-
-      console.log('adding circle command');
-      console.log(command);
 
       this.addDrawingCommand(command);
     }

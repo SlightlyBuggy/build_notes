@@ -35,22 +35,6 @@ export default function SelectedStrokeButton({
               ></div>
             );
           })}
-
-          {/* <div
-            className={clsx(`h-[2px]`, 'w-5 bg-black', {
-              'bg-green-500': selectedStrokeItem.strokeWidthPx == 2,
-            })}
-          ></div>
-          <div
-            className={clsx(`h-[3px]`, 'w-5 bg-black', {
-              'bg-green-500': selectedStrokeItem.strokeWidthPx == 3,
-            })}
-          ></div>
-          <div
-            className={clsx(`h-[4px]`, 'w-5 bg-black', {
-              'bg-green-500': selectedStrokeItem.strokeWidthPx == 4,
-            })}
-          ></div> */}
         </div>
       </div>
     </div>

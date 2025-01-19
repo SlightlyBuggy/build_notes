@@ -97,7 +97,7 @@ export const useDrawingTool = ({
           startingCoords: startingCoords,
           lastCoords: lastCoords,
           painting: painting,
-          addDrawingCommand: addDrawingCommand,
+          addDrawingCommand: addDrawingCommandAndCleanup,
           textInputState: textInputState,
           textInputStateSetter: textInputStateSetter,
           selectOnCanvas: selectOnCanvas,
@@ -112,7 +112,6 @@ export const useDrawingTool = ({
 
         const coordinator: DrawingToolEventListenerCoordinator =
           drawingToolListenerCoordinatorFactory(args);
-
         coordinator.addEventListenersToPermCanvas();
 
         return () => {
@@ -137,12 +136,13 @@ export const useDrawingTool = ({
     }
   }, [textInputState.active, activeTool]);
 
-  // clean up when a command is added or removed
-  useEffect(() => {
+  const addDrawingCommandAndCleanup = (command: UnstyledDrawingCommand) => {
     setPainting(false);
     setStartingCoords(null);
     setLastCoords(null);
-  }, [drawCommands.length]);
+
+    addDrawingCommand(command);
+  };
 
   return {
     textInputState,

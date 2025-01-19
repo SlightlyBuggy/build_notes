@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { StyledDrawingCommand, UnstyledDrawingCommand } from '../util/types';
 import { drawCommandExecutorFactory } from '@/app/ui/ImageUploadAndEditor/ImageEditor/classes/DrawingToolCommandExecutor';
 import { StrokeItem } from '@/app/ui/ImageUploadAndEditor/ImageEditor/DrawingToolPalette/StrokeSelection/StrokeWidthSelector';
+import { DrawingTool } from '../util/enums';
 
 export const useDrawingCommands = (
   canvasRefPerm: React.RefObject<HTMLCanvasElement>,
@@ -125,15 +126,31 @@ export const useDrawingCommands = (
   };
 
   const addDrawingCommand = (command: UnstyledDrawingCommand) => {
-    const styledCommand: StyledDrawingCommand = {
-      ...command,
-      color: selectedColor,
-      strokeWidth: selectedStrokeItem.strokeWidthPx,
-    };
+    // validate the command.  if it was just a click, then we can ignore
+    let commandIsValid = true;
+    switch (command.drawingTool) {
+      case DrawingTool.Line:
+      case DrawingTool.Rectangle:
+        if (command.startX == command.endX && command.startY == command.endY) {
+          commandIsValid = false;
+        }
+        break;
+      case DrawingTool.RadiusedCircle:
+        if (command.radius === 0) {
+          commandIsValid = false;
+        }
+    }
+    if (commandIsValid) {
+      const styledCommand: StyledDrawingCommand = {
+        ...command,
+        color: selectedColor,
+        strokeWidth: selectedStrokeItem.strokeWidthPx,
+      };
 
-    const latestDrawCommands = getLatestDrawCommandsCopy();
-    addDrawCommandListToHistory([...latestDrawCommands, styledCommand]);
-    setUndoneDrawCommandHistories([]);
+      const latestDrawCommands = getLatestDrawCommandsCopy();
+      addDrawCommandListToHistory([...latestDrawCommands, styledCommand]);
+      setUndoneDrawCommandHistories([]);
+    }
   };
 
   const undoLastDrawingCommand = () => {

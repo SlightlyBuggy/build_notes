@@ -1,9 +1,7 @@
 import { useState, DragEvent } from 'react';
 import clsx from 'clsx';
 import { StaticImageData } from 'next/image';
-
-// TODO: should this be dynamic?
-const MAX_IMAGE_PX = 1000;
+import { getResizedImageWidthAndHeight } from '@/app/lib/util/image';
 
 export default function ImageUpload({
   setImageData,
@@ -28,23 +26,11 @@ export default function ImageUpload({
           image.src = file.target.result as string; // TODO this sseem like a hack
 
           image.onload = function () {
-            console.log(`before w: ${image.width}, h: ${image.height}`);
-            if (image.width > MAX_IMAGE_PX || image.height > MAX_IMAGE_PX) {
-              let scaleFactor = 1;
-              if (image.width > MAX_IMAGE_PX) {
-                scaleFactor = MAX_IMAGE_PX / image.width;
-              }
-              if (image.height > MAX_IMAGE_PX) {
-                const heightScaleFactor = MAX_IMAGE_PX / image.height;
-                scaleFactor =
-                  heightScaleFactor < scaleFactor
-                    ? heightScaleFactor
-                    : scaleFactor;
-              }
+            const { imageWidth, imageHeight } =
+              getResizedImageWidthAndHeight(image);
 
-              image.width = image.width * scaleFactor;
-              image.height = image.height * scaleFactor;
-            }
+            image.width = imageWidth;
+            image.height = imageHeight;
             console.log(`after w: ${image.width}, h: ${image.height}`);
           };
 

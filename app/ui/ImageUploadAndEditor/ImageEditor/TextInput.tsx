@@ -55,7 +55,7 @@ export function TextInput({
       <span
         id="hide"
         ref={spanRef}
-        className="border-cyan-300 border-1"
+        className="border-cyan-300 border-1 whitespace-pre"
         style={{
           fontFamily: 'Arial',
           fontSize: '1.25em',
