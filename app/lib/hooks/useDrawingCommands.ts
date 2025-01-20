@@ -21,7 +21,7 @@ export const useDrawingCommands = (
     Array<StyledDrawingCommand[]>
   >([]);
 
-  const getLatestDrawCommandsCopy = () => {
+  const getLatestDrawCommandsCopy = (): StyledDrawingCommand[] => {
     const latestHistory =
       (drawCommandsHistory.length &&
         drawCommandsHistory[drawCommandsHistory.length - 1]) ||
@@ -251,6 +251,19 @@ export const useDrawingCommands = (
     }
   };
 
+  const handleDeleteButtonPressed = () => {
+    const latestDrawCommandsCopy = getLatestDrawCommandsCopy();
+    const filteredDrawCommands = latestDrawCommandsCopy.filter(
+      (command) => !command.selected
+    );
+    if (latestDrawCommandsCopy.length != filteredDrawCommands.length) {
+      addDrawCommandListToHistory(filteredDrawCommands);
+      setUndoneDrawCommandHistories([
+        ...undoneDrawCommandHistories,
+        latestDrawCommandsCopy,
+      ]);
+    }
+  };
   return {
     drawCommands: getLatestDrawCommandsCopy(),
     undoneDrawCommandHistories,
@@ -264,5 +277,6 @@ export const useDrawingCommands = (
     handleCommandSelectionByIndex,
     handleSelectedCommandDrag,
     handleCommandUnselect,
+    handleDeleteButtonPressed,
   };
 };

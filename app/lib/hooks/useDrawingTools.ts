@@ -25,6 +25,7 @@ export const useDrawingTool = ({
   handleCommandSelectionByIndex,
   handleSelectedCommandDrag,
   handleCommandUnselect,
+  handleDeleteButtonPressed,
 }: {
   canvasRefPerm: React.RefObject<HTMLCanvasElement>;
   canvasRefTemp: React.RefObject<HTMLCanvasElement>;
@@ -36,6 +37,7 @@ export const useDrawingTool = ({
   handleCommandSelectionByIndex: (index: number) => void;
   handleSelectedCommandDrag: (deltaX: number, deltaY: number) => void;
   handleCommandUnselect: () => void;
+  handleDeleteButtonPressed: () => void;
 }) => {
   const [startingCoords, setStartingCoords] = useState<StartingCoords | null>(
     null
@@ -114,8 +116,11 @@ export const useDrawingTool = ({
           drawingToolListenerCoordinatorFactory(args);
         coordinator.addEventListenersToPermCanvas();
 
+        document.addEventListener('keydown', handleDelete);
+
         return () => {
           coordinator.removeEventListenersFromPermCanvas();
+          document.removeEventListener('keydown', handleDelete);
         };
       }
     }
@@ -128,6 +133,12 @@ export const useDrawingTool = ({
     textInputState.active,
     textInputState.value,
   ]);
+
+  const handleDelete = (ev: KeyboardEvent) => {
+    if (ev.key === 'Delete') {
+      handleDeleteButtonPressed();
+    }
+  };
 
   // make sure text input is not visible when it shouldn't be
   useEffect(() => {

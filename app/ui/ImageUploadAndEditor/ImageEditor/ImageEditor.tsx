@@ -43,6 +43,7 @@ export default function ImageEditor({
     handleCommandSelectionByIndex,
     handleSelectedCommandDrag,
     handleCommandUnselect,
+    handleDeleteButtonPressed,
   } = useDrawingCommands(
     canvasRefPerm,
     canvasRefTemp,
@@ -62,6 +63,7 @@ export default function ImageEditor({
       handleCommandSelectionByIndex,
       handleSelectedCommandDrag,
       handleCommandUnselect,
+      handleDeleteButtonPressed,
     });
 
   return (
