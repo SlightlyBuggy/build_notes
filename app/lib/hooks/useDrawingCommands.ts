@@ -43,8 +43,7 @@ export const useDrawingCommands = (
     addDrawCommandListToHistory(commands);
   };
 
-  // TODO: we should only actually update history when we have something to update, i.e. when we start dragging
-  // on selection, make a new history with the selected item selected
+  // on selection, make a new history
   const handleCommandSelectionByIndex = (index: number) => {
     const newHistory = getLatestDrawCommandsCopy();
     setDrawCommandsHistory([...drawCommandsHistory, newHistory]);
@@ -77,6 +76,7 @@ export const useDrawingCommands = (
       }
     }
 
+    // replace the current latest history with the one new one with updated coordinates
     const drawCommandHistoryCopy = JSON.parse(
       JSON.stringify(drawCommandsHistory)
     );
@@ -88,15 +88,23 @@ export const useDrawingCommands = (
 
   // handle unselection of object
   const handleCommandUnselect = () => {
-    const drawCommandHistoryCopy = JSON.parse(
+    const drawCommandHistoryCopy: StyledDrawingCommand[][] = JSON.parse(
       JSON.stringify(drawCommandsHistory)
     );
-
-    const latestDrawCommandHistory = getLatestDrawCommandsCopy();
-
     // remove the latest history if it exactly matches the one prior
-    // this happens on select/unselect with no other action
+    // this happens on select/unselect but no drag
+    removeLastHistorIfNoChange(drawCommandHistoryCopy);
+
+    setDrawCommandsHistory(drawCommandHistoryCopy);
+
+    setSelectedDrawCommandIndex(null);
+  };
+
+  const removeLastHistorIfNoChange = (
+    drawCommandHistoryCopy: StyledDrawingCommand[][]
+  ) => {
     if (drawCommandHistoryCopy.length >= 3) {
+      const latestDrawCommandHistory = getLatestDrawCommandsCopy();
       const latestMinusOneDrawCommandHistory =
         drawCommandHistoryCopy[drawCommandsHistory.length - 2];
 
@@ -107,10 +115,6 @@ export const useDrawingCommands = (
         drawCommandHistoryCopy.pop();
       }
     }
-
-    setDrawCommandsHistory(drawCommandHistoryCopy);
-
-    setSelectedDrawCommandIndex(null);
   };
 
   const tempDrawCommandSetter = (command: UnstyledDrawingCommand) => {
@@ -152,7 +156,13 @@ export const useDrawingCommands = (
   };
 
   const undoLastDrawingCommand = () => {
-    const drawCommandHistoryCopy = [...drawCommandsHistory];
+    const drawCommandHistoryCopy = JSON.parse(
+      JSON.stringify(drawCommandsHistory)
+    );
+
+    // we might have a no-change history if an item has been selected but no drag has happened
+    removeLastHistorIfNoChange(drawCommandHistoryCopy);
+
     const lastHistory: StyledDrawingCommand[] | undefined =
       drawCommandHistoryCopy.pop();
     if (lastHistory) {
@@ -162,6 +172,8 @@ export const useDrawingCommands = (
       ]);
       setDrawCommandsHistory(drawCommandHistoryCopy);
     }
+
+    setSelectedDrawCommandIndex(null);
   };
 
   const redoLastUndoneCommand = () => {
@@ -173,6 +185,8 @@ export const useDrawingCommands = (
       setDrawCommandsHistory([...drawCommandsHistory, historyToRedo]);
       setUndoneDrawCommandHistories(undoneDrawCommandHistoriesCopy);
     }
+
+    setSelectedDrawCommandIndex(null);
   };
 
   const clearTempCanvas = () => {
