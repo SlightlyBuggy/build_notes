@@ -75,7 +75,6 @@ export class RadiusedCircleToolListenerCoordinator extends DrawingToolEventListe
         startX: this.startingCoords.startX,
         startY: this.startingCoords.startY,
         radius: radius,
-        selected: false,
       };
 
       const objectBoundaries = getObjectBoundaries({
@@ -106,7 +105,6 @@ export class RadiusedCircleToolListenerCoordinator extends DrawingToolEventListe
         startX: this.startingCoords.startX,
         startY: this.startingCoords.startY,
         radius: radius,
-        selected: false,
       };
 
       this.setTempDrawCommandAndLastCoords(command, currentX, currentY);

@@ -17,7 +17,7 @@ abstract class DrawingToolCommandExecutor {
   private selectedCommandBorderColor = '#38ffff';
 
   private drawBoxAroundSelectedCommand = () => {
-    if (this.command.selected && this.command.objectBoundaries) {
+    if (this.selected && this.command.objectBoundaries) {
       const selectionBoxBoundaries = this.getSelectedCommandBorderCoords(
         this.command.objectBoundaries
       );
@@ -54,13 +54,16 @@ abstract class DrawingToolCommandExecutor {
   protected abstract _executeCommand(): void;
   protected drawingContext: CanvasRenderingContext2D;
   protected command: StyledDrawingCommand;
+  protected selected: boolean;
 
   constructor(
     command: StyledDrawingCommand,
-    drawingContext: CanvasRenderingContext2D
+    drawingContext: CanvasRenderingContext2D,
+    selected: boolean
   ) {
     this.command = command;
     this.drawingContext = drawingContext;
+    this.selected = selected;
   }
 }
 
@@ -176,17 +179,26 @@ class TextCommandExecutor extends DrawingToolCommandExecutor {
 
 export const drawCommandExecutorFactory = (
   command: StyledDrawingCommand,
-  permDrawingContext: CanvasRenderingContext2D
+  permDrawingContext: CanvasRenderingContext2D,
+  selected: boolean
 ): DrawingToolCommandExecutor => {
   switch (command.drawingTool) {
     case DrawingTool.Line:
-      return new LineToolCommandExecutor(command, permDrawingContext);
+      return new LineToolCommandExecutor(command, permDrawingContext, selected);
     case DrawingTool.RadiusedCircle:
-      return new RadiusedCircleCommandExecutor(command, permDrawingContext);
+      return new RadiusedCircleCommandExecutor(
+        command,
+        permDrawingContext,
+        selected
+      );
     case DrawingTool.Rectangle:
-      return new RectangleToolCommandExecutor(command, permDrawingContext);
+      return new RectangleToolCommandExecutor(
+        command,
+        permDrawingContext,
+        selected
+      );
     case DrawingTool.Text:
-      return new TextCommandExecutor(command, permDrawingContext);
+      return new TextCommandExecutor(command, permDrawingContext, selected);
     default:
       throw new Error(
         `drawCommandExecutorFactory does not handle DrawingTool ${command.drawingTool}`

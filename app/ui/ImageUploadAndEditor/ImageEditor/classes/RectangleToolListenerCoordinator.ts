@@ -69,7 +69,6 @@ export class RectangleToolListenerCoordinator extends DrawingToolEventListenerCo
         startY: this.startingCoords.startY,
         endX: this.lastCoords.lastX,
         endY: this.lastCoords.lastY,
-        selected: false,
       };
 
       const objectBoundaries = getObjectBoundaries({
@@ -95,7 +94,6 @@ export class RectangleToolListenerCoordinator extends DrawingToolEventListenerCo
         startY: this.startingCoords.startY,
         endX: currentX,
         endY: currentY,
-        selected: false,
       };
 
       this.setTempDrawCommandAndLastCoords(command, currentX, currentY);

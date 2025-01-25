@@ -21,6 +21,10 @@ export const useDrawingCommands = (
     Array<StyledDrawingCommand[]>
   >([]);
 
+  const [selectedDrawCommandIndex, setSelectedDrawCommandIndex] = useState<
+    number | null
+  >(null);
+
   const getLatestDrawCommandsCopy = (): StyledDrawingCommand[] => {
     const latestHistory =
       (drawCommandsHistory.length &&
@@ -39,37 +43,37 @@ export const useDrawingCommands = (
     addDrawCommandListToHistory(commands);
   };
 
+  // TODO: we should only actually update history when we have something to update, i.e. when we start dragging
   // on selection, make a new history with the selected item selected
   const handleCommandSelectionByIndex = (index: number) => {
     const newHistory = getLatestDrawCommandsCopy();
-    newHistory[index].selected = true;
     setDrawCommandsHistory([...drawCommandsHistory, newHistory]);
+
+    setSelectedDrawCommandIndex(index);
   };
 
   // on movement, replace the latest history with a new one with updated coordinates for the selected command
   const handleSelectedCommandDrag = (deltaX: number, deltaY: number) => {
     const latestCommandsCopy = getLatestDrawCommandsCopy();
-    for (let command of latestCommandsCopy) {
-      if (command.selected) {
-        command.startX += deltaX;
-        command.startY += deltaY;
+    if (selectedDrawCommandIndex != null) {
+      const command = latestCommandsCopy[selectedDrawCommandIndex];
+      command.startX += deltaX;
+      command.startY += deltaY;
 
-        if (command.endX !== undefined) {
-          command.endX += deltaX;
-        }
+      if (command.endX !== undefined) {
+        command.endX += deltaX;
+      }
 
-        if (command.endY !== undefined) {
-          command.endY += deltaY;
-        }
+      if (command.endY !== undefined) {
+        command.endY += deltaY;
+      }
 
-        if (command.objectBoundaries) {
-          command.objectBoundaries.leftX += deltaX;
-          command.objectBoundaries.rightX += deltaX;
+      if (command.objectBoundaries) {
+        command.objectBoundaries.leftX += deltaX;
+        command.objectBoundaries.rightX += deltaX;
 
-          command.objectBoundaries.bottomY += deltaY;
-          command.objectBoundaries.topY += deltaY;
-        }
-        break;
+        command.objectBoundaries.bottomY += deltaY;
+        command.objectBoundaries.topY += deltaY;
       }
     }
 
@@ -89,14 +93,6 @@ export const useDrawingCommands = (
     );
 
     const latestDrawCommandHistory = getLatestDrawCommandsCopy();
-    for (let command of latestDrawCommandHistory) {
-      if (command.selected) {
-        command.selected = false;
-        break;
-      }
-    }
-    drawCommandHistoryCopy[drawCommandHistoryCopy.length - 1] =
-      latestDrawCommandHistory;
 
     // remove the latest history if it exactly matches the one prior
     // this happens on select/unselect with no other action
@@ -113,6 +109,8 @@ export const useDrawingCommands = (
     }
 
     setDrawCommandsHistory(drawCommandHistoryCopy);
+
+    setSelectedDrawCommandIndex(null);
   };
 
   const tempDrawCommandSetter = (command: UnstyledDrawingCommand) => {
@@ -212,7 +210,8 @@ export const useDrawingCommands = (
       if (contextTemp && tempDrawCommand) {
         const drawCommandExecutor = drawCommandExecutorFactory(
           tempDrawCommand,
-          contextTemp
+          contextTemp,
+          false
         );
         drawCommandExecutor.executeCommand();
       }
@@ -238,30 +237,35 @@ export const useDrawingCommands = (
       const canvasPerm = canvasRefPerm.current;
       const contextPerm = canvasPerm.getContext('2d');
 
-      const latestDrawCommands = getLatestDrawCommandsCopy();
       if (contextPerm) {
-        for (let command of latestDrawCommands) {
+        const latestDrawCommands = getLatestDrawCommandsCopy();
+
+        latestDrawCommands.forEach((command, index) => {
           const drawCommandExecutor = drawCommandExecutorFactory(
             command,
-            contextPerm
+            contextPerm,
+            index === selectedDrawCommandIndex
           );
           drawCommandExecutor.executeCommand();
-        }
+        });
       }
     }
   };
 
   const handleDeleteButtonPressed = () => {
     const latestDrawCommandsCopy = getLatestDrawCommandsCopy();
-    const filteredDrawCommands = latestDrawCommandsCopy.filter(
-      (command) => !command.selected
-    );
-    if (latestDrawCommandsCopy.length != filteredDrawCommands.length) {
-      addDrawCommandListToHistory(filteredDrawCommands);
+
+    if (selectedDrawCommandIndex != null) {
       setUndoneDrawCommandHistories([
         ...undoneDrawCommandHistories,
-        latestDrawCommandsCopy,
+        JSON.parse(JSON.stringify(latestDrawCommandsCopy)),
       ]);
+
+      latestDrawCommandsCopy.splice(selectedDrawCommandIndex, 1);
+
+      addDrawCommandListToHistory(latestDrawCommandsCopy);
+
+      setSelectedDrawCommandIndex(null);
     }
   };
   return {
