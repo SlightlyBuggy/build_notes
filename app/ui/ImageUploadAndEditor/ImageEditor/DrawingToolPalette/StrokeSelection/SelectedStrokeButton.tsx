@@ -10,6 +10,7 @@ export default function SelectedStrokeButton({
   selectedStrokeItem: StrokeItem;
   strokeItems: StrokeItem[];
 }) {
+  // tailwind is not properly handling custom width/height.  workaround below where style is applied directly.
   return (
     <div className="flex items-center pl-3 pr-3">
       <div className="flex items-center">
@@ -20,10 +21,11 @@ export default function SelectedStrokeButton({
           }}
         >
           {strokeItems.map((strokeItem, idx) => {
+            console.log(`h-[${strokeItem.strokeWidthPx}px]`);
             return (
               <div
                 className={clsx(
-                  `h-[${strokeItem.strokeWidthPx}px]`,
+                  // `h-[${strokeItem.strokeWidthPx}px]`,
                   'w-5 bg-black',
                   {
                     'bg-green-500':
@@ -31,6 +33,7 @@ export default function SelectedStrokeButton({
                       selectedStrokeItem.strokeWidthPx,
                   }
                 )}
+                style={{ height: `${strokeItem.strokeWidthPx}px` }}
                 key={idx}
               ></div>
             );

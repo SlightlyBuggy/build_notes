@@ -10,7 +10,8 @@ export default function StrokeMenuItem({
   selectedStrokeItem: StrokeItem;
   setSelectedStrokeItem: (strokeItem: StrokeItem) => void;
 }) {
-  const widthClass = `h-[${thisStrokeItem.strokeWidthPx}px]`;
+  // Tailwind is not properly handling custom height/width.  workaround below where style is applied directly
+  //   const widthClass = `h-[${thisStrokeItem.strokeWidthPx}px]`;
   return (
     <div
       className={clsx(
@@ -29,7 +30,11 @@ export default function StrokeMenuItem({
       }}
     >
       <div className="h-6 w-6 flex items-center justify-center hover:bg-yellow-100">
-        <div className={clsx('w-5 bg-black', widthClass)}></div>
+        {/* <div className={clsx('w-5 bg-black', widthClass)}></div> */}
+        <div
+          style={{ height: `${thisStrokeItem.strokeWidthPx}px` }}
+          className={clsx('w-5 bg-black')}
+        />
       </div>
     </div>
   );
